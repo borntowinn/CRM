@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class Deal implements Serializable {
     private Integer id;
     private Integer userId;
-    private Float budget;
+    private BigDecimal budget;
     private String phase;
     private String textArea;
     private Date creationDate;

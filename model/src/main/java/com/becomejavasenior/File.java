@@ -60,7 +60,7 @@ public class File implements Serializable {
     }
 
     public void setUserNameID(Integer userNameID) {
-        this.userNameID = userNameID;
+        this.userNameId = userNameID;
     }
 
     public Date getCreationDate() {
@@ -71,11 +71,7 @@ public class File implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public java.io.File getFile() {
+    public Byte[] getFile() {
         return file;
-    }
-
-    public void setFile(java.io.File file) {
-        this.file = file;
     }
 }
