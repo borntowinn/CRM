@@ -73,11 +73,11 @@ public class Deal implements Serializable {
         this.userId = userId;
     }
 
-    public Float getBudget() {
+    public BigDecimal getBudget() {
         return budget;
     }
 
-    public void setBudget(Float budget) {
+    public void setBudget(BigDecimal budget) {
         this.budget = budget;
     }
 
