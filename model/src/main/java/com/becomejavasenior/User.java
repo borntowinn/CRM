@@ -2,23 +2,49 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Default71721 on 22.01.16.
  */
 public class User implements Serializable {
-    //irrelevant comment
     private Integer id;
     private String name;
     private String surname;
     private String password;
     private Date creationDate;
-    private Integer userRoleID;
+    private Integer userRoleId;
     private String email;
     private String mobilePhone;
     private String workPhone;
+    private List<Comment> commentList;
+    private List<File> fileList;
 
     public User() {
+    }
+
+    public Integer getUserRoleId() {
+        return userRoleId;
+    }
+
+    public void setUserRoleId(Integer userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public List<File> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<File> fileList) {
+        this.fileList = fileList;
     }
 
     public Integer getId() {
@@ -62,11 +88,11 @@ public class User implements Serializable {
     }
 
     public Integer getUserRoleID() {
-        return userRoleID;
+        return userRoleId;
     }
 
     public void setUserRoleID(Integer userRoleID) {
-        this.userRoleID = userRoleID;
+        this.userRoleId = userRoleID;
     }
 
     public String getEmail() {
