@@ -8,23 +8,22 @@ import java.util.Date;
  */
 public class File implements Serializable {
     private Integer id;
-    private Integer userNameId;
+    private User userName;
     private Date creationDate;
     private Byte[] file;
     private String fileName;
-    private String fileSize;
 
     public File() {
 
     }
 
-    public Integer getUserNameId() {
+    public User getUserName() {
 
-        return userNameId;
+        return userName;
     }
 
-    public void setUserNameId(Integer userNameId) {
-        this.userNameId = userNameId;
+    public void setUserName(User userName) {
+        this.userName = userName;
     }
 
     public void setFile(Byte[] file) {
@@ -39,14 +38,6 @@ public class File implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(String fileSize) {
-        this.fileSize = fileSize;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -55,12 +46,12 @@ public class File implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserNameID() {
-        return userNameId;
+    public User getUserNameID() {
+        return userName;
     }
 
-    public void setUserNameID(Integer userNameID) {
-        this.userNameId = userNameID;
+    public void setUserNameID(User userNameID) {
+        this.userName = userNameID;
     }
 
     public Date getCreationDate() {

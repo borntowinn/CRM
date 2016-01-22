@@ -1,7 +1,5 @@
 package com.becomejavasenior;
 
-import com.becomejavasenior.File;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,12 +9,12 @@ import java.util.List;
 public class Company implements Serializable {
 
     private Integer id;
-    private String name;
+    private String companyName;
     private String phoneType;
     private String phoneNumber;
     private String email;
     private String website;
-    private Integer createdBy;
+    private User createdBy;
     private String address;
     private List<File> files;
     private List<Task> tasks;
@@ -36,12 +34,12 @@ public class Company implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getPhoneType() {
@@ -76,11 +74,11 @@ public class Company implements Serializable {
         this.website = website;
     }
 
-    public Integer getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

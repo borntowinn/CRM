@@ -19,7 +19,7 @@ public class Contact implements Serializable {
     private String position;
     private Boolean isDeleted;
     private Date creationTime;
-    private Integer createdBy;
+    private User createdBy;
     private Integer companyId;
     private List<File> files;
     private List<Comment> comments;
@@ -110,11 +110,11 @@ public class Contact implements Serializable {
         this.creationTime = creationTime;
     }
 
-    public Integer getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

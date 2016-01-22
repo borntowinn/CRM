@@ -11,14 +11,14 @@ import java.util.List;
 public class Task implements Serializable{
     private Integer id;
     private String period;
-    private Integer taskname;
+    private Integer taskName;
     private Integer userId;
-    private Time plantime;
+    private Time planTime;
     private String taskType;
-    private String author;
-    private Integer companyId;
-    private Integer dealId;
-    private Integer contactId;
+    private User author;
+    private Company company;
+    private Deal deal;
+    private Contact contact;
     private Date creationTime;
 
     private List<Comment> commentList;
@@ -43,12 +43,12 @@ public class Task implements Serializable{
         this.period = period;
     }
 
-    public Integer getTaskname() {
-        return taskname;
+    public Integer getTaskName() {
+        return taskName;
     }
 
-    public void setTaskname(Integer taskname) {
-        this.taskname = taskname;
+    public void setTaskName(Integer taskName) {
+        this.taskName = taskName;
     }
 
     public Integer getUserId() {
@@ -59,12 +59,12 @@ public class Task implements Serializable{
         this.userId = userId;
     }
 
-    public Time getPlantime() {
-        return plantime;
+    public Time getPlanTime() {
+        return planTime;
     }
 
-    public void setPlantime(Time plantime) {
-        this.plantime = plantime;
+    public void setPlanTime(Time planTime) {
+        this.planTime = planTime;
     }
 
     public String getTaskType() {
@@ -75,36 +75,36 @@ public class Task implements Serializable{
         this.taskType = taskType;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    public Integer getDealId() {
-        return dealId;
+    public Deal getDeal() {
+        return deal;
     }
 
-    public void setDealId(Integer dealId) {
-        this.dealId = dealId;
+    public void setDeal(Deal deal) {
+        this.deal = deal;
     }
 
-    public Integer getContactId() {
-        return contactId;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setContactId(Integer contactId) {
-        this.contactId = contactId;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     public Date getCreationTime() {

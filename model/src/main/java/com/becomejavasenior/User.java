@@ -2,7 +2,6 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Default71721 on 22.01.16
@@ -13,38 +12,20 @@ public class User implements Serializable {
     private String surname;
     private String password;
     private Date creationDate;
-    private Integer userRoleId;
+    private UserRole userRole;
     private String email;
     private String mobilePhone;
     private String workPhone;
-    private List<Comment> commentList;
-    private List<File> fileList;
 
     public User() {
     }
 
-    public Integer getUserRoleId() {
-        return userRoleId;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    public void setUserRoleId(Integer userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
-
-    public List<File> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public Integer getId() {
@@ -87,12 +68,12 @@ public class User implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Integer getUserRoleID() {
-        return userRoleId;
+    public UserRole getUserRoleID() {
+        return userRole;
     }
 
-    public void setUserRoleID(Integer userRoleID) {
-        this.userRoleId = userRoleID;
+    public void setUserRoleID(UserRole userRoleID) {
+        this.userRole = userRoleID;
     }
 
     public String getEmail() {

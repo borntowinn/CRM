@@ -10,12 +10,12 @@ import java.util.List;
  */
 public class Deal implements Serializable {
     private Integer id;
-    private Integer userId;
+    private User userId;
     private BigDecimal budget;
     private String phase;
     private String textArea;
     private Date creationDate;
-    private Integer companyId;
+    private Company company;
     private List<Contact> contactList;
     private List<Tag> tagList;
     private List<Comment> commentList;
@@ -65,11 +65,11 @@ public class Deal implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -105,11 +105,11 @@ public class Deal implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

@@ -11,7 +11,7 @@
     <module>model</module>
   </modules>
 
-  <name>CRM Maven Webapp</name>
+  <companyName>CRM Maven Webapp</companyName>
 
   <dependencies>
     <!-- Put here PostgreSQL connector dependency-->
