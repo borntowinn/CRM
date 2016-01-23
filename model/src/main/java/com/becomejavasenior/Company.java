@@ -17,14 +17,19 @@ public class Company implements Serializable {
     private User createdBy;
     private String address;
     private List<File> files;
-    private List<Task> tasks;
-    private List<Deal> deals;
     private List<Comment> comments;
-    private List<Contact> contacts;
+    private List<Tag> tags;
 
     public Company() {
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     public Integer getId() {
         return id;
@@ -98,22 +103,6 @@ public class Company implements Serializable {
         this.files = files;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public List<Deal> getDeals() {
-        return deals;
-    }
-
-    public void setDeals(List<Deal> deals) {
-        this.deals = deals;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -122,11 +111,4 @@ public class Company implements Serializable {
         this.comments = comments;
     }
 
-    public List<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<Contact> contacts) {
-        this.contacts = contacts;
-    }
 }

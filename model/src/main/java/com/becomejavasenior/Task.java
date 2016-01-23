@@ -11,9 +11,9 @@ import java.util.List;
 public class Task implements Serializable{
     private Integer id;
     private String period;
-    private Integer taskName;
+    private String taskName;
     private Integer userId;
-    private Time planTime;
+    private Date planTime;
     private String taskType;
     private User author;
     private Company company;
@@ -43,11 +43,11 @@ public class Task implements Serializable{
         this.period = period;
     }
 
-    public Integer getTaskName() {
+    public String getTaskName() {
         return taskName;
     }
 
-    public void setTaskName(Integer taskName) {
+    public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
 
@@ -59,7 +59,7 @@ public class Task implements Serializable{
         this.userId = userId;
     }
 
-    public Time getPlanTime() {
+    public Date getPlanTime() {
         return planTime;
     }
 
