@@ -1,4 +1,5 @@
 import com.becomejavasenior.Identified;
+import com.becomejavasenior.User;
 import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.GenericDao;
 import com.becomejavasenior.dao.PersistException;
@@ -22,7 +23,10 @@ public class ImplDaoTest extends GenericDaoTest<Connection> {
 
     @Parameterized.Parameters
     public static Collection getParameters() {
-        return Arrays.asList(new Object[][]{ {UserRole.class, new UserRole()} }); }
+        return Arrays.asList(new Object[][]{
+                {UserRole.class, new UserRole()},
+                { User.class, new User()}
+        }); }
 
     @Before
     public void setUp() throws PersistException, SQLException {

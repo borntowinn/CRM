@@ -5,6 +5,7 @@ import com.becomejavasenior.Identified;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
@@ -19,6 +20,8 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     public abstract String getUpdateQuery();
     public abstract String getDeleteQuery();
     public abstract String getCreateQuery();
+    public abstract String getSelectPKQuery();
+    public  abstract String getSelectLastInsertIdQuery();
     protected abstract List<T> parseResultSet(ResultSet rs) throws PersistException;
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws PersistException;
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws PersistException;
@@ -26,12 +29,19 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     @Override
     public T persist(T object) throws PersistException {
         T persistInstance;
+        long lastInsertedId =0;
 
-        //add data
+        // add data
         String sql = getCreateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                lastInsertedId = rs.getLong(1);
+            }
+
             if (count != 1) {
                 throw new PersistException("On persist modify more then 1 record: " + count);
             }
@@ -39,8 +49,9 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
             throw new PersistException(e);
         }
 
+
         //retrieve just added data
-        sql = getSelectQuery() + " WHERE id = last_insert_id();";
+        sql = getSelectLastInsertIdQuery() + lastInsertedId;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             List<T> list = parseResultSet(rs);
@@ -57,8 +68,8 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     @Override
     public T getByPK(Integer key) throws PersistException {
         List<T> list;
-        String sql = getSelectQuery();
-        sql += " WHERE id = ?";
+        String sql = getSelectPKQuery();
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, key);
             ResultSet rs = statement.executeQuery();

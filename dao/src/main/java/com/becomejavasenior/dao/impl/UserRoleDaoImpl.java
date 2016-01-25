@@ -26,6 +26,16 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
     }
 
     @Override
+    public String getSelectLastInsertIdQuery() {
+        return "SELECT user_role_id, role FROM user_role WHERE user_role_id=";
+    }
+
+    @Override
+    public String getSelectPKQuery() {
+        return "SELECT user_role_id, role FROM user_role WHERE user_role_id= ?";
+    }
+
+    @Override
     public String getCreateQuery() {
         return "INSERT INTO user_role (role) VALUES (?);";
     }
@@ -43,6 +53,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
     @Override
     public UserRole create() throws PersistException {
         UserRole userRole = new UserRole();
+
         return persist(userRole);
     }
 

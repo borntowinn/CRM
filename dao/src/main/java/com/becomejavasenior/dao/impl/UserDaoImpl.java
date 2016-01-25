@@ -22,25 +22,35 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM user";
+        return "SELECT * FROM \"user\"";
+    }
+
+    @Override
+    public String getSelectLastInsertIdQuery() {
+        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
+    }
+
+    @Override
+    public String getSelectPKQuery() {
+        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=?";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO user (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) \n" +
+        return "INSERT INTO \"user\" (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) \n" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE user \n" +
-                "SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, , user_role_id = ? \n" +
-                "WHERE id = ?;";
+        return "UPDATE \"user\" \n" +
+                "SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, user_role_id = ? \n" +
+                "WHERE user_id = ?;";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM user WHERE user_id= ?;";
+        return "DELETE FROM \"user\" WHERE user_id= ?;";
     }
 
     @Override
@@ -96,7 +106,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
     protected void prepareStatementForInsert(PreparedStatement statement, User object) throws PersistException {
         try {
             Date sqlDate = convert(object.getCreationDate());
-            int user_role_id = (object.getUserRoleId() == null) ? 0 : object.getUserRoleId();
+            int user_role_id = (object.getUserRoleId() == null) ? 1 : object.getUserRoleId();
 
             statement.setString(1, object.getName());
             statement.setString(2, object.getSurname());
