@@ -15,12 +15,6 @@ public class UserDaoImpl extends AbstractJDBCDao<User> {
     private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, surname  = ?, password = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ? WHERE user_id = ?;";
     private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
 
-    private class PersistUser extends User {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     public UserDaoImpl(Connection connection) {
         super(connection);
     }
@@ -65,7 +59,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> {
         LinkedList<User> result = new LinkedList<User>();
         try {
             while (rs.next()) {
-                PersistUser user = new PersistUser();
+                User user = new User();
                 user.setId(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
                 user.setSurname(rs.getString("surname"));
@@ -99,7 +93,6 @@ public class UserDaoImpl extends AbstractJDBCDao<User> {
             statement.setString(7, object.getWorkPhone());
             statement.setInt(8, object.getUserRoleId());
             statement.setInt(9, object.getId());
-
         } catch (Exception e) {
             throw new PersistException(e);
         }
@@ -131,5 +124,4 @@ public class UserDaoImpl extends AbstractJDBCDao<User> {
         }
         return new java.sql.Date(date.getTime());
     }
-
 }

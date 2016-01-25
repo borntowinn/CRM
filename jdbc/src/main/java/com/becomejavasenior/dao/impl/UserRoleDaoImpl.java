@@ -21,10 +21,6 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
         super(connection);
     }
 
-    private class PersistUserRole extends UserRole {
-        public void setId(int id) { super.setId(id); }
-    }
-
     @Override
     public String getSelectQuery() {
         return SELECT_QUERY;
@@ -65,7 +61,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
         LinkedList<UserRole> result = new LinkedList<UserRole>();
         try {
             while (rs.next()) {
-                PersistUserRole userRole = new PersistUserRole();
+                UserRole userRole = new UserRole();
                 userRole.setId(rs.getInt("user_role_id"));
                 userRole.setUserRole(rs.getString("role"));
                 result.add(userRole);
