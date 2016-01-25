@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao;
+package com.becomejavasenior.jdbc;
 
 public interface DaoFactory<Context> {
 
@@ -6,6 +6,6 @@ public interface DaoFactory<Context> {
         public GenericDao create(Context context);
     }
 
-    public Context getContext() throws PersistException;
+    public Context getContext() throws PersistException, PersistException;
     public GenericDao getDao(Context context, Class dtoClass) throws PersistException;
 }

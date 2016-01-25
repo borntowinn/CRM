@@ -2,9 +2,9 @@ package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.User;
 import com.becomejavasenior.UserRole;
-import com.becomejavasenior.dao.DaoFactory;
-import com.becomejavasenior.dao.GenericDao;
-import com.becomejavasenior.dao.PersistException;
+import com.becomejavasenior.jdbc.DaoFactory;
+import com.becomejavasenior.jdbc.GenericDao;
+import com.becomejavasenior.jdbc.PersistException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,9 +16,9 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     private String user = "postgres";
     private String password = "password";
-    private String url = "jdbc:postgresql://localhost:5432/crm_atlas";
+    private String url = "jdbc:postgresql://localhost:5432/crmr_atlas";
     private String driver = "org.postgresql.Driver";
-    private Map<Class, DaoCreator> creators;
+    private Map<Class, DaoFactory.DaoCreator> creators;
 
     public Connection getContext() throws PersistException {
         Connection connection = null;

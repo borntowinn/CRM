@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao;
+package com.becomejavasenior.jdbc;
 
 import com.becomejavasenior.Identified;
 

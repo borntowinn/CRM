@@ -1,5 +1,6 @@
-import com.becomejavasenior.Identified;
-import com.becomejavasenior.dao.GenericDao;
+package com.becomejavasenior;
+
+import com.becomejavasenior.jdbc.GenericDao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

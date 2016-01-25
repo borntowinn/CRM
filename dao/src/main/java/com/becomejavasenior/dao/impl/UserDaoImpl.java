@@ -1,8 +1,8 @@
 package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.User;
-import com.becomejavasenior.dao.AbstractJDBCDao;
-import com.becomejavasenior.dao.PersistException;
+import com.becomejavasenior.jdbc.AbstractJDBCDao;
+import com.becomejavasenior.jdbc.PersistException;
 
 import java.sql.*;
 import java.util.LinkedList;
