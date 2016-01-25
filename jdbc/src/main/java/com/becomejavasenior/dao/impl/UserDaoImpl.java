@@ -8,11 +8,11 @@ import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User> {
 
-    private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
+    private final static String SELECT_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\"";
     private final static String LAST_INSERT_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-    private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, user_role_id = ? WHERE user_id = ?;";
+    private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, surname  = ?, password = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ? WHERE user_id = ?;";
     private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
 
     private class PersistUser extends User {
@@ -98,6 +98,8 @@ public class UserDaoImpl extends AbstractJDBCDao<User> {
             statement.setString(6, object.getMobilePhone());
             statement.setString(7, object.getWorkPhone());
             statement.setInt(8, object.getUserRoleId());
+            statement.setInt(9, object.getId());
+
         } catch (Exception e) {
             throw new PersistException(e);
         }
