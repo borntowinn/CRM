@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
+public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
 
     private final static String SELECT_QUERY = "SELECT user_role_id, role FROM user_role";
     private final static String LAST_INSERT_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id=";
@@ -56,9 +56,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
     }
 
     @Override
-    public UserRole create() throws PersistException {
-        UserRole userRole = new UserRole();
-
+    public UserRole create(UserRole userRole) throws PersistException {
         return persist(userRole);
     }
 

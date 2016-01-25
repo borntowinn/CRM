@@ -1,6 +1,5 @@
 package com.becomejavasenior.dao.impl;
 
-import com.becomejavasenior.Identified;
 import com.becomejavasenior.dao.GenericDao;
 
 import java.sql.Connection;
@@ -9,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
+public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
 
     private Connection connection;
 
@@ -71,12 +70,12 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     @Override
-    public T getByPK(Integer key) throws PersistException {
+    public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, key);
+            statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
@@ -84,7 +83,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
         }
 
         if (list == null || list.size() == 0) {
-            throw new PersistException("Record with PK = " + key + " not found.");
+            throw new PersistException("Record with PK = " + id + " not found.");
         }
 
         if (list.size() > 1) {
@@ -110,7 +109,7 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     @Override
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql);) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
@@ -123,11 +122,11 @@ public abstract class AbstractJDBCDao<T extends Identified<PK>, PK extends Integ
     }
 
     @Override
-    public void delete(T object) throws PersistException {
+    public void delete(Integer id) throws PersistException {
         String sql = getDeleteQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             try {
-                statement.setObject(1, object.getId());
+                statement.setObject(1, id);
             } catch (Exception e) {
                 throw new PersistException(e);
             }

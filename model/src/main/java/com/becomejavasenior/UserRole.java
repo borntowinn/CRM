@@ -2,7 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 
-public class UserRole implements Serializable, Identified<Integer> {
+public class UserRole implements Serializable {
     private Integer id;
     private String userRole;
 

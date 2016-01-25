@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
+public class UserDaoImpl extends AbstractJDBCDao<User> {
 
     private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
     private final static String LAST_INSERT_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
@@ -56,8 +56,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
     }
 
     @Override
-    public User create() throws PersistException {
-        User user = new User();
+    public User create(User user) throws PersistException {
         return persist(user);
     }
 

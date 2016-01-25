@@ -3,7 +3,7 @@ package com.becomejavasenior;
 import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable, Identified<Integer> {
+public class User implements Serializable {
     private Integer id;
     private String name;
     private String surname;
