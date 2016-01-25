@@ -8,6 +8,13 @@ import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
 
+    private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
+    private final static String LAST_INSERT_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
+    private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=?";
+    private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, user_role_id = ? WHERE user_id = ?;";
+    private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
+
     private class PersistUser extends User {
         public void setId(int id) {
             super.setId(id);
@@ -20,35 +27,32 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM \"user\"";
+        return SELECT_QUERY;
     }
 
     @Override
     public String getSelectLastInsertIdQuery() {
-        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
+        return LAST_INSERT_QUERY;
     }
 
     @Override
     public String getSelectPKQuery() {
-        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=?";
+        return LAST_INSERT_ID_QUERY;
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO \"user\" (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) \n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        return CREATE_QUERY;
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE \"user\" \n" +
-                "SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, user_role_id = ? \n" +
-                "WHERE user_id = ?;";
+        return UPDATE_QUERY;
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM \"user\" WHERE user_id= ?;";
+        return DELETE_QUERY;
     }
 
     @Override

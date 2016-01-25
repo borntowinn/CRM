@@ -1,7 +1,7 @@
 package com.becomejavasenior.dao.impl;
 
 
-public class PersistException extends Exception {
+public class PersistException extends RuntimeException {
 
     public PersistException() {
     }

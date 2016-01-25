@@ -1,11 +1,13 @@
 package com.becomejavasenior.dao;
 
-public interface DaoFactory<Context> {
+import java.sql.Connection;
+
+public interface DaoFactory {
 
     public interface DaoCreator<Context> {
         public GenericDao create(Context context);
     }
 
-    public Context getContext() throws Exception;
-    public GenericDao getDao(Context context, Class dtoClass) throws Exception;
+    public Connection getContext() throws RuntimeException;
+    public GenericDao getDao(Connection connection, Class dtoClass) throws RuntimeException;
 }

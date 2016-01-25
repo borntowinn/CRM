@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoFactoryImpl implements DaoFactory<Connection> {
+public class DaoFactoryImpl implements DaoFactory {
 
     private String user = "postgres";
     private String password = "password";
@@ -19,6 +19,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
     private String driver = "org.postgresql.Driver";
     private Map<Class, DaoFactory.DaoCreator> creators;
 
+    @Override
     public Connection getContext() throws PersistException {
         Connection connection = null;
         try {

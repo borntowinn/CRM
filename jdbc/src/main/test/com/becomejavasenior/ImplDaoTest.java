@@ -1,7 +1,8 @@
 package com.becomejavasenior;
 
-import com.becomejavasenior.dao.impl.DaoFactoryImpl;
+import com.becomejavasenior.dao.DaoFactory;
 import com.becomejavasenior.dao.GenericDao;
+import com.becomejavasenior.dao.impl.DaoFactoryImpl;
 import com.becomejavasenior.dao.impl.PersistException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +19,7 @@ public class ImplDaoTest extends GenericDaoTest<Connection> {
 
     private GenericDao dao;
 
-    private static final DaoFactoryImpl factory = new DaoFactoryImpl();
+    private static final DaoFactory factory = new DaoFactoryImpl();
 
     @Parameterized.Parameters
     public static Collection getParameters() {
