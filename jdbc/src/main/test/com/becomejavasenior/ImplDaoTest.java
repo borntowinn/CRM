@@ -1,8 +1,8 @@
 package com.becomejavasenior;
 
 import com.becomejavasenior.dao.impl.DaoFactoryImpl;
-import com.becomejavasenior.jdbc.GenericDao;
-import com.becomejavasenior.jdbc.PersistException;
+import com.becomejavasenior.dao.GenericDao;
+import com.becomejavasenior.dao.impl.PersistException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runners.Parameterized;

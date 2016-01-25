@@ -1,4 +1,4 @@
-package com.becomejavasenior.jdbc;
+package com.becomejavasenior.dao.impl;
 
 
 public class PersistException extends Exception {

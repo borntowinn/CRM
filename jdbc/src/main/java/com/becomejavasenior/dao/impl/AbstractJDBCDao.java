@@ -1,6 +1,7 @@
-package com.becomejavasenior.jdbc;
+package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.Identified;
+import com.becomejavasenior.dao.GenericDao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

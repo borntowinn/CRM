@@ -2,9 +2,8 @@ package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.User;
 import com.becomejavasenior.UserRole;
-import com.becomejavasenior.jdbc.DaoFactory;
-import com.becomejavasenior.jdbc.GenericDao;
-import com.becomejavasenior.jdbc.PersistException;
+import com.becomejavasenior.dao.DaoFactory;
+import com.becomejavasenior.dao.GenericDao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +15,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     private String user = "postgres";
     private String password = "password";
-    private String url = "jdbc:postgresql://localhost:5432/crmr_atlas";
+    private String url = "jdbc:postgresql://localhost:5432/crm_atlas";
     private String driver = "org.postgresql.Driver";
     private Map<Class, DaoFactory.DaoCreator> creators;
 
@@ -32,7 +31,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     @Override
     public GenericDao getDao(Connection connection, Class dtoClass) throws PersistException {
-        DaoCreator creator = creators.get(dtoClass);
+        DaoFactory.DaoCreator creator = creators.get(dtoClass);
         if (creator == null) {
             throw new PersistException("Dao object for " + dtoClass + " not found.");
         }
@@ -41,7 +40,7 @@ public class DaoFactoryImpl implements DaoFactory<Connection> {
 
     public DaoFactoryImpl() {
         try {
-            Class.forName(driver);//Регистрируем драйвер
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
