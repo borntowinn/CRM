@@ -1,8 +1,6 @@
 package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.UserRole;
-import com.becomejavasenior.dao.AbstractJDBCDao;
-import com.becomejavasenior.dao.PersistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +8,14 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
+public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
+
+    private final static String SELECT_QUERY = "SELECT user_role_id, role FROM user_role";
+    private final static String LAST_INSERT_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id=";
+    private final static String LAST_INSERT_ID_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id= ?";
+    private final static String CREATE_QUERY = "INSERT INTO user_role (role) VALUES (?);";
+    private final static String UPDATE_QUERY = "UPDATE user_role SET role= ?  WHERE user_role_id= ?;";
+    private final static String DELETE_QUERY = "DELETE FROM user_role WHERE user_role_id= ?;";
 
     public UserRoleDaoImpl(Connection connection) {
         super(connection);
@@ -22,27 +27,36 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole, Integer> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT user_role_id, role FROM user_role";
+        return SELECT_QUERY;
+    }
+
+    @Override
+    public String getSelectLastInsertIdQuery() {
+        return LAST_INSERT_QUERY;
+    }
+
+    @Override
+    public String getSelectPKQuery() {
+        return LAST_INSERT_ID_QUERY;
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO user_role (role) VALUES (?);";
+        return CREATE_QUERY;
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE user_role SET role= ?  WHERE user_role_id= ?;";
+        return UPDATE_QUERY;
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM user_role WHERE user_role_id= ?;";
+        return DELETE_QUERY;
     }
 
     @Override
-    public UserRole create() throws PersistException {
-        UserRole userRole = new UserRole();
+    public UserRole create(UserRole userRole) throws PersistException {
         return persist(userRole);
     }
 

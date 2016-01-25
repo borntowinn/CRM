@@ -1,14 +1,19 @@
 package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.User;
-import com.becomejavasenior.dao.AbstractJDBCDao;
-import com.becomejavasenior.dao.PersistException;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
+public class UserDaoImpl extends AbstractJDBCDao<User> {
+
+    private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
+    private final static String LAST_INSERT_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=";
+    private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM \"user\" WHERE user_id=?";
+    private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, user_role_id = ? WHERE user_id = ?;";
+    private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
 
     private class PersistUser extends User {
         public void setId(int id) {
@@ -22,30 +27,36 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT user_id, name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id FROM user";
+        return SELECT_QUERY;
+    }
+
+    @Override
+    public String getSelectLastInsertIdQuery() {
+        return LAST_INSERT_QUERY;
+    }
+
+    @Override
+    public String getSelectPKQuery() {
+        return LAST_INSERT_ID_QUERY;
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO user (name, surname, password, date_creation, email, mobile_phone, work_phone, user_role_id) \n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        return CREATE_QUERY;
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE user \n" +
-                "SET name = ?, surname  = ?, password = ?, date_creation = ?, , email = ?, , mobile_phone = ?, , work_phone = ?, , user_role_id = ? \n" +
-                "WHERE id = ?;";
+        return UPDATE_QUERY;
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM user WHERE user_id= ?;";
+        return DELETE_QUERY;
     }
 
     @Override
-    public User create() throws PersistException {
-        User user = new User();
+    public User create(User user) throws PersistException {
         return persist(user);
     }
 
@@ -96,7 +107,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User, Integer> {
     protected void prepareStatementForInsert(PreparedStatement statement, User object) throws PersistException {
         try {
             Date sqlDate = convert(object.getCreationDate());
-            int user_role_id = (object.getUserRoleId() == null) ? 0 : object.getUserRoleId();
+            int user_role_id = (object.getUserRoleId() == null) ? 1 : object.getUserRoleId();
 
             statement.setString(1, object.getName());
             statement.setString(2, object.getSurname());
