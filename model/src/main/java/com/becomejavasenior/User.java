@@ -4,25 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
+
     private Integer id;
     private String name;
-    private String surname;
     private String password;
+    private String description;
     private Date creationDate;
-    private Integer userRoleId;
     private String email;
     private String mobilePhone;
     private String workPhone;
+    private UserRole userRole;
+    private Integer language;
 
     public User() {
-    }
-
-    public Integer getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(Integer userRoleId) {
-        this.userRoleId = userRoleId;
     }
 
     public Integer getId() {
@@ -41,20 +35,20 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getCreationDate() {
@@ -87,5 +81,21 @@ public class User implements Serializable {
 
     public void setWorkPhone(String workPhone) {
         this.workPhone = workPhone;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public Integer getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Integer language) {
+        this.language = language;
     }
 }

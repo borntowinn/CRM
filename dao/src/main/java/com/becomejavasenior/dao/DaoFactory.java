@@ -2,7 +2,7 @@ package com.becomejavasenior.dao;
 
 import java.sql.Connection;
 
-public interface DaoFactory {
+public interface DaoFactory<Context> {
 
     public interface DaoCreator<Context> {
         public GenericDao create(Context context);
