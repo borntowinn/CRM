@@ -2,11 +2,15 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 
-public class UserRole implements Serializable {
+/**
+ * Created by Default71721 on 22.01.16.
+ */
+public class UserRole implements Serializable{
     private Integer id;
     private String userRole;
 
     public UserRole() {
+
     }
 
     public Integer getId() {
