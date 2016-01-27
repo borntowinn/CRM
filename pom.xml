@@ -9,9 +9,10 @@
     <module>controller</module>
     <module>dao</module>
     <module>model</module>
+    <module>jdbc</module>
   </modules>
 
-  <companyName>CRM Maven Webapp</companyName>
+  <name>CRM Maven Webapp</name>
 
   <dependencies>
     <!-- Put here PostgreSQL connector dependency-->
