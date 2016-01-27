@@ -1,7 +1,8 @@
-package com.becomejavasenior.dao.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserRoleDao;
+import com.becomejavasenior.dao.jdbc.exception.PersistException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

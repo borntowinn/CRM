@@ -1,8 +1,9 @@
 package com.becomejavasenior;
 
 import com.becomejavasenior.dao.UserDao;
-import com.becomejavasenior.dao.impl.DaoFactoryImpl;
-import com.becomejavasenior.dao.impl.PersistException;
+import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,8 +26,8 @@ public class UserTest {
 
     @Before
     public void setUp() {
-        Connection connection = DaoFactoryImpl.getConnection();
-        userDao = DaoFactoryImpl.getUserDAO();
+        Connection connection = ConnectionFactory.getConnection();
+        userDao = DaoFactory.getUserDAO();
         newUser = new User();
         lastInsertedObject = new User();
 

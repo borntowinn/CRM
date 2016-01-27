@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao.impl;
+package com.becomejavasenior.dao.jdbc.exception;
 
 
 public class PersistException extends RuntimeException {

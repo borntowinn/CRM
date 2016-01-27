@@ -1,11 +1,14 @@
-package com.becomejavasenior.dao.impl;
+package com.becomejavasenior.dao.jdbc.impl;
+
+import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 
 import java.sql.*;
 import java.util.List;
 
 public abstract class AbstractJDBCDao<T> {
 
-    private Connection connection = DaoFactoryImpl.getConnection();
+    private Connection connection = ConnectionFactory.getConnection();
 
     protected abstract String getSelectQuery();
     protected abstract String getUpdateQuery();

@@ -1,8 +1,10 @@
-package com.becomejavasenior.dao.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.User;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.UserRoleDao;
+import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,7 +21,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao{
     private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, password = ?, description  = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ?, language = ? WHERE user_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
 
-    private UserRoleDao userRoleDao = DaoFactoryImpl.getUserRoleDAO();
+    private UserRoleDao userRoleDao = DaoFactory.getUserRoleDAO();
 
     @Override
     public String getSelectQuery() {
