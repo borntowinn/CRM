@@ -1,14 +1,14 @@
 package com.becomejavasenior.dao.impl;
 
 import com.becomejavasenior.UserRole;
+import com.becomejavasenior.dao.UserRoleDao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
+public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRoleDao {
 
     private final static String SELECT_QUERY = "SELECT user_role_id, role FROM user_role";
     private final static String LAST_INSERT_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id=";
@@ -16,10 +16,6 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> {
     private final static String CREATE_QUERY = "INSERT INTO user_role (role) VALUES (?);";
     private final static String UPDATE_QUERY = "UPDATE user_role SET role= ?  WHERE user_role_id= ?;";
     private final static String DELETE_QUERY = "DELETE FROM user_role WHERE user_role_id= ?;";
-
-    public UserRoleDaoImpl(Connection connection) {
-        super(connection);
-    }
 
     @Override
     public String getSelectQuery() {

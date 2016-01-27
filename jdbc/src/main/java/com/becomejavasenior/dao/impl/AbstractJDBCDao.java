@@ -1,20 +1,11 @@
 package com.becomejavasenior.dao.impl;
 
-import com.becomejavasenior.dao.GenericDao;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
+public abstract class AbstractJDBCDao<T> {
 
-    private Connection connection;
-
-    public AbstractJDBCDao(Connection connection) {
-        this.connection = connection;
-    }
+    private Connection connection = DaoFactoryImpl.getConnection();
 
     protected abstract String getSelectQuery();
     protected abstract String getUpdateQuery();
@@ -40,7 +31,7 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
                 lastInsertedId = rs.getLong(1);
             }
             return lastInsertedId;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
     }
@@ -56,20 +47,18 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
                 throw new PersistException("Exception on findByPK new persist data.");
             }
             persistInstance = list.iterator().next();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
         return persistInstance;
 
     }
 
-    @Override
     public T persist(T object) throws PersistException {
         long lastInsertedId = addData(object);
         return retrieveData(lastInsertedId);
     }
 
-    @Override
     public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();
@@ -78,7 +67,7 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
 
@@ -93,20 +82,18 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
         return list.iterator().next();
     }
 
-    @Override
     public List<T> getAll() throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
         return list;
     }
 
-    @Override
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -116,12 +103,11 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
                 throw new PersistException("On update modify more then 1 record: " + count);
             }
         }
-        catch (Exception e) {
+        catch (SQLException e) {
             throw new PersistException(e);
         }
     }
 
-    @Override
     public void delete(Integer id) throws PersistException {
         String sql = getDeleteQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -135,9 +121,8 @@ public abstract class AbstractJDBCDao<T> implements GenericDao<T> {
                 throw new PersistException("On delete modify more then 1 record: " + count);
             }
             statement.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
     }
-
 }
