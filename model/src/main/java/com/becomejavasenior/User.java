@@ -9,13 +9,14 @@ import java.util.Date;
 public class User implements Serializable {
     private Integer id;
     private String name;
-    private String surname;
     private String password;
+    private String description;
     private Date creationDate;
     private UserRole userRole;
     private String email;
     private String mobilePhone;
     private String workPhone;
+    private Integer language;
 
     public User() {
     }
@@ -44,14 +45,6 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -66,14 +59,6 @@ public class User implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public UserRole getUserRoleID() {
-        return userRole;
-    }
-
-    public void setUserRoleID(UserRole userRoleID) {
-        this.userRole = userRoleID;
     }
 
     public String getEmail() {
@@ -98,5 +83,21 @@ public class User implements Serializable {
 
     public void setWorkPhone(String workPhone) {
         this.workPhone = workPhone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Integer language) {
+        this.language = language;
     }
 }
