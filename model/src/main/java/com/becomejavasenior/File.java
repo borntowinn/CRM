@@ -8,22 +8,12 @@ import java.util.Date;
  */
 public class File implements Serializable {
     private Integer id;
-    private User userName;
     private Date creationDate;
     private Byte[] file;
     private String fileName;
 
     public File() {
 
-    }
-
-    public User getUserName() {
-
-        return userName;
-    }
-
-    public void setUserName(User userName) {
-        this.userName = userName;
     }
 
     public void setFile(Byte[] file) {
@@ -44,14 +34,6 @@ public class File implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUserNameID() {
-        return userName;
-    }
-
-    public void setUserNameID(User userNameID) {
-        this.userName = userNameID;
     }
 
     public Date getCreationDate() {

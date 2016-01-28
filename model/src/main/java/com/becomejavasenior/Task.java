@@ -12,14 +12,15 @@ public class Task implements Serializable{
     private Integer id;
     private String period;
     private String taskName;
-    private Integer userId;
     private Date planTime;
+    private User responsible;
     private String taskType;
     private User author;
     private Company company;
     private Deal deal;
-    private Contact contact;
     private Date creationTime;
+    private Contact contact;
+    private Boolean isDeleted;
 
     private List<Comment> commentList;
 
@@ -51,19 +52,19 @@ public class Task implements Serializable{
         this.taskName = taskName;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getResponsible() {
+        return responsible;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
     }
 
     public Date getPlanTime() {
         return planTime;
     }
 
-    public void setPlanTime(Time planTime) {
+    public void setPlanTime(Date planTime) {
         this.planTime = planTime;
     }
 
@@ -121,5 +122,13 @@ public class Task implements Serializable{
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

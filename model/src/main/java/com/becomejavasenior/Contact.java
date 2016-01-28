@@ -10,9 +10,8 @@ import java.util.List;
 public class Contact implements Serializable {
 
     private Integer id;
-    private String contactName;
-    private String contactSurname;
-    private String phoneType;
+    private String nameSurname;
+    private Integer phoneType;
     private String phoneNumber;
     private String email;
     private String skype;
@@ -20,11 +19,11 @@ public class Contact implements Serializable {
     private Boolean isDeleted;
     private Date creationTime;
     private User createdBy;
-    private Integer companyId;
+    private Company companyId;
     private List<File> files;
-    private List<Comment> comments;
     private List<Deal> deals;
     private List<Task> tasks;
+    private List<Tag> tags;
 
     public Contact() {
     }
@@ -38,27 +37,19 @@ public class Contact implements Serializable {
         this.id = id;
     }
 
-    public String getContactName() {
-        return contactName;
+    public String getNameSurname() {
+        return nameSurname;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
+    public void setNameSurname(String nameSurname) {
+        this.nameSurname = nameSurname;
     }
 
-    public String getContactSurname() {
-        return contactSurname;
-    }
-
-    public void setContactSurname(String contactSurname) {
-        this.contactSurname = contactSurname;
-    }
-
-    public String getPhoneType() {
+    public Integer getPhoneType() {
         return phoneType;
     }
 
-    public void setPhoneType(String phoneType) {
+    public void setPhoneType(Integer phoneType) {
         this.phoneType = phoneType;
     }
 
@@ -118,11 +109,11 @@ public class Contact implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Integer getCompanyId() {
+    public Company getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Company companyId) {
         this.companyId = companyId;
     }
 
@@ -132,14 +123,6 @@ public class Contact implements Serializable {
 
     public void setFiles(List<File> files) {
         this.files = files;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     public List<Deal> getDeals() {
@@ -156,5 +139,13 @@ public class Contact implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }
