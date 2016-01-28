@@ -12,7 +12,6 @@ import java.util.List;
 public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRoleDao {
 
     private final static String SELECT_QUERY = "SELECT user_role_id, role FROM user_role";
-    private final static String LAST_INSERT_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id=";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO user_role (role) VALUES (?);";
     private final static String UPDATE_QUERY = "UPDATE user_role SET role= ?  WHERE user_role_id= ?;";
@@ -21,11 +20,6 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRo
     @Override
     public String getSelectQuery() {
         return SELECT_QUERY;
-    }
-
-    @Override
-    public String getSelectLastInsertIdQuery() {
-        return LAST_INSERT_QUERY;
     }
 
     @Override

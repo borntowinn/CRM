@@ -15,7 +15,6 @@ import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao{
     private final static String SELECT_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\"";
-    private final static String LAST_INSERT_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\" WHERE user_id=";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\" WHERE user_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, password = ?, description  = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ?, language = ? WHERE user_id=?";
@@ -26,11 +25,6 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao{
     @Override
     public String getSelectQuery() {
         return SELECT_QUERY;
-    }
-
-    @Override
-    public String getSelectLastInsertIdQuery() {
-        return LAST_INSERT_QUERY;
     }
 
     @Override
