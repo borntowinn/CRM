@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class User implements Serializable {
     private String mobilePhone;
     private String workPhone;
     private Integer language;
-    private List<SessionHistory> sessionHistories;
+    private List<SessionHistory> sessionHistories = new LinkedList<SessionHistory>();
 
     public User() {
     }

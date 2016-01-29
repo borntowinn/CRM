@@ -3,6 +3,7 @@ package com.becomejavasenior;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,10 +19,10 @@ public class Deal implements Serializable {
     private Company company;
     private Contact contact;
     private Boolean isDeleted;
-    private List<Tag> tagList;
-    private List<Comment> commentList;
-    private List<File> fileList;
-    private List<Task> tasks;
+    private List<Tag> tagList = new LinkedList<Tag>();
+    private List<Comment> commentList = new LinkedList<Comment>();
+    private List<File> fileList = new LinkedList<File>();
+    private List<Task> tasks = new LinkedList<Task>();
 
     public Deal() {
 

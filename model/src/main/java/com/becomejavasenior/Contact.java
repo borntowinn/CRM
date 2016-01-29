@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,10 +21,10 @@ public class Contact implements Serializable {
     private Date creationTime;
     private User createdBy;
     private Company companyId;
-    private List<File> files;
-    private List<Deal> deals;
-    private List<Task> tasks;
-    private List<Tag> tags;
+    private List<File> files = new LinkedList<File>();
+    private List<Deal> deals = new LinkedList<Deal>();
+    private List<Task> tasks = new LinkedList<Task>();
+    private List<Tag> tags = new LinkedList<Tag>();
 
     public Contact() {
     }

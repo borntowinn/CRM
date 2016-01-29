@@ -1,5 +1,6 @@
 package com.becomejavasenior;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public class Phase {
     private Integer id;
     private String phase;
-    private List<Deal> deals;
+    private List<Deal> deals = new LinkedList<Deal>();
 
     public Phase() {
     }

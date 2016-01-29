@@ -3,6 +3,7 @@ package com.becomejavasenior;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class Task implements Serializable{
     private Contact contact;
     private Boolean isDeleted;
 
-    private List<Comment> commentList;
+    private List<Comment> commentList = new LinkedList<Comment>();
 
     public Task() {
 
