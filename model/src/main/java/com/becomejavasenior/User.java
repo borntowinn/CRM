@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Default71721 on 22.01.16
@@ -17,6 +18,7 @@ public class User implements Serializable {
     private String mobilePhone;
     private String workPhone;
     private Integer language;
+    private List<SessionHistory> sessionHistories;
 
     public User() {
     }
@@ -43,6 +45,14 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPassword() {
@@ -85,19 +95,19 @@ public class User implements Serializable {
         this.workPhone = workPhone;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Integer getLanguage() {
         return language;
     }
 
     public void setLanguage(Integer language) {
         this.language = language;
+    }
+
+    public List<SessionHistory> getSessionHistories() {
+        return sessionHistories;
+    }
+
+    public void setSessionHistories(List<SessionHistory> sessionHistories) {
+        this.sessionHistories = sessionHistories;
     }
 }

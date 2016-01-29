@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,25 +11,20 @@ public class Company implements Serializable {
 
     private Integer id;
     private String companyName;
-    private String phoneType;
+    private Integer phoneType;
     private String phoneNumber;
     private String email;
     private String website;
     private User createdBy;
+    private Boolean isDeleted;
     private String address;
+    private Date creationTime;
     private List<File> files;
-    private List<Comment> comments;
     private List<Tag> tags;
+    private List<Comment> comments;
+    private List<Task> tasks;
 
     public Company() {
-    }
-
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
     }
 
     public Integer getId() {
@@ -47,11 +43,11 @@ public class Company implements Serializable {
         this.companyName = companyName;
     }
 
-    public String getPhoneType() {
+    public Integer getPhoneType() {
         return phoneType;
     }
 
-    public void setPhoneType(String phoneType) {
+    public void setPhoneType(Integer phoneType) {
         this.phoneType = phoneType;
     }
 
@@ -77,6 +73,14 @@ public class Company implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public User getCreatedBy() {
@@ -111,4 +115,31 @@ public class Company implements Serializable {
         this.comments = comments;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Date getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }
