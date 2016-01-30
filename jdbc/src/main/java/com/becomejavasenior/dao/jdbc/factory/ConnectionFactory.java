@@ -1,6 +1,6 @@
 package com.becomejavasenior.dao.jdbc.factory;
 
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class ConnectionFactory {
         FileInputStream fis = null;
         Connection connection = null;
         try {
-            fis = new FileInputStream("src\\main\\resources\\jdbc.properties");
+            fis = new FileInputStream("src/main/resources/jdbc.properties");
             props.load(fis);
 
             Class.forName(props.getProperty("DRIVER"));

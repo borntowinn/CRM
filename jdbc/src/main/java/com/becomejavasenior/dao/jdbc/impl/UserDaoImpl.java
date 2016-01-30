@@ -1,9 +1,10 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.User;
+import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.UserRoleDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.Date;
@@ -13,14 +14,14 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao{
+public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
     private final static String SELECT_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\"";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\" WHERE user_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, password = ?, description  = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ?, language = ? WHERE user_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"user\" WHERE user_id= ?;";
 
-    private UserRoleDao userRoleDao = DaoFactory.getUserRoleDAO();
+    private UserRoleDao<UserRole> userRoleDao = DaoFactory.getUserRoleDAO();
 
     @Override
     public String getSelectQuery() {

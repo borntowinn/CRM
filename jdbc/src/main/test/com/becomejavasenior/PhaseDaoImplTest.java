@@ -1,10 +1,9 @@
 package com.becomejavasenior;
 
 import com.becomejavasenior.dao.PhaseDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ public class PhaseDaoImplTest {
 
     private Phase phase;
     private List<Phase> phases;
-    private PhaseDao phaseDao;
+    private PhaseDao<Phase> phaseDao;
 
     @Before
     public void setupAndConnection()

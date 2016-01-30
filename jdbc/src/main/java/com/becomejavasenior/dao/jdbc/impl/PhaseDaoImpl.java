@@ -2,7 +2,7 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Phase;
 import com.becomejavasenior.dao.PhaseDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 
 
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Default71721 on 29.01.16.
  */
-public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao {
+public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Phase> {
     private final static String SELECT_QUERY = "SELECT phase_id, phase FROM phase";
     private final static String SELECT_BY_PK = "SELECT phase_id, phase FROM phase WHERE phase_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO phase (phase) VALUES (?);";

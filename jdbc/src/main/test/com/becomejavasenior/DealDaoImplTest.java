@@ -1,7 +1,7 @@
 package com.becomejavasenior;
 
 import com.becomejavasenior.dao.DealDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import org.junit.Assert;
@@ -25,7 +25,7 @@ public class DealDaoImplTest {
     private User user;
     private Phase phase;
     private List<Deal> deals;
-    private DealDao dealDao;
+    private DealDao<Deal> dealDao;
 
     @Before
     public void setupAndConnection()
@@ -88,7 +88,10 @@ public class DealDaoImplTest {
     @Test
     public void testGetAllEntries()
     {
+        //when
         deals = dealDao.getAll();
+
+        //then
         Assert.assertNotNull(deals);
         Assert.assertTrue(deals.size() > 0);
     }

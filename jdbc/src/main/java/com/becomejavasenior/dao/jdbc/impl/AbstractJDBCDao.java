@@ -1,12 +1,13 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.AbstractDao;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 
 import java.sql.*;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T> {
+public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
 
     private Connection connection = ConnectionFactory.getConnection();
 
@@ -38,11 +39,13 @@ public abstract class AbstractJDBCDao<T> {
         }
     }
 
+    @Override
     public T persist(T object) throws PersistException {
         int lastInsertedId = addData(object);
         return getByPK(lastInsertedId);
     }
 
+    @Override
     public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();
@@ -66,6 +69,7 @@ public abstract class AbstractJDBCDao<T> {
         return list.iterator().next();
     }
 
+    @Override
     public List<T> getAll() throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
@@ -78,13 +82,14 @@ public abstract class AbstractJDBCDao<T> {
         return list;
     }
 
+    @Override
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
-                throw new PersistException("On update modify more then 1 record: " + count);
+                throw new PersistException("On update modify more than 1 record: " + count);
             }
         }
         catch (SQLException e) {
@@ -92,6 +97,7 @@ public abstract class AbstractJDBCDao<T> {
         }
     }
 
+    @Override
     public void delete(Integer id) throws PersistException {
         String sql = getDeleteQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -102,7 +108,7 @@ public abstract class AbstractJDBCDao<T> {
             }
             int count = statement.executeUpdate();
             if (count != 1) {
-                throw new PersistException("On delete modify more then 1 record: " + count);
+                throw new PersistException("On delete modify more than 1 record: " + count);
             }
             statement.close();
         } catch (SQLException e) {

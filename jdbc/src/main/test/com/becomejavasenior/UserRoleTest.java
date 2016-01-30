@@ -2,7 +2,7 @@ package com.becomejavasenior;
 
 import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +19,7 @@ public class UserRoleTest {
     private UserRole userRole = null;
     private UserRole lastInsertedObject = null;
     private List<UserRole> userRoles = null;
-    private UserRoleDao userRoleDao = null;
+    private UserRoleDao<UserRole> userRoleDao = null;
 
     @Before
     public void setUp() {

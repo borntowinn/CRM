@@ -1,12 +1,11 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.Contact;
-import com.becomejavasenior.Deal;
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.PhaseDao;
 import com.becomejavasenior.dao.UserDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
@@ -16,16 +15,16 @@ import java.util.List;
 /**
  * Created by Default71721 on 28.01.16.
  */
-public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao {
+public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> {
     private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal";
     private static final String SELECT_BY_PK = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal WHERE deal_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE deal SET createdby = ?, budget = ?, phase_id  = ?, responsible = ?, date_creation = ?, company_id = ?, contact_id = ?, isdeleted = ? WHERE deal_id=?";
     private static final String DELETE_QUERY = "DELETE FROM deal WHERE deal_id= ?;";
 
-    private UserDao userDao = DaoFactory.getUserDAO();
-    private PhaseDao phaseDao = DaoFactory.getPhaseDao();
-    private CompanyDao companyDao = DaoFactory.getCompanyDAO();
+    private UserDao<User> userDao = DaoFactory.getUserDAO();
+    private PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
+    private CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
 
     @Override
     protected String getSelectQuery() {
@@ -55,6 +54,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao {
     @Override
     protected List<Deal> parseResultSet(ResultSet rs) throws PersistException {
         LinkedList<Deal> resultList = new LinkedList<>();
+        //Following 2 lines must be deleted as soon as  ContactDao is implemented
         Contact contact = new Contact();
         contact.setId(1);
         try {
@@ -67,7 +67,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao {
                 deal.setResponsible(userDao.getByPK(rs.getInt("responsible")));
                 deal.setCreationDate(rs.getTimestamp("date_creation"));
                 deal.setCompany(companyDao.getByPK(rs.getInt("company_id")));
-                //deal.setContact has to be changed as soon as ContactDao will be implemented
+                //deal.setContact has to be changed as soon as ContactDao is implemented
                 deal.setContact(contact);
                 deal.setDeleted(rs.getBoolean("isdeleted"));
                 resultList.add(deal);
