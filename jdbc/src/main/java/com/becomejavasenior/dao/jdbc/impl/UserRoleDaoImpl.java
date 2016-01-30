@@ -2,14 +2,14 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserRoleDao;
-import com.becomejavasenior.dao.jdbc.exception.PersistException;
+import com.becomejavasenior.dao.exception.PersistException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRoleDao {
+public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRoleDao<UserRole> {
 
     private final static String SELECT_QUERY = "SELECT user_role_id, role FROM user_role";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_role_id, role FROM user_role WHERE user_role_id= ?";

@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Deal implements Serializable {
     private BigDecimal budget;
     private Phase phase;
     private User responsible;
-    private Date creationDate;
+    private Timestamp creationDate;
     private Company company;
     private Contact contact;
     private Boolean isDeleted;
@@ -68,11 +69,11 @@ public class Deal implements Serializable {
         this.responsible = responsible;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
