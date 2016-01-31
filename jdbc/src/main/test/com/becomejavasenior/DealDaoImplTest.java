@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DealDaoImplTest {
         deal.setContact(contact);
         deal.setCompany(company);
         deal.setDeleted(false);
-        deal.setCreationDate(new Timestamp(new Date().getTime()));
+        deal.setCreationDate(LocalDateTime.now());
         deal.setBudget(new BigDecimal("123.00"));
         deal.setCreatedBy(user);
         deal.setResponsible(user);

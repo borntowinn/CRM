@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Contact implements Serializable {
     private String skype;
     private String position;
     private Boolean isDeleted;
-    private Date creationTime;
+    private LocalDateTime creationTime;
     private User createdBy;
     private Company companyId;
     private List<File> files = new LinkedList<File>();
@@ -94,11 +95,11 @@ public class Contact implements Serializable {
         isDeleted = deleted;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 

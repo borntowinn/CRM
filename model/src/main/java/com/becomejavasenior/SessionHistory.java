@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by valkos on 28.01.16.
@@ -10,7 +11,7 @@ public class SessionHistory {
     private User userId;
     private String ipAddress;
     private String browser;
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     public SessionHistory() {
     }
@@ -47,11 +48,11 @@ public class SessionHistory {
         this.browser = browser;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 }

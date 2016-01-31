@@ -7,10 +7,7 @@ import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,7 +65,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 company.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
                 company.setAddress(rs.getString("address"));
                 company.setDeleted(rs.getBoolean("isdeleted"));
-                company.setCreationTime(rs.getDate("creation_time"));
+                company.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
                 result.add(company);
             }
         } catch (SQLException e) {
@@ -80,7 +77,6 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Company object) throws PersistException {
         try {
-            Date sqlDate = convert(object.getCreationTime());
             statement.setString(1, object.getCompanyName());
             statement.setInt(2, object.getPhoneType());
             statement.setString(3, object.getPhoneNumber());
@@ -89,7 +85,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
             statement.setInt(6, object.getCreatedBy().getId());
             statement.setString(7, object.getAddress());
             statement.setBoolean(8, object.getDeleted());
-            statement.setDate(9, sqlDate);
+            statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
             statement.setInt(10, object.getId());
         } catch (SQLException e) {
             throw new PersistException(e);
@@ -99,7 +95,6 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Company object) throws PersistException {
         try {
-            Date sqlDate = convert(object.getCreationTime());
             int user_id = (object.getCreatedBy().getId() == null) ? new Integer(1) : object.getCreatedBy().getId();
             statement.setString(1, object.getCompanyName());
             statement.setInt(2, object.getPhoneType());
@@ -109,16 +104,9 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
             statement.setInt(6, user_id);
             statement.setString(7, object.getAddress());
             statement.setBoolean(8, object.getDeleted());
-            statement.setDate(9, sqlDate);
+            statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
         } catch (SQLException e) {
             throw new PersistException(e);
         }
-    }
-
-    protected Date convert(java.util.Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new Date(date.getTime());
     }
 }
