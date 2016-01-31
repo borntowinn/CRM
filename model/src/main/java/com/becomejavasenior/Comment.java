@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
 public class Comment implements Serializable{
     private Integer id;
     private String comment;
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     public Comment() {
 
@@ -31,11 +32,11 @@ public class Comment implements Serializable{
         this.comment = comment;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 }

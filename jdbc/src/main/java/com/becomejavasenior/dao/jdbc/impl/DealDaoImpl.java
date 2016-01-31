@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> {
     private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal";
-    private static final String SELECT_BY_PK = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal WHERE deal_id = ?";
+    private static final String SELECT_BY_PK_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal WHERE deal_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE deal SET createdby = ?, budget = ?, phase_id  = ?, responsible = ?, date_creation = ?, company_id = ?, contact_id = ?, isdeleted = ? WHERE deal_id=?";
     private static final String DELETE_QUERY = "DELETE FROM deal WHERE deal_id= ?;";
@@ -48,7 +48,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
 
     @Override
     protected String getSelectPKQuery() {
-        return SELECT_BY_PK;
+        return SELECT_BY_PK_QUERY;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
                 deal.setBudget(rs.getBigDecimal("budget"));
                 deal.setPhase(phaseDao.getByPK(rs.getInt("phase_id")));
                 deal.setResponsible(userDao.getByPK(rs.getInt("responsible")));
-                deal.setCreationDate(rs.getTimestamp("date_creation"));
+                deal.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
                 deal.setCompany(companyDao.getByPK(rs.getInt("company_id")));
                 //deal.setContact has to be changed as soon as ContactDao is implemented
                 deal.setContact(contact);
@@ -83,13 +83,12 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Deal deal) throws PersistException {
         try {
-            Timestamp sqlDate = convert(deal.getCreationDate());
            // statement.setInt(1, object.getId());
             statement.setInt(1, deal.getCreatedBy().getId());
             statement.setBigDecimal(2, deal.getBudget());
             statement.setInt(3, deal.getPhase().getId());
             statement.setInt(4, deal.getResponsible().getId());
-            statement.setTimestamp(5, sqlDate);
+            statement.setTimestamp(5, Timestamp.valueOf(deal.getCreationDate()));
             statement.setInt(6, deal.getCompany().getId());
             //next line should be edited when ContactDao is available
             statement.setInt(7, 3);
@@ -104,12 +103,11 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Deal deal) throws PersistException {
         try {
-            Timestamp sqlDate = convert(deal.getCreationDate());
             statement.setInt(1, deal.getCreatedBy().getId());
             statement.setBigDecimal(2, deal.getBudget());
             statement.setInt(3, deal.getPhase().getId());
             statement.setInt(4, deal.getResponsible().getId());
-            statement.setTimestamp(5, sqlDate);
+            statement.setTimestamp(5, Timestamp.valueOf(deal.getCreationDate()));
             statement.setInt(6, deal.getCompany().getId());
             //next line should be edited when ContactDao is available
             statement.setInt(7, 3);
@@ -125,12 +123,5 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     public Deal create(Deal deal) {
         return persist(deal);
-    }
-
-    protected java.sql.Timestamp convert(java.util.Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new java.sql.Timestamp(date.getTime());
     }
 }
