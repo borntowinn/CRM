@@ -5,9 +5,19 @@
 <web-app>
     <display-companyName>CRM Web Application</display-companyName>
 
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.becomejavasenior.web.DashboardServlet</servlet-class>
+
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>dashboard.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>
