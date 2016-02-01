@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Task implements Serializable{
     private Integer id;
     private String period;
     private String taskName;
-    private Date planTime;
+    private LocalDateTime planTime;
     private User responsible;
     private String taskType;
     private User author;
@@ -61,11 +62,11 @@ public class Task implements Serializable{
         this.responsible = responsible;
     }
 
-    public Date getPlanTime() {
+    public LocalDateTime getPlanTime() {
         return planTime;
     }
 
-    public void setPlanTime(Date planTime) {
+    public void setPlanTime(LocalDateTime planTime) {
         this.planTime = planTime;
     }
 

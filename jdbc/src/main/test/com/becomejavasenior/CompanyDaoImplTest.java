@@ -10,6 +10,7 @@ package com.becomejavasenior;
 
         import java.sql.Connection;
         import java.sql.SQLException;
+        import java.time.LocalDateTime;
         import java.util.Date;
         import java.util.List;
 
@@ -50,7 +51,7 @@ public class CompanyDaoImplTest {
         newCompany.setCreatedBy(userCreator);
         newCompany.setAddress("1 Infinite Loop, Cupertino, CA 95014");
         newCompany.setDeleted(false);
-        newCompany.setCreationTime(new Date());
+        newCompany.setCreationTime(LocalDateTime.now());
 
         //1 - create
         Company lastInsertedObject = companyDao.persist(newCompany);
@@ -61,7 +62,7 @@ public class CompanyDaoImplTest {
 
         //2 - update
         lastInsertedObject.setCompanyName("saveyoursoul.com");
-        lastInsertedObject.setCreationTime(new Date());
+        lastInsertedObject.setCreationTime(LocalDateTime.now());
         lastInsertedObject.setEmail("saveyoursoul@google.com");
         lastInsertedObject.setPhoneNumber("+737 37 37");
         companyDao.update(lastInsertedObject);
@@ -93,7 +94,7 @@ public class CompanyDaoImplTest {
         newCompany.setCreatedBy(userCreator);
         newCompany.setAddress("1 Infinite Loop, Cupertino, CA 95014");
         newCompany.setDeleted(false);
-        newCompany.setCreationTime(new Date());
+        newCompany.setCreationTime(LocalDateTime.now());
         Company lastInsertedObject = companyDao.persist(newCompany);
         companyDao.delete(lastInsertedObject.getId());
         companyDao.getByPK(lastInsertedObject.getId());
