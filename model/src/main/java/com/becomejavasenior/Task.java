@@ -2,6 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,11 +10,11 @@ import java.util.List;
 /**
  * Created by Default71721 on 22.01.16
  */
-public class Task implements Serializable{
+public class Task implements Serializable {
     private Integer id;
     private String period;
     private String taskName;
-    private Date planTime;
+    private LocalDateTime planTime;
     private User responsible;
     private String taskType;
     private User author;
@@ -22,6 +23,7 @@ public class Task implements Serializable{
     private Date creationTime;
     private Contact contact;
     private Boolean isDeleted;
+    private Boolean isDone;
 
     private List<Comment> commentList = new LinkedList<Comment>();
 
@@ -61,11 +63,11 @@ public class Task implements Serializable{
         this.responsible = responsible;
     }
 
-    public Date getPlanTime() {
+    public LocalDateTime getPlanTime() {
         return planTime;
     }
 
-    public void setPlanTime(Date planTime) {
+    public void setPlanTime(LocalDateTime planTime) {
         this.planTime = planTime;
     }
 
@@ -131,5 +133,13 @@ public class Task implements Serializable{
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
     }
 }

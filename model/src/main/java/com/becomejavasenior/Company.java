@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Company implements Serializable {
     private User createdBy;
     private Boolean isDeleted;
     private String address;
-    private Date creationTime;
+    private LocalDateTime creationTime;
     private List<File> files = new LinkedList<File>();
     private List<Tag> tags = new LinkedList<Tag>();
     private List<Comment> comments = new LinkedList<Comment>();
@@ -124,11 +125,11 @@ public class Company implements Serializable {
         this.tags = tags;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 

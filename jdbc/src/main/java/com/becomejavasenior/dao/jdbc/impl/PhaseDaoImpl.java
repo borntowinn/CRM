@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Phase> {
     private final static String SELECT_QUERY = "SELECT phase_id, phase FROM phase";
-    private final static String SELECT_BY_PK = "SELECT phase_id, phase FROM phase WHERE phase_id= ?";
+    private final static String SELECT_BY_PK_QUERY = "SELECT phase_id, phase FROM phase WHERE phase_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO phase (phase) VALUES (?);";
     private final static String UPDATE_QUERY = "UPDATE phase SET phase= ?  WHERE phase_id= ?;";
     private final static String DELETE_QUERY = "DELETE FROM phase WHERE phase_id= ?;";
@@ -28,7 +28,7 @@ public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Pha
 
     @Override
     public String getSelectPKQuery() {
-        return SELECT_BY_PK;
+        return SELECT_BY_PK_QUERY;
     }
 
     @Override

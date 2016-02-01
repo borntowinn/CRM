@@ -37,41 +37,53 @@ public class PhaseDaoImplTest {
     }
 
     @Test
-    public void testCreateDatabaseEntry()
+    public void createDbEntry_Phase_PhaseFromDb()
     {
         Assert.assertEquals(phase.getPhase(), phaseDao.create(phase).getPhase());
     }
 
     @Test
-    public void testGetByPK()
+    public void getRecordByPK_Phase_PhaseFromDbByPK()
     {
+        //when
         Integer id = phaseDao.create(phase).getId();
+
+        //then
         Assert.assertEquals(phase.getPhase(), phaseDao.getByPK(id).getPhase());
     }
 
     @Test
-    public void testGetAllEntries()
+    public void getAllRecordsTest()
     {
+        //when
         phases = phaseDao.getAll();
+
+        //then
         Assert.assertNotNull(phases);
         Assert.assertTrue(phases.size() > 0);
     }
 
     @Test
-    public void testUpdate()
+    public void updateRecord_NewPhase_NewPhaseExpectedFromDb()
     {
+        //when
         Integer id = phaseDao.create(phase).getId();
         phase.setPhase("newPhase");
         phase.setId(id);
         phaseDao.update(phase);
+
+        //then
         Assert.assertEquals(phase.getPhase(), phaseDao.getByPK(id).getPhase());
     }
 
     @Test(expected=PersistException.class)
-    public void testDelete()
+    public void deleteRecord_PersistExceptionIsExpected()
     {
+        //when
         Integer id = phaseDao.create(phase).getId();
         phaseDao.delete(id);
+
+        //then -> exception must be thrown == the record was successfully deleted and can't be accessed anymore
         phaseDao.getByPK(id);
     }
 }

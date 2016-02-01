@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class UserTest {
         newUser.setName("Glen");
         newUser.setPassword("!(*@&!*(@&!*(@!@)(*");
         newUser.setDescription("DESCRIPTION");
-        newUser.setCreationDate(new Date());
+        newUser.setCreationDate(LocalDateTime.now());
         newUser.setEmail("johnson@gmail.com");
         newUser.setMobilePhone("+666 66 66");
         newUser.setWorkPhone("+777 77 77");
@@ -62,7 +63,7 @@ public class UserTest {
 
         //2 - update
         lastInsertedObject.setName("Maria");
-        lastInsertedObject.setCreationDate(new Date());
+        lastInsertedObject.setCreationDate(LocalDateTime.now());
         lastInsertedObject.setEmail("maria.johnson@yahoo.com");
         lastInsertedObject.setMobilePhone("248-8-248");
         userDao.update(lastInsertedObject);
@@ -89,7 +90,7 @@ public class UserTest {
         newUser.setName("Oven");
         newUser.setPassword("pass");
         newUser.setDescription("TEST DESC");
-        newUser.setCreationDate(new Date());
+        newUser.setCreationDate(LocalDateTime.now());
         newUser.setEmail("oven@gmail.com");
         newUser.setMobilePhone("+6 66 66");
         newUser.setWorkPhone("+7 77 77");

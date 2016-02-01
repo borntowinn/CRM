@@ -7,10 +7,7 @@ import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,7 +60,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
                 user.setName(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
                 user.setDescription(rs.getString("description"));
-                user.setCreationDate(rs.getDate("date_creation"));
+                user.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
                 user.setEmail(rs.getString("email"));
                 user.setMobilePhone(rs.getString("mobile_phone"));
                 user.setWorkPhone(rs.getString("work_phone"));
@@ -80,12 +77,10 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, User object) throws PersistException {
         try {
-            Date sqlDate = convert(object.getCreationDate());
-
             statement.setString(1, object.getName());
             statement.setString(2, object.getPassword());
             statement.setString(3, object.getDescription());
-            statement.setDate(4, sqlDate);
+            statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
             statement.setString(5, object.getEmail());
             statement.setString(6, object.getMobilePhone());
             statement.setString(7, object.getWorkPhone());
@@ -100,12 +95,11 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, User object) throws PersistException {
         try {
-            Date sqlDate = convert(object.getCreationDate());
             int user_role_id = (object.getUserRole().getId() == null) ? new Integer(1) : object.getUserRole().getId();
             statement.setString(1, object.getName());
             statement.setString(2, object.getPassword());
             statement.setString(3, object.getDescription());
-            statement.setDate(4, sqlDate);
+            statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
             statement.setString(5, object.getEmail());
             statement.setString(6, object.getMobilePhone());
             statement.setString(7, object.getWorkPhone());
@@ -114,12 +108,5 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
         } catch (SQLException e) {
             throw new PersistException(e);
         }
-    }
-
-    protected java.sql.Date convert(java.util.Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new java.sql.Date(date.getTime());
     }
 }

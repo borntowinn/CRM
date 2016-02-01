@@ -1,6 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class User implements Serializable {
     private String name;
     private String password;
     private String description;
-    private Date creationDate;
+    private LocalDateTime creationDate;
     private UserRole userRole;
     private String email;
     private String mobilePhone;
@@ -64,11 +65,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

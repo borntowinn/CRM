@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DealDaoImplTest {
         deal.setContact(contact);
         deal.setCompany(company);
         deal.setDeleted(false);
-        deal.setCreationDate(new Timestamp(new Date().getTime()));
+        deal.setCreationDate(LocalDateTime.now());
         deal.setBudget(new BigDecimal("123.00"));
         deal.setCreatedBy(user);
         deal.setResponsible(user);
@@ -58,9 +59,12 @@ public class DealDaoImplTest {
     }
 
     @Test
-    public void testCreateDatabaseEntry()
+    public void createDbEntry_LocalDeal_DealFromDb()
     {
+        //when
         Deal localDeal = dealDao.create(deal);
+
+        //then
         Assert.assertEquals(deal.getCreationDate(), localDeal.getCreationDate());
         Assert.assertEquals(deal.getBudget(), localDeal.getBudget());
         Assert.assertEquals(deal.getPhase().getId(), localDeal.getPhase().getId());
@@ -72,9 +76,12 @@ public class DealDaoImplTest {
     }
 
     @Test
-    public void testGetByPK()
+    public void getByPK_Deal_DealFromDbByPK()
     {
+        //when
         Integer id = dealDao.create(deal).getId();
+
+        //then
         Assert.assertEquals(deal.getCreationDate(), dealDao.getByPK(id).getCreationDate());
         Assert.assertEquals(deal.getBudget(), dealDao.getByPK(id).getBudget());
         Assert.assertEquals(deal.getPhase().getId(), dealDao.getByPK(id).getPhase().getId());
@@ -86,7 +93,7 @@ public class DealDaoImplTest {
     }
 
     @Test
-    public void testGetAllEntries()
+    public void getAllRecordsTest()
     {
         //when
         deals = dealDao.getAll();
@@ -97,20 +104,26 @@ public class DealDaoImplTest {
     }
 
     @Test
-    public void testUpdate()
+    public void updateRecord_Budget789_Returned789()
     {
+        //when
         Integer id = dealDao.create(deal).getId();
         deal.setBudget(new BigDecimal("789.00"));
         deal.setId(id);
         dealDao.update(deal);
+
+        //then
         Assert.assertEquals(deal.getBudget(), dealDao.getByPK(id).getBudget());
     }
 
     @Test(expected=PersistException.class)
-    public void testDelete()
+    public void deleteRecord_PersistExceptionIsExpected()
     {
+        //when
         Integer id = dealDao.create(deal).getId();
         dealDao.delete(id);
+
+        //then -> exception must be thrown == the record was successfully deleted and can't be accessed anymore
         dealDao.getByPK(id);
     }
 }
