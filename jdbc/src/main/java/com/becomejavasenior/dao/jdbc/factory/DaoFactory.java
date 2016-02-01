@@ -22,4 +22,8 @@ public class DaoFactory {
     public static DealDao getDealDao() {
         return new DealDaoImpl();
     }
+
+    public static DashboardDao getDashboardDao(){
+        return new DashboardDaoImpl();
+    }
 }
