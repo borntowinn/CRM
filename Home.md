@@ -32,7 +32,7 @@
 Разделы размещены с левом части страницы в виде вертикального списка.
 Каждый раздел имеет свою уникальную иконку.
 
-https://crm-atlas.atlassian.net/secure/attachment/10209/diagram.png
+https://crm-atlas.atlassian.net/secure/attachment/10301/crm_atlas.png
 ___
 **Wiki editor**
 
