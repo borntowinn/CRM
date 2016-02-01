@@ -18,8 +18,8 @@ public class DashboardDaoImpl implements DashboardDao {
     private static final String SELECT_DEALS_WITHOUT_TASK = "SELECT * FROM deal WHERE deal_id NOT IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private static final String SELECT_DEALS_WITH_TASK = "SELECT * FROM deal WHERE deal_id IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private static final String SELECT_TASKS = "SELECT * FROM task";
-    private static final String SELECT_COMPLETED_TASKS = "SELECT * FROM task WHERE ";
-    private static final String SELECT_OVERDUE_TASKS = "SELECT * FROM task WHERE ";
+    private static final String SELECT_COMPLETED_TASKS = "SELECT * FROM task WHERE isDone";
+    private static final String SELECT_OVERDUE_TASKS = "SELECT * FROM task WHERE NOT isDone;";
     private static final String SELECT_CONTACTS = "SELECT * FROM contact";
     private static final String SELECT_COMPANIES = "SELECT * FROM company";
 
@@ -89,12 +89,12 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public int getCompletedTasksCount() {
-        return 0;
+        return getCount(SELECT_COMPLETED_TASKS);
     }
 
     @Override
     public int getOverdueTasksCount() {
-        return 0;
+        return getCount(SELECT_OVERDUE_TASKS);
     }
 
     @Override
