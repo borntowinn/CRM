@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Default71721 on 22.01.16
  */
-public class Task implements Serializable{
+public class Task implements Serializable {
     private Integer id;
     private String period;
     private String taskName;
@@ -23,6 +23,7 @@ public class Task implements Serializable{
     private Date creationTime;
     private Contact contact;
     private Boolean isDeleted;
+    private Boolean isDone;
 
     private List<Comment> commentList = new LinkedList<Comment>();
 
@@ -132,5 +133,13 @@ public class Task implements Serializable{
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
     }
 }
