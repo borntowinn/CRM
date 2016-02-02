@@ -1,89 +1,120 @@
 package com.becomejavasenior;
 
-        import com.becomejavasenior.dao.CompanyDao;
-        import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-        import com.becomejavasenior.dao.exception.PersistException;
-        import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
-        import org.junit.Assert;
-        import org.junit.Before;
-        import org.junit.Test;
+import com.becomejavasenior.dao.CompanyDao;
+import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.exception.PersistException;
+import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-        import java.sql.Connection;
-        import java.sql.SQLException;
-        import java.time.LocalDateTime;
-        import java.util.Date;
-        import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
 
-        import static junit.framework.TestCase.assertEquals;
-        import static junit.framework.TestCase.assertNotSame;
-        import static junit.framework.TestCase.assertSame;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertSame;
 
 public class CompanyDaoImplTest {
-    private CompanyDao<Company> companyDao = null;
-    private Company newCompany = null;
+    private CompanyDao<Company> companyDao;
 
     public CompanyDaoImplTest() {
     }
 
     @Before
-    public void setUp() {
+    public void setUpConnection() {
         Connection connection = ConnectionFactory.getConnection();
         companyDao = DaoFactory.getCompanyDAO();
-        newCompany = new Company();
         try {
             connection.setAutoCommit(false);
-        } catch (SQLException var3) {
-            var3.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
 
     @Test
-    public void testCreateAndUpdateAndGetByPK() {
-        User userCreator = new User();
-        userCreator.setId(5);
-
-        newCompany.setCompanyName("Slaves&Bosses");
-        newCompany.setPhoneType(1);
-        newCompany.setPhoneNumber("+737 37 37");
-        newCompany.setEmail("slaves&bosses@google.com");
-        newCompany.setWebsite("slaves&bosses.com");
-        newCompany.setCreatedBy(userCreator);
-        newCompany.setAddress("1 Infinite Loop, Cupertino, CA 95014");
-        newCompany.setDeleted(false);
-        newCompany.setCreationTime(LocalDateTime.now());
-
-        //1 - create
+    public void getByPKTest() {
+        //when
+        Company newCompany = new Company();
+        testPreparation(newCompany);
         Company lastInsertedObject = companyDao.persist(newCompany);
+        Integer id = lastInsertedObject.getId();
+
+        //then
+        Assert.assertEquals(id, companyDao.getByPK(id).getId());
+
+        //remove testing data from the database
+        companyDao.delete(lastInsertedObject.getId());
+    }
+
+    @Test
+    public void testCreateCompany() {
+        //when
+        Company newCompany = new Company();
+        testPreparation(newCompany);
+        Company lastInsertedObject = companyDao.persist(newCompany);
+
+        //then
         assertEquals("Slaves&Bosses", lastInsertedObject.getCompanyName());
         assertEquals("+737 37 37", lastInsertedObject.getPhoneNumber());
         assertEquals("slaves&bosses@google.com", lastInsertedObject.getEmail());
         assertSame(5, lastInsertedObject.getCreatedBy().getId());
 
-        //2 - update
-        lastInsertedObject.setCompanyName("saveyoursoul.com");
-        lastInsertedObject.setCreationTime(LocalDateTime.now());
-        lastInsertedObject.setEmail("saveyoursoul@google.com");
-        lastInsertedObject.setPhoneNumber("+737 37 37");
-        companyDao.update(lastInsertedObject);
-
-        //3 get by PK and check update
-        int id = lastInsertedObject.getId().intValue();
-        Company getByPkCompany = companyDao.getByPK(Integer.valueOf(id));
-        assertEquals("+737 37 37", getByPkCompany.getPhoneNumber());
-        assertNotSame(4, getByPkCompany.getCreatedBy().getId());
+        //remove testing data from the database
         companyDao.delete(lastInsertedObject.getId());
     }
 
+    @Test(expected = PersistException.class)
+    public void testDeleteCompany() {
+        //when
+        Company newCompany = new Company();
+        testPreparation(newCompany);
+        Company lastInsertedObject = companyDao.persist(newCompany);
+        Integer lasInsertedObjectId = lastInsertedObject.getId();
+        companyDao.delete(lasInsertedObjectId);
+
+        //then -> exception must be thrown == the record was successfully deleted and can't be accessed anymore
+        companyDao.getByPK(lasInsertedObjectId);
+    }
+
     @Test
-    public void testGetAll() {
+    public void testUpdateCompany() {
+        //before
+        Company newCompany = new Company();
+        testPreparation(newCompany);
+        Company lastInsertedObject = companyDao.persist(newCompany);
+
+        //when (update company data)
+        lastInsertedObject.setCompanyName("saveyoursoul.com");
+        lastInsertedObject.setEmail("saveyoursoul@google.com");
+        lastInsertedObject.setPhoneNumber("+737 77 77");
+        companyDao.update(lastInsertedObject);
+        int id = lastInsertedObject.getId();
+        Company getByPkCompany = companyDao.getByPK(id);
+
+        //then
+        assertEquals("saveyoursoul.com", getByPkCompany.getCompanyName());
+        assertEquals("saveyoursoul@google.com", getByPkCompany.getEmail());
+        assertEquals("+737 77 77", getByPkCompany.getPhoneNumber());
+
+        //remove testing data from the database
+        companyDao.delete(id);
+    }
+
+    @Test
+    public void testGetAllRecords() {
+        //when
         List<Company> companies = companyDao.getAll();
+
+        //then
         Assert.assertNotNull(companies);
         Assert.assertTrue(companies.size() > 0);
     }
 
-    @Test(expected = PersistException.class)
-    public void testDeleteAndException() {
+    private void testPreparation(Company newCompany) {
+        //set some testing data to the newCompany object
         User userCreator = new User();
         userCreator.setId(5);
         newCompany.setCompanyName("Slaves&Bosses");
@@ -95,8 +126,5 @@ public class CompanyDaoImplTest {
         newCompany.setAddress("1 Infinite Loop, Cupertino, CA 95014");
         newCompany.setDeleted(false);
         newCompany.setCreationTime(LocalDateTime.now());
-        Company lastInsertedObject = companyDao.persist(newCompany);
-        companyDao.delete(lastInsertedObject.getId());
-        companyDao.getByPK(lastInsertedObject.getId());
     }
 }
