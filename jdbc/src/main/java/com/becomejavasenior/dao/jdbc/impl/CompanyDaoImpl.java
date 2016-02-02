@@ -77,15 +77,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Company object) throws PersistException {
         try {
-            statement.setString(1, object.getCompanyName());
-            statement.setInt(2, object.getPhoneType());
-            statement.setString(3, object.getPhoneNumber());
-            statement.setString(4, object.getEmail());
-            statement.setString(5, object.getWebsite());
-            statement.setInt(6, object.getCreatedBy().getId());
-            statement.setString(7, object.getAddress());
-            statement.setBoolean(8, object.getDeleted());
-            statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
+            prepareStatement(statement, object);
             statement.setInt(10, object.getId());
         } catch (SQLException e) {
             throw new PersistException(e);
@@ -95,18 +87,21 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Company object) throws PersistException {
         try {
-            int user_id = (object.getCreatedBy().getId() == null) ? new Integer(1) : object.getCreatedBy().getId();
-            statement.setString(1, object.getCompanyName());
-            statement.setInt(2, object.getPhoneType());
-            statement.setString(3, object.getPhoneNumber());
-            statement.setString(4, object.getEmail());
-            statement.setString(5, object.getWebsite());
-            statement.setInt(6, user_id);
-            statement.setString(7, object.getAddress());
-            statement.setBoolean(8, object.getDeleted());
-            statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
+            prepareStatement(statement, object);
         } catch (SQLException e) {
             throw new PersistException(e);
         }
+    }
+
+    private void prepareStatement(PreparedStatement statement, Company object) throws SQLException {
+        statement.setString(1, object.getCompanyName());
+        statement.setInt(2, object.getPhoneType());
+        statement.setString(3, object.getPhoneNumber());
+        statement.setString(4, object.getEmail());
+        statement.setString(5, object.getWebsite());
+        statement.setInt(6, object.getCreatedBy().getId());
+        statement.setString(7, object.getAddress());
+        statement.setBoolean(8, object.getDeleted());
+        statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
     }
 }
