@@ -1,5 +1,7 @@
-package com.becomejavasenior;
+package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.SessionHistory;
+import com.becomejavasenior.User;
 import com.becomejavasenior.dao.SessionHistoryDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;

@@ -1,5 +1,7 @@
-package com.becomejavasenior;
+package com.becomejavasenior.dao.jdbc.impl;
 
+        import com.becomejavasenior.Company;
+        import com.becomejavasenior.User;
         import com.becomejavasenior.dao.CompanyDao;
         import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
         import com.becomejavasenior.dao.exception.PersistException;
@@ -11,7 +13,6 @@ package com.becomejavasenior;
         import java.sql.Connection;
         import java.sql.SQLException;
         import java.time.LocalDateTime;
-        import java.util.Date;
         import java.util.List;
 
         import static junit.framework.TestCase.assertEquals;

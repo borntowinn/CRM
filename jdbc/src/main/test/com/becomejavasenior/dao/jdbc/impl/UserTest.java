@@ -1,5 +1,7 @@
-package com.becomejavasenior;
+package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.User;
+import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
@@ -11,7 +13,6 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotSame;
@@ -21,7 +22,6 @@ import static junit.framework.TestCase.assertSame;
 public class UserTest {
 
     private User newUser = null;
-    private User lastInsertedObject = null;
     private List<User> users = null;
     private UserDao userDao =null;
 
@@ -30,7 +30,6 @@ public class UserTest {
         Connection connection = ConnectionFactory.getConnection();
         userDao = DaoFactory.getUserDAO();
         newUser = new User();
-        lastInsertedObject = new User();
 
         try {
             connection.setAutoCommit(false);
