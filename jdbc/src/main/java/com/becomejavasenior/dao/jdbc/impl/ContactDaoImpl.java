@@ -112,6 +112,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setTimestamp(8, Timestamp.valueOf(contact.getCreationTime()));
             statement.setInt(9, contact.getCreatedBy().getId());
             statement.setInt(10, contact.getCompanyId().getId());
+            statement.setInt(11, contact.getId());
         } catch (SQLException e) {
             throw new PersistException(e);
         }

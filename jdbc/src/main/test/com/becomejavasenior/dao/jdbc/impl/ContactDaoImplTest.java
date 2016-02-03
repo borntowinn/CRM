@@ -80,25 +80,12 @@ public class ContactDaoImplTest {
     public void updateContact() {
         Contact newContact = new Contact();
         testInformation(newContact);
-        User user = new User();
-        user.setId(1);
-        Company com = new Company();
-        com.setId(1);
-        //Integer id = contactDao.create(newContact).getId();
-        newContact.setId(21);
-        newContact.setNameSurname("mmm");
+        Integer id = contactDao.create(newContact).getId();
+        newContact.setId(id);
         newContact.setPhoneType(3);
-        newContact.setPhoneNumber("1321");
-        newContact.setEmail("ema");
-        newContact.setSkype("sk");
-        newContact.setCreationTime(LocalDateTime.now());
-        newContact.setDeleted(false);
-        newContact.setPosition("admin");
-        newContact.setCreatedBy(user);
-        newContact.setCompanyId(com);
         contactDao.update(newContact);
 
-        assertSame(3, contactDao.getByPK(21).getPhoneType());
+        assertSame(3, contactDao.getByPK(id).getPhoneType());
     }
 
     @Test
