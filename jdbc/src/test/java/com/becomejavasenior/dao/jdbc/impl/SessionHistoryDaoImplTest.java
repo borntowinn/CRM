@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao.jdbc.impl;
+package java.com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.SessionHistory;
 import com.becomejavasenior.User;

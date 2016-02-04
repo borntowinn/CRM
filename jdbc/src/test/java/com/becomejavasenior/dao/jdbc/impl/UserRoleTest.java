@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao.jdbc.impl;
+package java.com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserRoleDao;

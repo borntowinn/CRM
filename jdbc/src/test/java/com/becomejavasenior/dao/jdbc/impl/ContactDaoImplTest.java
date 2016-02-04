@@ -1,4 +1,4 @@
-package com.becomejavasenior.dao.jdbc.impl;
+package java.com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Company;
 import com.becomejavasenior.Contact;
@@ -66,7 +66,7 @@ public class ContactDaoImplTest {
     }
 
     @Test(expected = PersistException.class)
-    public void testDeleteCompany() {
+    public void testDeleteContact() {
         Contact newContact = new Contact();
         testInformation(newContact);
         Contact testContact = contactDao.persist(newContact);
