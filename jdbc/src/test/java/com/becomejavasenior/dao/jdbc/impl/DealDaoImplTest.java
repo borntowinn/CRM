@@ -1,5 +1,6 @@
-package com.becomejavasenior;
+package java.com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
@@ -11,9 +12,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -12,8 +12,8 @@ import java.util.Properties;
 public class ConnectionFactory {
     public static Connection getConnection() {
         Properties props = new Properties();
-        FileInputStream fis = null;
-        Connection connection = null;
+        FileInputStream fis;
+        Connection connection;
         try {
             fis = new FileInputStream("src/main/resources/jdbc.properties");
             props.load(fis);
