@@ -11,9 +11,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +48,7 @@ public class DealDaoImplTest {
         deal.setCreatedBy(user);
         deal.setResponsible(user);
         deal.setPhase(phase);
+        deal.setDealName("testing name");
 
         try {
             connection.setAutoCommit(false);
@@ -73,6 +72,7 @@ public class DealDaoImplTest {
         Assert.assertEquals(deal.getDeleted(), localDeal.getDeleted());
         Assert.assertEquals(deal.getResponsible().getId(), localDeal.getResponsible().getId());
         Assert.assertEquals(deal.getCreatedBy().getId(), localDeal.getCreatedBy().getId());
+        Assert.assertEquals(deal.getDealName(), localDeal.getDealName());
     }
 
     @Test
@@ -90,6 +90,7 @@ public class DealDaoImplTest {
         Assert.assertEquals(deal.getDeleted(), dealDao.getByPK(id).getDeleted());
         Assert.assertEquals(deal.getResponsible().getId(), dealDao.getByPK(id).getResponsible().getId());
         Assert.assertEquals(deal.getCreatedBy().getId(), dealDao.getByPK(id).getCreatedBy().getId());
+        Assert.assertEquals(deal.getDealName(), dealDao.getByPK(id).getDealName());
     }
 
     @Test
