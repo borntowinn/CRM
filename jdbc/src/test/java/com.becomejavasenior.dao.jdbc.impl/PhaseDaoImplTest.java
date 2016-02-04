@@ -1,5 +1,6 @@
-package com.becomejavasenior;
+package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.Phase;
 import com.becomejavasenior.dao.PhaseDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
