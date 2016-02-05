@@ -43,7 +43,7 @@
                             <select class="form-control" id="responsible" name="responsible">
                                 <% List<User> users = (List<User>) request.getAttribute("userList");
                                     for (User user  : users ) { %>
-                                        <option value="<% out.println(user.getId()); %>"><% out.println(user.getName()); %></option>
+                                        <option value="<% out.print(user.getId()); %>"><% out.println(user.getName()); %></option>
                                     <%
                                     }
                                 %>
@@ -52,10 +52,6 @@
                                 <%--<jsp:useBean id="user" scope="page" type="com.becomejavasenior.User"/>--%>
                                 <%--<option value="${user.id}">${user.name}</option>--%>
                             <%--</c:forEach>--%>
-                                <option value="1">Иванов Иван Иванович</option>
-                                <option value="2">Петров Петр Петрович</option>
-                                <option value="3">Сидоров Семен Михайлович</option>
-                                <option value="4">Татарко Игорь Петрович</option>
                             </select>
 
                         </div>

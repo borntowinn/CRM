@@ -1,6 +1,9 @@
 package com.becomejavasenior.web;
 
+import com.becomejavasenior.Company;
+import com.becomejavasenior.Contact;
 import com.becomejavasenior.User;
+import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,14 +23,26 @@ import java.util.List;
  */
 public class AddContactServlet extends HttpServlet {
 
-
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ContactDao contactDao = DaoFactory.getContactDAO();
+        UserDao userDao = DaoFactory.getUserDAO();
+        request.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("contact_name");
+        Integer responsible = Integer.valueOf(request.getParameter("responsible"));
+        Integer phoneType = Integer.valueOf(request.getParameter("phone_type"));
+        String phone = request.getParameter("phone_number");
+        String email = request.getParameter("email");
+        String skype = request.getParameter("skype");
+        String position = request.getParameter("position");
+
+        Contact newContact = new Contact(name, phoneType, phone, email, skype, position,
+                LocalDateTime.now(), (User) userDao.getByPK(responsible), new Company());
+        contactDao.create(newContact);
+        response.sendRedirect("dashboard");
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Connection connection = ConnectionFactory.getConnection();
         UserDao userDao = DaoFactory.getUserDAO();
 
         List<User> userList = userDao.getAll();
