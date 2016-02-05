@@ -29,10 +29,14 @@ public class DaoFactory {
     }
 
 
+
     public static SessionHistoryDao getSessionHistoryDao() {
         return new SessionHistoryDaoImpl();
     }
+
     public static DashboardDao getDashboardDao(){
         return new DashboardDaoImpl();
     }
+
+
 }
