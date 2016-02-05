@@ -123,7 +123,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
         }
         catch (SQLException e)
         {
-            throw new PersistException();
+            throw new PersistException("Unable to close database connection");
         }
     }
 }
