@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.becomejavasenior.User" %>
 <%@ page import="java.util.List" %>
@@ -16,18 +17,7 @@
             <jsp:include page="fragments/leftMenu.jsp"/>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <table>
-            <c:forEach items="${users}" var="user">
-                <%--<jsp:useBean id="user" scope="page" type="com.becomejavasenior.User"/>--%>
-                <tr>
-                    <%--&lt;%&ndash;%>
-                        <%--List<User> users = (List<User>) request.getAttribute("users");--%>
-                    <%--%>--%>
-                    <td>user ID: <c:out value="${user.id}"/></td>
-                    <td>user name: <c:out value="${user.name}"/></td>
-                </tr>
-            </c:forEach>
-            </table>
+
 
             <h2 class="page-header">Добавить контакт</h2>
                <form id="addContactForm" method="post" class="form-horizontal">
@@ -51,8 +41,13 @@
                         <label for="responsible" class="control-label col-xs-1">Ответственный</label>
                         <div class="col-xs-11">
                             <select class="form-control" id="responsible" name="responsible">
-
-                            <%--<c:forEach items="${users}" var="user">--%>
+                                <% List<User> users = (List<User>) request.getAttribute("userList");
+                                    for (User user  : users ) { %>
+                                        <option value="<% out.println(user.getId()); %>"><% out.println(user.getName()); %></option>
+                                    <%
+                                    }
+                                %>
+                            <%--<c:forEach items="${userList}" var="user">--%>
 
                                 <%--<jsp:useBean id="user" scope="page" type="com.becomejavasenior.User"/>--%>
                                 <%--<option value="${user.id}">${user.name}</option>--%>
