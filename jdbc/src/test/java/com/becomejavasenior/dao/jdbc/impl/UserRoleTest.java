@@ -1,13 +1,11 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,13 +15,13 @@ import static junit.framework.TestCase.assertEquals;
 
 public class UserRoleTest {
 
-    private UserRole userRole = null;
-    private UserRole lastInsertedObject = null;
+    private static UserRole userRole = null;
+    private static UserRole lastInsertedObject = null;
     private List<UserRole> userRoles = null;
-    private UserRoleDao<UserRole> userRoleDao = null;
+    private static UserRoleDao<UserRole> userRoleDao = null;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         Connection connection = ConnectionFactory.getConnection();
         userRoleDao = DaoFactory.getUserRoleDAO();
         userRole = new UserRole();
@@ -34,6 +32,13 @@ public class UserRoleTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        userRoleDao.closeCurrentConnection();
     }
 
     @Test

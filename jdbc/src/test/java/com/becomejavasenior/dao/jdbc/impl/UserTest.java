@@ -1,4 +1,4 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.User;
 import com.becomejavasenior.UserRole;
@@ -6,9 +6,7 @@ import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,12 +19,12 @@ import static junit.framework.TestCase.assertSame;
 
 public class UserTest {
 
-    private User newUser = null;
+    private static User newUser = null;
     private List<User> users = null;
-    private UserDao userDao =null;
+    private static UserDao userDao =null;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         Connection connection = ConnectionFactory.getConnection();
         userDao = DaoFactory.getUserDAO();
         newUser = new User();
@@ -36,6 +34,12 @@ public class UserTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        userDao.closeCurrentConnection();
     }
 
     @Test

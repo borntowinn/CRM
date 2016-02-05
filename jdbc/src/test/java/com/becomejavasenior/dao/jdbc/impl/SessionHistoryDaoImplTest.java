@@ -1,4 +1,4 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.SessionHistory;
 import com.becomejavasenior.User;
@@ -6,9 +6,7 @@ import com.becomejavasenior.dao.SessionHistoryDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,13 +17,13 @@ import java.util.List;
  * Created by Default71721 on 31.01.16.
  */
 public class SessionHistoryDaoImplTest {
-    private SessionHistory sessionHistory;
-    private User user;
+    private static SessionHistory sessionHistory;
+    private static User user;
     private List<SessionHistory> sessionHistories;
-    private SessionHistoryDao<SessionHistory> sessionHistoryDao;
+    private static SessionHistoryDao<SessionHistory> sessionHistoryDao;
 
-    @Before
-    public void setupAndConnection()
+    @BeforeClass
+    public static void setupAndConnection()
     {
         Connection connection = ConnectionFactory.getConnection();
         sessionHistoryDao = DaoFactory.getSessionHistoryDao();
@@ -42,6 +40,12 @@ public class SessionHistoryDaoImplTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        sessionHistoryDao.closeCurrentConnection();
     }
 
     @Test
