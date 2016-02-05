@@ -1,13 +1,11 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Phase;
 import com.becomejavasenior.dao.PhaseDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,12 +16,12 @@ import java.util.List;
  */
 public class PhaseDaoImplTest {
 
-    private Phase phase;
+    private static Phase phase;
     private List<Phase> phases;
-    private PhaseDao<Phase> phaseDao;
+    private static PhaseDao<Phase> phaseDao;
 
-    @Before
-    public void setupAndConnection()
+    @BeforeClass
+    public static void setupAndConnection()
     {
         Connection connection = ConnectionFactory.getConnection();
         phaseDao = DaoFactory.getPhaseDao();
@@ -35,6 +33,12 @@ public class PhaseDaoImplTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        phaseDao.closeCurrentConnection();
     }
 
     @Test

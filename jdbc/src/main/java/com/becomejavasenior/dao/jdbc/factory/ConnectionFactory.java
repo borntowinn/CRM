@@ -21,6 +21,7 @@ public class ConnectionFactory {
             Class.forName(props.getProperty("DRIVER"));
 
             connection = DriverManager.getConnection(props.getProperty("URL"), props.getProperty("USER"), props.getProperty("PASSWORD"));
+            fis.close();
         } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new PersistException(e);
         }
