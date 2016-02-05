@@ -109,7 +109,7 @@
                                 <div class="col-sm-3">
                                     <select class="form-control" id="timeList" name="timeName">
                                         <c:forEach items="${requestScope.timeList}" var="hour" varStatus="loop">
-                                            <option value="li_${loop.index}" >${hour}</option>
+                                            <option value="${hour}" >${hour}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

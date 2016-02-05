@@ -58,11 +58,21 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       while (rs.next()) {
         Task task = new Task();
         task.setId(rs.getInt("task_id"));
-        task.setPeriod(rs.getString("period"));
-        task.setTaskName(rs.getString("task_name"));
-        task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
+
+        if(task.getPeriod() != null){
+          task.setPeriod(rs.getString("period"));
+        }
+        if(task.getTaskName() != null){
+          task.setTaskName(rs.getString("task_name"));
+        }
+        if(task.getPlanTime() != null){
+          task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
+        }
+
         task.setResponsible(userDao.getByPK(rs.getInt("responsible")));
-        task.setTaskType(rs.getString("task_type"));
+        if(task.getTaskType() != null){
+          task.setTaskType(rs.getString("task_type"));
+        }
         task.setAuthor(userDao.getByPK(rs.getInt("author")));
 
         if(task.getCompany() != null){
@@ -74,15 +84,20 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
         }
 
         if(task.getCreationTime() != null ){
-          task.setCreationTime(rs.getTime("creation_time"));
+          task.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
         }
 
         if(task.getContact() != null){
           task.setContact(contactDao.getByPK(rs.getInt("contact_id")));
         }
 
-        task.setDeleted(rs.getBoolean("isdeleted"));
-        task.setDone(rs.getBoolean("isdone"));
+        if(task.getDeleted() != null){
+          task.setDeleted(rs.getBoolean("isdeleted"));
+        }
+        if(task.getDone() != null){
+          task.setDone(rs.getBoolean("isdone"));
+        }
+
         result.add(task);
       }
 
@@ -95,7 +110,6 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   @Override
   protected void prepareStatementForInsert(PreparedStatement statement, Task object) throws PersistException {
     setObjectValueToStatement(statement, object);
-    //statement.setInt(13, object.getId());
   }
 
   @Override
@@ -106,12 +120,32 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   private void setObjectValueToStatement(PreparedStatement statement, Task object) throws PersistException {
     try {
+      if(object.getPeriod() != null){
+        statement.setString(1, object.getPeriod());
+      } else{
+        statement.setNull(1, Types.VARCHAR);
+      }
 
-      statement.setString(1, object.getPeriod());
-      statement.setString(2, object.getTaskName());
-      statement.setTimestamp(3, Timestamp.valueOf(object.getPlanTime()));
+      if(object.getTaskName() != null){
+        statement.setString(2, object.getTaskName());
+      } else{
+        statement.setNull(2, Types.VARCHAR);
+      }
+
+      if(object.getPlanTime() != null){
+        statement.setTimestamp(3, Timestamp.valueOf(object.getPlanTime()));
+      }else{
+        statement.setNull(3, java.sql.Types.TIMESTAMP);
+      }
+
       statement.setInt(4, object.getResponsible().getId());
-      statement.setString(5, object.getTaskType());
+
+      if(object.getTaskType() != null){
+        statement.setString(5, object.getTaskType());
+      } else{
+        statement.setNull(5, Types.VARCHAR);
+      }
+
       statement.setInt(6, object.getAuthor().getId());
 
       if(object.getCompany() != null){
@@ -126,15 +160,30 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
         statement.setNull(8, java.sql.Types.INTEGER);
       }
 
+      if(object.getCreationTime() != null){
+        statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
+      }else{
+        statement.setNull(9, java.sql.Types.TIMESTAMP);
+      }
+
       if(object.getContact() != null){
         statement.setInt(10, object.getContact().getId());
       } else{
         statement.setNull(10, java.sql.Types.INTEGER);
       }
 
-      statement.setNull(9, java.sql.Types.TIMESTAMP);
-      statement.setBoolean(11, object.getDeleted());
-      statement.setBoolean(12, object.getDone());
+      if(object.getDeleted() != null){
+        statement.setBoolean(11, object.getDeleted());
+      }else{
+        statement.setNull(11, Types.BOOLEAN);
+      }
+
+      if(object.getDone() != null){
+        statement.setBoolean(12, object.getDone());
+      }else{
+        statement.setNull(12, Types.BOOLEAN);
+      }
+
     } catch (SQLException e) {
       throw new PersistException(e);
     }

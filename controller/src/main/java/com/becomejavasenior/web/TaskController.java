@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +67,13 @@ public class TaskController extends HttpServlet {
             task.setContact(contact);
         }
 
-        task.setPlanTime(LocalDateTime.now());
-        task.setCreationTime(new java.util.Date());
+        task.setCreationTime(LocalDateTime.now());
+
+        LocalDate date = LocalDate.parse(request.getParameter("dateName"));
+        String timeString = (request.getParameter("timeName") != null) ? request.getParameter("timeName") : "00:00";
+        LocalTime time = LocalTime.parse(timeString);
+        LocalDateTime planTime = LocalDateTime.of(date, time);
+        task.setPlanTime(planTime);
 
         User responsible = new User();
         responsible.setId(Integer.valueOf(request.getParameter("responsibleName")));

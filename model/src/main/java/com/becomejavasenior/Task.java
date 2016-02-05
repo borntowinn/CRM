@@ -1,9 +1,7 @@
 package com.becomejavasenior;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ public class Task implements Serializable {
     private User author;
     private Company company;
     private Deal deal;
-    private Date creationTime;
+    private LocalDateTime creationTime;
     private Contact contact;
     private Boolean isDeleted;
     private Boolean isDone;
@@ -111,11 +109,11 @@ public class Task implements Serializable {
         this.contact = contact;
     }
 
-    public Date getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(Date creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
 

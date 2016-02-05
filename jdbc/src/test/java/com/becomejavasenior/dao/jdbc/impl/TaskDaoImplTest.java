@@ -59,7 +59,7 @@ public class TaskDaoImplTest {
         newTask.setAuthor(user);
         newTask.setCompany(company);
         newTask.setDeal(deal);
-        newTask.setCreationTime(new java.util.Date());
+        newTask.setCreationTime(LocalDateTime.now());
         newTask.setContact(contact);
         newTask.setDeleted(Boolean.FALSE);
         newTask.setDone(Boolean.FALSE);
@@ -107,7 +107,7 @@ public class TaskDaoImplTest {
         newTask.setAuthor(user);
         newTask.setCompany(company);
         newTask.setDeal(deal);
-        newTask.setCreationTime(new java.util.Date());
+        newTask.setCreationTime(LocalDateTime.now());
         newTask.setContact(contact);
         newTask.setDeleted(Boolean.FALSE);
         newTask.setDone(Boolean.FALSE);
