@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> {
 
-  private final static String SELECT_QUERY = "SELECT task_id, period, taskname, plantime, responsible, task_type, comment, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task ";
-  private final static String SELECT_BY_PK = "SELECT task_id, period, taskname, plantime, responsible, task_type, comment, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task WHERE task_id=?";
-  private final static String CREATE_QUERY = "INSERT INTO task (period, taskname, plantime, responsible, task_type, comment, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?. ?, ?, ?, ?)";
-  private final static String UPDATE_QUERY = "UPDATE task SET period = ?, taskname = ?, plantime  = ?, responsible = ?, task_type = ?, comment = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
+  private final static String SELECT_QUERY = "SELECT task_id, period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task ";
+  private final static String SELECT_BY_PK = "SELECT task_id, period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task WHERE task_id=?";
+  private final static String CREATE_QUERY = "INSERT INTO task (period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
   private final static String DELETE_QUERY = "DELETE FROM task WHERE task_id= ?;";
 
   private UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -57,17 +57,30 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
     try {
       while (rs.next()) {
         Task task = new Task();
-        task.setId(rs.getInt("id"));
+        task.setId(rs.getInt("task_id"));
         task.setPeriod(rs.getString("period"));
         task.setTaskName(rs.getString("task_name"));
-        task.setPlanTime(rs.getTimestamp("plan_time").toLocalDateTime());
+        task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
         task.setResponsible(userDao.getByPK(rs.getInt("responsible")));
         task.setTaskType(rs.getString("task_type"));
         task.setAuthor(userDao.getByPK(rs.getInt("author")));
-        task.setCompany(companyDao.getByPK(rs.getInt("company_id")));
-        task.setDeal(dealDao.getByPK(rs.getInt("deal_id")));
-        task.setCreationTime(rs.getTime("creation_time"));
-        task.setContact(contactDao.getByPK(rs.getInt("contact_id")));
+
+        if(task.getCompany() != null){
+          task.setCompany(companyDao.getByPK(rs.getInt("company_id")));
+        }
+
+        if(task.getDeal() != null){
+          task.setDeal(dealDao.getByPK(rs.getInt("deal_id")));
+        }
+
+        if(task.getCreationTime() != null ){
+          task.setCreationTime(rs.getTime("creation_time"));
+        }
+
+        if(task.getContact() != null){
+          task.setContact(contactDao.getByPK(rs.getInt("contact_id")));
+        }
+
         task.setDeleted(rs.getBoolean("isdeleted"));
         task.setDone(rs.getBoolean("isdone"));
         result.add(task);
@@ -82,7 +95,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   @Override
   protected void prepareStatementForInsert(PreparedStatement statement, Task object) throws PersistException {
     setObjectValueToStatement(statement, object);
-    statement.setInt(13, object.getId());
+    //statement.setInt(13, object.getId());
   }
 
   @Override
@@ -93,19 +106,36 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   private void setObjectValueToStatement(PreparedStatement statement, Task object) throws PersistException {
     try {
+
       statement.setString(1, object.getPeriod());
       statement.setString(2, object.getTaskName());
       statement.setTimestamp(3, Timestamp.valueOf(object.getPlanTime()));
       statement.setInt(4, object.getResponsible().getId());
       statement.setString(5, object.getTaskType());
       statement.setInt(6, object.getAuthor().getId());
-      statement.setInt(7, object.getCompany().getId());
-      statement.setInt(8, object.getDeal().getId());
-      statement.setTime(9, (Time) object.getCreationTime());
-      statement.setInt(10, object.getContact().getId());
+
+      if(object.getCompany() != null){
+        statement.setInt(7, object.getCompany().getId());
+      }else{
+        statement.setNull(7, java.sql.Types.INTEGER);
+      }
+
+      if(object.getDeal() != null){
+        statement.setInt(8, object.getDeal().getId());
+      } else{
+        statement.setNull(8, java.sql.Types.INTEGER);
+      }
+
+      if(object.getContact() != null){
+        statement.setInt(10, object.getContact().getId());
+      } else{
+        statement.setNull(10, java.sql.Types.INTEGER);
+      }
+
+      statement.setNull(9, java.sql.Types.TIMESTAMP);
       statement.setBoolean(11, object.getDeleted());
       statement.setBoolean(12, object.getDone());
-    } catch (Exception e) {
+    } catch (SQLException e) {
       throw new PersistException(e);
     }
   }
