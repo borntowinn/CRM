@@ -28,7 +28,9 @@ public class DaoFactory {
         return new DealDaoImpl();
     }
 
+    public static ContactDao getContactDao(){return new ContactDaoImpl(); }
 
+    public static TaskDao getTaskDao(){return new TaskDaoImpl();}
 
     public static SessionHistoryDao getSessionHistoryDao() {
         return new SessionHistoryDaoImpl();
