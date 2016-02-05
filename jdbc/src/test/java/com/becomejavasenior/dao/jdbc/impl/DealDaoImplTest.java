@@ -1,5 +1,6 @@
-package com.becomejavasenior;
+package java.com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;

@@ -1,6 +1,5 @@
 package com.becomejavasenior.dao.jdbc.factory;
 
-import com.becomejavasenior.SessionHistory;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.impl.*;
 
@@ -15,6 +14,10 @@ public class DaoFactory {
 
     public static CompanyDao getCompanyDAO() {
         return new CompanyDaoImpl();
+    }
+
+    public static ContactDao getContactDAO() {
+        return new ContactDaoImpl();
     }
 
     public static PhaseDao getPhaseDao() {
