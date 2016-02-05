@@ -11,14 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotSame;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertSame;
 
 /**
  * Created by Katia on 03.02.2016.
