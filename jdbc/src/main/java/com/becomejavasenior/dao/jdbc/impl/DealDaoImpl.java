@@ -1,10 +1,7 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.*;
-import com.becomejavasenior.dao.CompanyDao;
-import com.becomejavasenior.dao.DealDao;
-import com.becomejavasenior.dao.PhaseDao;
-import com.becomejavasenior.dao.UserDao;
+import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
@@ -25,6 +22,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
     private CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
+    private ContactDao<Contact> contactDao = DaoFactory.getContactDAO();
 
     @Override
     protected String getSelectQuery() {
@@ -54,9 +52,6 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     protected List<Deal> parseResultSet(ResultSet rs) throws PersistException {
         LinkedList<Deal> resultList = new LinkedList<>();
-        //Following 2 lines must be deleted as soon as  ContactDao is implemented
-        Contact contact = new Contact();
-        contact.setId(1);
         try {
             while (rs.next()) {
                 Deal deal = new Deal();
@@ -67,8 +62,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
                 deal.setResponsible(userDao.getByPK(rs.getInt("responsible")));
                 deal.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
                 deal.setCompany(companyDao.getByPK(rs.getInt("company_id")));
-                //deal.setContact has to be changed as soon as ContactDao is implemented
-                deal.setContact(contact);
+                deal.setContact(contactDao.getByPK(rs.getInt("contact_id")));
                 deal.setDeleted(rs.getBoolean("isdeleted"));
                 deal.setDealName(rs.getString("name"));
                 resultList.add(deal);
@@ -84,15 +78,13 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Deal deal) throws PersistException {
         try {
-            // statement.setInt(1, object.getId());
             statement.setInt(1, deal.getCreatedBy().getId());
             statement.setBigDecimal(2, deal.getBudget());
             statement.setInt(3, deal.getPhase().getId());
             statement.setInt(4, deal.getResponsible().getId());
             statement.setTimestamp(5, Timestamp.valueOf(deal.getCreationDate()));
             statement.setInt(6, deal.getCompany().getId());
-            //next line should be edited when ContactDao is available
-            statement.setInt(7, 3);
+            statement.setInt(7, deal.getContact().getId());
             statement.setBoolean(8, deal.getDeleted());
             statement.setString(9, deal.getDealName());
         }
@@ -111,8 +103,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
             statement.setInt(4, deal.getResponsible().getId());
             statement.setTimestamp(5, Timestamp.valueOf(deal.getCreationDate()));
             statement.setInt(6, deal.getCompany().getId());
-            //next line should be edited when ContactDao is available
-            statement.setInt(7, 3);
+            statement.setInt(7, deal.getContact().getId());
             statement.setBoolean(8, deal.getDeleted());
             statement.setString(9, deal.getDealName());
             statement.setInt(10, deal.getId());
