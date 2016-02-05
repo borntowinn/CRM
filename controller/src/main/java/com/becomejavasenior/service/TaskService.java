@@ -1,9 +1,6 @@
 package com.becomejavasenior.service;
 
-import com.becomejavasenior.Company;
-import com.becomejavasenior.Contact;
-import com.becomejavasenior.Deal;
-import com.becomejavasenior.User;
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.util.*;
@@ -92,6 +89,10 @@ public class TaskService {
         }
 
         return contactMap;
+    }
+
+    public static Task saveTask(Task task){
+        return (Task) DaoFactory.getTaskDao().persist(task);
     }
 
 }

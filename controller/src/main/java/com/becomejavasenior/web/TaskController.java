@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -65,18 +65,21 @@ public class TaskController extends HttpServlet {
             task.setContact(contact);
         }
 
+        task.setPlanTime(LocalDateTime.now());
+        task.setCreationTime(new java.util.Date());
+
         User responsible = new User();
         responsible.setId(Integer.valueOf(request.getParameter("responsibleName")));
         task.setResponsible(responsible);
 
         User createdBy = new User();
         createdBy.setId(Integer.valueOf(request.getParameter("createdByName")));
-        task.setResponsible(createdBy);
+        task.setAuthor(createdBy);
 
         String message = TaskService.getSuccessMessage();
         request.setAttribute("message", message);
 
-        //TaskService.saveTask(task);
+        TaskService.saveTask(task);
 
         request.getRequestDispatcher("/task/index.jsp")
                 .forward(request, response);
