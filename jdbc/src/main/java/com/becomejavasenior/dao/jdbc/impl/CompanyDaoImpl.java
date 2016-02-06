@@ -12,10 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyDao<Company> {
-    private final static String SELECT_QUERY = "SELECT company_id, company_name, phone_type, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\"";
-    private final static String LAST_INSERT_ID_QUERY = "SELECT company_id, company_name, phone_type, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\" WHERE company_id=?";
-    private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, phone_type, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, phone_type = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
+    private final static String SELECT_QUERY = "SELECT company_id, company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\"";
+    private final static String LAST_INSERT_ID_QUERY = "SELECT company_id, company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\" WHERE company_id=?";
+    private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, responsible = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"company\" WHERE company_id= ?;";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -58,7 +58,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 Company company = new Company();
                 company.setId(rs.getInt("company_id"));
                 company.setCompanyName(rs.getString("company_name"));
-                company.setPhoneType(rs.getInt("phone_type"));
+                company.setResponsible(userDao.getByPK(rs.getInt("responsible")));
                 company.setPhoneNumber(rs.getString("phone_number"));
                 company.setEmail(rs.getString("email"));
                 company.setWebsite(rs.getString("web_site"));
@@ -95,7 +95,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
 
     private void prepareStatement(PreparedStatement statement, Company object) throws SQLException {
         statement.setString(1, object.getCompanyName());
-        statement.setInt(2, object.getPhoneType());
+        statement.setInt(2, object.getResponsible().getId());
         statement.setString(3, object.getPhoneNumber());
         statement.setString(4, object.getEmail());
         statement.setString(5, object.getWebsite());

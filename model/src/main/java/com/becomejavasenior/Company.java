@@ -2,7 +2,6 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class Company implements Serializable {
 
     private Integer id;
     private String companyName;
-    private Integer phoneType;
+    private User responsible;
     private String phoneNumber;
     private String email;
     private String website;
@@ -45,12 +44,12 @@ public class Company implements Serializable {
         this.companyName = companyName;
     }
 
-    public Integer getPhoneType() {
-        return phoneType;
+    public User getResponsible() {
+        return responsible;
     }
 
-    public void setPhoneType(Integer phoneType) {
-        this.phoneType = phoneType;
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
     }
 
     public String getPhoneNumber() {

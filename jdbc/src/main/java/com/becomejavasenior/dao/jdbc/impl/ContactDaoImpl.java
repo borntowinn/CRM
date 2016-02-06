@@ -20,10 +20,10 @@ import java.util.List;
  * Created by valkos on 02.02.16.
  */
 public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactDao<Contact> {
-    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
-    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
-    private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
+    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact";
+    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact WHERE contact_id = ?";
+    private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?, responsible = ?  WHERE contact_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -71,6 +71,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 contact.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
                 contact.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
                 contact.setCompanyId(companyDAO.getByPK(rs.getInt("company_id")));
+                contact.setResponsible(userDao.getByPK(rs.getInt("responsible")));
                 result.add(contact);
             }
         } catch (SQLException e) {
@@ -83,6 +84,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     protected void prepareStatementForInsert(PreparedStatement statement, Contact contact) throws PersistException {
         try {
             int user_id = (contact.getCreatedBy().getId() == null) ? new Integer(1) : contact.getCreatedBy().getId();
+            int responsible_id = (contact.getResponsible().getId() == null) ? new Integer(1) : contact.getResponsible().getId();
             int company_id = (contact.getCompanyId().getId() == null) ? new Integer(1) : contact.getCompanyId().getId();
             statement.setString(1, contact.getNameSurname());
             statement.setInt(2, contact.getPhoneType());
@@ -94,6 +96,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setTimestamp(8, Timestamp.valueOf(contact.getCreationTime()));
             statement.setInt(9, user_id);
             statement.setInt(10, company_id);
+            statement.setInt(11, responsible_id);
         } catch (SQLException e) {
             throw new PersistException(e);
         }
@@ -112,7 +115,8 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setTimestamp(8, Timestamp.valueOf(contact.getCreationTime()));
             statement.setInt(9, contact.getCreatedBy().getId());
             statement.setInt(10, contact.getCompanyId().getId());
-            statement.setInt(11, contact.getId());
+            statement.setInt(11, contact.getResponsible().getId());
+            statement.setInt(12, contact.getId());
         } catch (SQLException e) {
             throw new PersistException(e);
         }

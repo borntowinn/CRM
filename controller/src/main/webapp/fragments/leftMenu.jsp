@@ -5,6 +5,7 @@
     <li><a href="/crm/dashboard">Рабочий стол</a></li>
     <li><a href="#">Сделки</a></li>
     <li><a href="#">Контакты</a></li>
+    <li><a href="/company">Добавить компанию</a></li>
 
     <li><a href="<c:url value="/tasks">
     <c:param name="action" value="view" />

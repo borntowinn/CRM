@@ -22,14 +22,21 @@ public class Contact implements Serializable {
     private LocalDateTime creationTime;
     private User createdBy;
     private Company companyId;
+    private User responsible;
     private List<File> files = new LinkedList<File>();
     private List<Deal> deals = new LinkedList<Deal>();
     private List<Task> tasks = new LinkedList<Task>();
     private List<Tag> tags = new LinkedList<Tag>();
-
     public Contact() {
     }
 
+    public User getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
 
     public Integer getId() {
         return id;
