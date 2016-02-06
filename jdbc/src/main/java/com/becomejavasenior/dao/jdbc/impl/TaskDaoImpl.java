@@ -58,44 +58,24 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       while (rs.next()) {
         Task task = new Task();
         task.setId(rs.getInt("task_id"));
-
-        if(task.getPeriod() != null){
-          task.setPeriod(rs.getString("period"));
-        }
-        if(task.getTaskName() != null){
-          task.setTaskName(rs.getString("task_name"));
-        }
-        if(task.getPlanTime() != null){
-          task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
-        }
-
+        task.setPeriod(rs.getString("period"));
+        task.setTaskName(rs.getString("task_name"));
+        task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
+        task.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
+        task.setDeleted(rs.getBoolean("isdeleted"));
+        task.setDone(rs.getBoolean("isdone"));
+        task.setTaskType(rs.getString("task_type"));
         task.setResponsible(userDao.getByPK(rs.getInt("responsible")));
-        if(task.getTaskType() != null){
-          task.setTaskType(rs.getString("task_type"));
-        }
         task.setAuthor(userDao.getByPK(rs.getInt("author")));
 
-        if(task.getCompany() != null){
+        if(rs.getInt("company_id") != 0){
           task.setCompany(companyDao.getByPK(rs.getInt("company_id")));
         }
-
-        if(task.getDeal() != null){
+        if(rs.getInt("deal_id") != 0){
           task.setDeal(dealDao.getByPK(rs.getInt("deal_id")));
         }
-
-        if(task.getCreationTime() != null ){
-          task.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
-        }
-
-        if(task.getContact() != null){
+        if(rs.getInt("contact_id") != 0){
           task.setContact(contactDao.getByPK(rs.getInt("contact_id")));
-        }
-
-        if(task.getDeleted() != null){
-          task.setDeleted(rs.getBoolean("isdeleted"));
-        }
-        if(task.getDone() != null){
-          task.setDone(rs.getBoolean("isdone"));
         }
 
         result.add(task);
@@ -115,6 +95,11 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   @Override
   protected void prepareStatementForUpdate(PreparedStatement statement, Task object) throws PersistException {
     setObjectValueToStatement(statement, object);
+    try {
+      statement.setInt(13, object.getId());
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
 
@@ -135,7 +120,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       if(object.getPlanTime() != null){
         statement.setTimestamp(3, Timestamp.valueOf(object.getPlanTime()));
       }else{
-        statement.setNull(3, java.sql.Types.TIMESTAMP);
+        statement.setNull(3, Types.TIMESTAMP);
       }
 
       statement.setInt(4, object.getResponsible().getId());
@@ -151,25 +136,25 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       if(object.getCompany() != null){
         statement.setInt(7, object.getCompany().getId());
       }else{
-        statement.setNull(7, java.sql.Types.INTEGER);
+        statement.setNull(7, Types.INTEGER);
       }
 
       if(object.getDeal() != null){
         statement.setInt(8, object.getDeal().getId());
       } else{
-        statement.setNull(8, java.sql.Types.INTEGER);
+        statement.setNull(8, Types.INTEGER);
       }
 
       if(object.getCreationTime() != null){
         statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
       }else{
-        statement.setNull(9, java.sql.Types.TIMESTAMP);
+        statement.setNull(9, Types.TIMESTAMP);
       }
 
       if(object.getContact() != null){
         statement.setInt(10, object.getContact().getId());
       } else{
-        statement.setNull(10, java.sql.Types.INTEGER);
+        statement.setNull(10, Types.INTEGER);
       }
 
       if(object.getDeleted() != null){

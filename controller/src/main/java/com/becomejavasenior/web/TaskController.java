@@ -52,6 +52,15 @@ public class TaskController extends HttpServlet {
         task.setTaskType(request.getParameter("typeName"));
         task.setDeleted(false);
         task.setDone(false);
+        task.setCreationTime(LocalDateTime.now());
+
+        User responsible = new User();
+        responsible.setId(Integer.valueOf(request.getParameter("responsibleName")));
+        task.setResponsible(responsible);
+
+        User createdBy = new User();
+        createdBy.setId(Integer.valueOf(request.getParameter("createdByName")));
+        task.setAuthor(createdBy);
 
         if(task.getTaskName().equals("company")){
             Company company = new Company();
@@ -67,21 +76,10 @@ public class TaskController extends HttpServlet {
             task.setContact(contact);
         }
 
-        task.setCreationTime(LocalDateTime.now());
-
-        LocalDate date = LocalDate.parse(request.getParameter("dateName"));
-        String timeString = (request.getParameter("timeName") != null) ? request.getParameter("timeName") : "00:00";
-        LocalTime time = LocalTime.parse(timeString);
+        LocalDate date = (!request.getParameter("dateName").isEmpty()) ? LocalDate.parse(request.getParameter("dateName")) : LocalDate.now();
+        LocalTime time = (request.getParameter("timeName") != null) ? LocalTime.parse(request.getParameter("timeName")) : LocalTime.MIDNIGHT;
         LocalDateTime planTime = LocalDateTime.of(date, time);
         task.setPlanTime(planTime);
-
-        User responsible = new User();
-        responsible.setId(Integer.valueOf(request.getParameter("responsibleName")));
-        task.setResponsible(responsible);
-
-        User createdBy = new User();
-        createdBy.setId(Integer.valueOf(request.getParameter("createdByName")));
-        task.setAuthor(createdBy);
 
         String message = TaskService.getSuccessMessage();
         request.setAttribute("message", message);

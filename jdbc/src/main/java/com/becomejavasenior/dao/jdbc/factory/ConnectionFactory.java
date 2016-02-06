@@ -13,7 +13,7 @@ public class ConnectionFactory {
     public static Connection getConnection() {
         Properties props = new Properties();
         Connection connection;
-        try (FileInputStream fis = new FileInputStream("C:\\Users\\iaroslav.borysov\\Desktop\\crm-atlas\\jdbc\\src\\main\\resources\\jdbc.properties")){
+        try (FileInputStream fis = new FileInputStream("jdbc\\src\\main\\resources\\jdbc.properties")){
             props.load(fis);
 
             Class.forName(props.getProperty("DRIVER"));

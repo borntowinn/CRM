@@ -49,7 +49,6 @@ public class TaskDaoImplTest {
         deal.setId(1);
         Company company = new Company();
         company.setId(1);
-        Contact contact = new Contact();
 
         newTask.setPeriod("one week");
         newTask.setTaskName("new_task");
@@ -60,7 +59,6 @@ public class TaskDaoImplTest {
         newTask.setCompany(company);
         newTask.setDeal(deal);
         newTask.setCreationTime(LocalDateTime.now());
-        newTask.setContact(contact);
         newTask.setDeleted(Boolean.FALSE);
         newTask.setDone(Boolean.FALSE);
 
@@ -97,7 +95,6 @@ public class TaskDaoImplTest {
         deal.setId(1);
         Company company = new Company();
         company.setId(1);
-        Contact contact = new Contact();
 
         newTask.setPeriod("one week");
         newTask.setTaskName("new_task");
@@ -108,7 +105,6 @@ public class TaskDaoImplTest {
         newTask.setCompany(company);
         newTask.setDeal(deal);
         newTask.setCreationTime(LocalDateTime.now());
-        newTask.setContact(contact);
         newTask.setDeleted(Boolean.FALSE);
         newTask.setDone(Boolean.FALSE);
         Task lastInsertedObject = (Task) taskDao.persist(newTask);

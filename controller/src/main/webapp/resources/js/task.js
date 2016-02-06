@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    $("#calendar").val(getDate("today"));
+});
+
 getDate = function(id){
     var now = new Date();
 
