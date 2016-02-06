@@ -60,14 +60,18 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
         task.setId(rs.getInt("task_id"));
         task.setPeriod(rs.getString("period"));
         task.setTaskName(rs.getString("task_name"));
-        task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
-        task.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
         task.setDeleted(rs.getBoolean("isdeleted"));
         task.setDone(rs.getBoolean("isdone"));
         task.setTaskType(rs.getString("task_type"));
         task.setResponsible(userDao.getByPK(rs.getInt("responsible")));
         task.setAuthor(userDao.getByPK(rs.getInt("author")));
 
+        if(rs.getTimestamp("plantime") != null){
+          task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
+        }
+        if(rs.getTimestamp("creation_time") != null){
+          task.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
+        }
         if(rs.getInt("company_id") != 0){
           task.setCompany(companyDao.getByPK(rs.getInt("company_id")));
         }
@@ -105,17 +109,9 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   private void setObjectValueToStatement(PreparedStatement statement, Task object) throws PersistException {
     try {
-      if(object.getPeriod() != null){
-        statement.setString(1, object.getPeriod());
-      } else{
-        statement.setNull(1, Types.VARCHAR);
-      }
 
-      if(object.getTaskName() != null){
-        statement.setString(2, object.getTaskName());
-      } else{
-        statement.setNull(2, Types.VARCHAR);
-      }
+      statement.setString(1, object.getPeriod());
+      statement.setString(2, object.getTaskName());
 
       if(object.getPlanTime() != null){
         statement.setTimestamp(3, Timestamp.valueOf(object.getPlanTime()));
@@ -124,13 +120,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       }
 
       statement.setInt(4, object.getResponsible().getId());
-
-      if(object.getTaskType() != null){
-        statement.setString(5, object.getTaskType());
-      } else{
-        statement.setNull(5, Types.VARCHAR);
-      }
-
+      statement.setString(5, object.getTaskType());
       statement.setInt(6, object.getAuthor().getId());
 
       if(object.getCompany() != null){
