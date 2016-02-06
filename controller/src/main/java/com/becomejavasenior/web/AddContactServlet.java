@@ -35,8 +35,17 @@ public class AddContactServlet extends HttpServlet {
         String skype = request.getParameter("skype");
         String position = request.getParameter("position");
 
-        Contact newContact = new Contact(name, phoneType, phone, email, skype, position,
-                LocalDateTime.now(), (User) userDao.getByPK(responsible), new Company());
+        Contact newContact = new Contact();
+        newContact.setNameSurname(name);
+        newContact.setPhoneType(phoneType);
+        newContact.setPhoneNumber(phone);
+        newContact.setEmail(email);
+        newContact.setSkype(skype);
+        newContact.setPosition(position);
+        newContact.setCreationTime(LocalDateTime.now());
+        newContact.setCreatedBy((User) userDao.getByPK(responsible));
+        newContact.setCompanyId(new Company());
+
         contactDao.create(newContact);
         response.sendRedirect("dashboard");
 

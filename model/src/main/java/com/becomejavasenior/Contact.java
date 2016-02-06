@@ -30,19 +30,6 @@ public class Contact implements Serializable {
     public Contact() {
     }
 
-    public Contact(String nameSurname, Integer phoneType, String phoneNumber, String email,
-                   String skype, String position, LocalDateTime creationTime, User createdBy, Company company) {
-        this.nameSurname = nameSurname;
-        this.phoneType = phoneType;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.skype = skype;
-        this.position = position;
-        this.creationTime = creationTime;
-        this.createdBy = createdBy;
-        this.companyId = company;
-        this.isDeleted = false;
-    }
 
     public Integer getId() {
         return id;
