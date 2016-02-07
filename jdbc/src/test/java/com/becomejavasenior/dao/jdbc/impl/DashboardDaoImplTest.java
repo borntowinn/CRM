@@ -1,4 +1,4 @@
-package com.becomejavasenior;
+package com.becomejavasenior.dao.jdbc.impl;
 
 
 import com.becomejavasenior.dao.DashboardDao;
