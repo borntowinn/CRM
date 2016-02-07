@@ -3,15 +3,18 @@ package com.becomejavasenior.service;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class TaskService {
 
-    private static final String[] TIME_ARRAY = {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00",
-            "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
-            "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
+    private static final String[] TIME_ARRAY = {"08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
+            "16:00", "17:00", "18:00", "19:00"};
 
     private static final String MESSAGE = "Задача успешно добавлена";
+    private static final LocalDate TODAY = LocalDate.now();
+    private static final LocalDate TOMORROW = TODAY.plusDays(1);
 
     public static List<String> getTimeList(){
         return new ArrayList<>(Arrays.asList(TIME_ARRAY));
@@ -91,8 +94,56 @@ public class TaskService {
         return contactMap;
     }
 
-    public static Task saveTask(Task task){
-        return (Task) DaoFactory.getTaskDao().persist(task);
+    public static boolean saveTask(Task task){
+        Task persistedTask = (Task)DaoFactory.getTaskDao().persist(task);
+        if(persistedTask != null){
+            return true;
+        }
+
+        return false;
     }
 
+    public static List<Task> getTasksForPeriod(LocalDateTime start, LocalDateTime end) {
+        return DaoFactory.getTaskDao().getTasksForPeriod(start, end);
+    }
+
+    public static List<Task> getTodayList() {
+        List<Task> taskList = TaskService.getAllTasks();
+        List<Task> todayList = new ArrayList<>();
+        for(Task task : taskList){
+            if(TODAY.equals(task.getPlanTime())){
+                todayList.add(task);
+            }
+        }
+
+        return todayList;
+    }
+
+    public static List<Task> getTomorrowList() {
+        List<Task> taskList = TaskService.getAllTasks();
+        List<Task> tomorrowList = new ArrayList<>();
+        for(Task task : taskList){
+            if(TOMORROW.equals(task.getPlanTime())){
+                tomorrowList.add(task);
+            }
+        }
+
+        return tomorrowList;
+    }
+
+    public static List<Task> getOverdueList() {
+        List<Task> taskList = TaskService.getAllTasks();
+        List<Task> overdueList = new ArrayList<>();
+        for(Task task : taskList){
+            if(TODAY.isAfter(task.getPlanTime().toLocalDate()) && !task.getDone()){
+                overdueList.add(task);
+            }
+        }
+
+        return overdueList;
+    }
+
+    public static List<Task> getAllTasks() {
+        return DaoFactory.getTaskDao().getAll();
+    }
 }

@@ -45,7 +45,7 @@
                         </div>
                         <br><br>
 
-                        <form class="form-horizontal" role="form" method="POST" action="/tasks" accept-charset="UTF-8">
+                        <form action="<c:url value="/tasks/add"/>" method="post" class="form-horizontal" role="form" accept-charset="UTF-8">
 
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="periodList">Период:</label>

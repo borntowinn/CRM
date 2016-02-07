@@ -75,21 +75,75 @@ $("#nameList").change(function(){
         $("#companyDiv").css("display","none");
         $("#contactDiv").css("display","block");
     }
-
-//        $.ajax({
-//            url: 'http://localhost:8080/task/getName',
-//            data: flag,
-//            type: "get",
-//            success : function(data) {
-//                console.log("SUCCESS: ", data);
-//                display(data);
-//            },
-//            error : function(e) {
-//                console.log("ERROR: ", e);
-//                display(e);
-//            },
-//            done : function(e) {
-//                console.log("DONE");
-//            }
-//        });
 });
+
+getDay = function(){
+
+    var date = $('#dayCalendar').val();
+
+    $('td[id^=td_]').empty();
+    $('#responseMessage').empty();
+    $('tr[id^=tr_]').removeClass('success');
+    $('#currentDate').text(date);
+
+    $.ajax({
+        url: 'ajax/getDay',
+        data: {date: date},
+        type: "post",
+        success : function(data) {
+            if(data != "NO DATA"){
+                processData(data);
+            } else {
+                $('#responseMessage').html('<h4><strong>Задания на выбраную дату отсутствуют</strong></h4>');
+            }
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+        },
+        done : function(e) {
+            console.log("DONE");
+        }
+    });//ajax
+};
+
+processData = function(data){
+    var json = data;
+    console.log(json);
+
+    for(var i=0; i<json.length; i++){
+        var task = json[i];
+
+        var hour = task.planTime.time.hour + '\\:00';
+        var id = (hour.length == 6) ? hour : ('0' + hour);
+
+        var taskType = task.taskType;
+        var target;
+        var targetName;
+
+        if(task.deal){
+            target = "Зделка:";
+            targetName = task.deal.dealName;
+        } else if(task.contact){
+            target = "Контакт:";
+            targetName = task.contact.nameSurname;
+        } else if(task.company){
+            target = "Компания:";
+            targetName = task.company.companyName;
+        }
+
+        insertTaskDiv(id, taskType, target, targetName);
+    }
+};
+
+insertTaskDiv = function(id, taskType, target, targetName){
+
+    $('#tr_' + id).addClass('success');
+
+    $('#td_' + id).append('<div class="col-md-6"><div class="panel panel-danger">'+
+        '<div class="panel-heading text-center">' + taskType + '</div><table class="table">' +
+        '<tbody><tr><td><h5><strong>Текст Задачи:</strong></h5></td>'+
+        '<td><h5><p class="text-left"></p></h5></td></tr>'+
+        '<tr><td class="col-md-1"><h5><strong>' + target + '</strong></h5></td>'+
+        '<td><h5><p class="text-left">' + targetName + '</p></h5></td></tr>' +
+        '</tbody></table></div></div>');
+};

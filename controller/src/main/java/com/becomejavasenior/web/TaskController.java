@@ -17,35 +17,86 @@ import java.util.Map;
 
 @WebServlet(
         name = "taskServlet",
-        urlPatterns = {"/tasks"}
+        urlPatterns = {"/tasks/*"}
 )
 public class TaskController extends HttpServlet {
 
-    private final String CREATE = "create";
-    private final String VIEW = "view";
+    private final String CREATE = "/create";
+    private final String ADD = "/add";
+    private final String LIST_ALL = "/listAll";
+    private final String LIST_CURRENT = "/listCurrent";
+    private final String LIST_DAY = "/listDay";
+    private final String LIST_WEEK = "/listWeek";
+    private final String LIST_MONTH = "/listMonth";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if(action == null){
-            action = VIEW;
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        String url = "";
+
+        if (requestURI.endsWith(LIST_ALL)) {
+            url = this.listAll(request, response);
+        } else if (requestURI.endsWith(CREATE)) {
+            url = this.createTask(request, response);
+        } else if (requestURI.endsWith(LIST_CURRENT)) {
+            url = this.listCurrent(request, response);
+        } else if (requestURI.endsWith(LIST_DAY)) {
+            url = this.listDay(request, response);
+        } else if (requestURI.endsWith(LIST_WEEK)) {
+            url = this.listWeek(request, response);
+        } else if (requestURI.endsWith(LIST_MONTH)) {
+            url = this.listMonth(request, response);
         }
 
-        switch(action)
-        {
-            case CREATE:
-                this.createTask(request, response);
-                break;
-            case VIEW:
-            default:
-                this.listTasks(request, response);
-                break;
+        request.getRequestDispatcher(url)
+                .forward(request, response);
+    }
+
+    private String listMonth(HttpServletRequest request, HttpServletResponse response) {
+        return "/task/monthList.jsp";
+    }
+
+    private String listWeek(HttpServletRequest request, HttpServletResponse response) {
+        return "/task/weekList.jsp";
+    }
+
+    private String listDay(HttpServletRequest request, HttpServletResponse response) {
+        List<String> timeList = TaskService.getTimeList();
+        request.setAttribute("timeList", timeList);
+
+        return "/task/dayList.jsp";
+    }
+
+    private String listCurrent(HttpServletRequest request, HttpServletResponse response) {
+        List<Task> todayList = TaskService.getTodayList();
+        List<Task> tomorrowList = TaskService.getTomorrowList();
+        List<Task> overdueList = TaskService.getOverdueList();
+
+        if(todayList != null && todayList.size() > 0){
+            request.setAttribute("todayList", todayList);
+        } else if(tomorrowList != null && tomorrowList.size() > 0){
+            request.setAttribute("tomorrowList", tomorrowList);
+        } else if(overdueList != null && overdueList.size() > 0){
+            request.setAttribute("overdueList", overdueList);
         }
+
+        return "/task/currentList.jsp";
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        String url = "";
 
+        if (requestURI.endsWith(ADD)) {
+            url = this.addTask(request, response);
+        }
+
+        request.getRequestDispatcher(url)
+                .forward(request, response);
+    }
+
+    private String addTask(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
         Task task = new Task();
         task.setPeriod(request.getParameter("periodName"));
         task.setTaskName(request.getParameter("task_name"));
@@ -81,16 +132,15 @@ public class TaskController extends HttpServlet {
         LocalDateTime planTime = LocalDateTime.of(date, time);
         task.setPlanTime(planTime);
 
-        String message = TaskService.getSuccessMessage();
-        request.setAttribute("message", message);
+        if(TaskService.saveTask(task)){
+            String message = TaskService.getSuccessMessage();
+            request.setAttribute("message", message);
+        }
 
-        TaskService.saveTask(task);
-
-        request.getRequestDispatcher("/task/index.jsp")
-                .forward(request, response);
+        return "/task/allList.jsp";
     }
 
-    private void createTask(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+    private String createTask(HttpServletRequest request, HttpServletResponse response){
         List<String> timeList = TaskService.getTimeList();
         Map<String, String> periodMap = TaskService.getPeriodMap();
         Map<String, String> nameMap = TaskService.getNameMap();
@@ -109,13 +159,13 @@ public class TaskController extends HttpServlet {
         request.setAttribute("contactMap", contactMap);
         request.setAttribute("userMap", userMap);
 
-        request.getRequestDispatcher("/task/addTask.jsp")
-                .forward(request, response);
+        return "/task/addTask.jsp";
     }
 
-    private void listTasks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private String listAll(HttpServletRequest request, HttpServletResponse response) {
+        List<Task> taskList = TaskService.getAllTasks();
+        request.setAttribute("taskList", taskList);
 
-        request.getRequestDispatcher("/task/index.jsp")
-                .forward(request, response);
+        return "/task/allList.jsp";
     }
 }
