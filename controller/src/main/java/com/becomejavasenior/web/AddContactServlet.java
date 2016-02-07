@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class AddContactServlet extends HttpServlet {
 
+    private HttpServletRequest postRequest;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ContactDao contactDao = DaoFactory.getContactDAO();
         UserDao userDao = DaoFactory.getUserDAO();
@@ -61,5 +63,13 @@ public class AddContactServlet extends HttpServlet {
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("addContact.jsp");
         requestDispatcher.forward(request, response);
+    }
+
+    private void addContact(){
+
+    }
+
+    private void addDeal(){
+
     }
 }
