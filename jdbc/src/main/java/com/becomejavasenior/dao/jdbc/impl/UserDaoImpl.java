@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
-    private final static String SELECT_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\"";
+    private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\" WHERE user_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"user\" SET name = ?, password = ?, description  = ?, date_creation = ?, email = ?, mobile_phone = ?, work_phone = ?, user_role_id = ?, language = ? WHERE user_id=?";
@@ -60,7 +60,9 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
                 user.setName(rs.getString("name"));
                 user.setPassword(rs.getString("password"));
                 user.setDescription(rs.getString("description"));
-                user.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
+                if(rs.getTimestamp("date_creation") != null) {
+                    user.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
+                }
                 user.setEmail(rs.getString("email"));
                 user.setMobilePhone(rs.getString("mobile_phone"));
                 user.setWorkPhone(rs.getString("work_phone"));
@@ -80,7 +82,13 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
             statement.setString(1, object.getName());
             statement.setString(2, object.getPassword());
             statement.setString(3, object.getDescription());
-            statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
+
+            if(object.getCreationDate() != null){
+                statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
+            }else{
+                statement.setNull(3, Types.TIMESTAMP);
+            }
+
             statement.setString(5, object.getEmail());
             statement.setString(6, object.getMobilePhone());
             statement.setString(7, object.getWorkPhone());
@@ -95,15 +103,20 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, User object) throws PersistException {
         try {
-            int user_role_id = (object.getUserRole().getId() == null) ? new Integer(1) : object.getUserRole().getId();
             statement.setString(1, object.getName());
             statement.setString(2, object.getPassword());
             statement.setString(3, object.getDescription());
-            statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
+
+            if(object.getCreationDate() != null){
+                statement.setTimestamp(4, Timestamp.valueOf(object.getCreationDate()));
+            }else{
+                statement.setNull(3, Types.TIMESTAMP);
+            }
+
             statement.setString(5, object.getEmail());
             statement.setString(6, object.getMobilePhone());
             statement.setString(7, object.getWorkPhone());
-            statement.setInt(8, user_role_id);
+            statement.setInt(8, object.getUserRole().getId());
             statement.setInt(9, object.getLanguage());
         } catch (SQLException e) {
             throw new PersistException(e);
