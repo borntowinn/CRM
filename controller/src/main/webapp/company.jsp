@@ -1,4 +1,5 @@
 <%--
+<%--
   Created by IntelliJ IDEA.
   User: Katia
   Date: 08.02.2016
@@ -8,9 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <jsp:include page="fragments/headTag.jsp"/>
 <head>
+    <script type="text/javascript" src="js/jquery-1.8.0.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <title>Title</title>
 </head>
 <body>
@@ -52,16 +56,17 @@
                             Удаленные
                         </label>
                     </div>
-                    <h3>выпад меню</h3>
                     <div class="dropdown">
-                        <!-- Link or button to toggle dropdown -->
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li><a tabindex="-1" href="#">Действие</a></li>
-                            <li><a tabindex="-1" href="#">Другое действие</a></li>
-                            <li><a tabindex="-1" href="#">Еще ссылка</a></li>
-                            <li class="divider"></li>
-                            <li><a tabindex="-1" href="#">Доп. ссылка</a></li>
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">За все время <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
                         </ul>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-sm">Созданы</button>
+                        <button type="submit" class="btn btn-sm">Изменены</button>
                     </div>
                     <div class="checkbox">
                         <label>
@@ -117,12 +122,41 @@
                             Не реализована
                         </label>
                     </div>
+                    <div class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Менеджеры <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Не учитывать <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Теги <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-sm">Очистить</button>
+                        <button type="submit" class="btn btn-sm">Применить</button>
+                    </div>
 
                 </div>
                 <%--col-sm-3--%>
 
                 <div class="col-sm-9">
                     <div class="panel panel-success">
+                        <div style="margin-left: 650px">
+                            <button type="button" class="btn btn-default">Создать</button>
+                        </div>
                         <h3 class="page-header">Список компаний</h3>
 
                         <table class="table table-bordered">
