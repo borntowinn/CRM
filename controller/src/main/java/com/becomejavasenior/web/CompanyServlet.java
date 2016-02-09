@@ -21,12 +21,13 @@ import java.util.List;
         urlPatterns = {"/companies"}
 )
 public class CompanyServlet extends HttpServlet {
+    private String viewCompany = "company.jsp";
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Company> companies = DaoFactory.getCompanyDAO().getAll();
         req.setAttribute("companies", companies);
         resp.setContentType("text/html");
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("company.jsp");
-
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(viewCompany);
         requestDispatcher.forward(req, resp);
     }
 
