@@ -1,5 +1,6 @@
 package com.becomejavasenior.web;
 
+import com.becomejavasenior.Comment;
 import com.becomejavasenior.Company;
 import com.becomejavasenior.Contact;
 import com.becomejavasenior.User;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,11 +23,18 @@ import java.util.List;
  */
 public class AddContactServlet extends HttpServlet {
 
-    private HttpServletRequest postRequest;
+    private ContactDao contactDao;
+    private UserDao userDao;
+
+
+    @Override
+    public void init() throws ServletException {
+        this.contactDao = DaoFactory.getContactDAO();
+        this.userDao = DaoFactory.getUserDAO();
+
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ContactDao contactDao = DaoFactory.getContactDAO();
-        UserDao userDao = DaoFactory.getUserDAO();
         request.setCharacterEncoding("UTF-8");
         String name = request.getParameter("contact_name");
         Integer responsible = Integer.valueOf(request.getParameter("responsible"));
@@ -36,6 +43,7 @@ public class AddContactServlet extends HttpServlet {
         String email = request.getParameter("email");
         String skype = request.getParameter("skype");
         String position = request.getParameter("position");
+        String comment = request.getParameter("note");
 
         Contact newContact = new Contact();
         newContact.setNameSurname(name);
@@ -46,30 +54,29 @@ public class AddContactServlet extends HttpServlet {
         newContact.setPosition(position);
         newContact.setCreationTime(LocalDateTime.now());
         newContact.setCreatedBy((User) userDao.getByPK(responsible));
+        newContact.setDeleted(false);
+
+
         newContact.setCompanyId(new Company());
 
-        contactDao.create(newContact);
+        Contact contact = (Contact) contactDao.create(newContact);
+        if(!comment.isEmpty()){
+            Comment commentNew = new Comment();
+            commentNew.setComment(comment);
+            commentNew.setCreationDate(LocalDateTime.now());
+            contactDao.addCommentToContact(commentNew, contact.getId());
+        }
         response.sendRedirect("dashboard");
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDao userDao = DaoFactory.getUserDAO();
-
         List<User> userList = userDao.getAll();
         request.setAttribute("userList", userList);
-
         response.setContentType("text/html");
-
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("addContact.jsp");
         requestDispatcher.forward(request, response);
-    }
-
-    private void addContact(){
-
-    }
-
-    private void addDeal(){
 
     }
 }

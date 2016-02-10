@@ -1,5 +1,6 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.Comment;
 import com.becomejavasenior.Company;
 import com.becomejavasenior.Contact;
 import com.becomejavasenior.User;
@@ -9,10 +10,8 @@ import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,11 +19,14 @@ import java.util.List;
  * Created by valkos on 02.02.16.
  */
 public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactDao<Contact> {
-    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
-    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
-    private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
-    private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
+    private final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
+    private final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
+    private final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
+    private final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
+    private final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation) VALUES (?, ?)";
+    private final String ADD_COMMENT_TO_CONTACT_QUERY = "INSERT INTO comment_to_contact (comment_id, contact_id) VALUES (?, ?)";
+
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private CompanyDao<Company> companyDAO = DaoFactory.getCompanyDAO();
@@ -121,5 +123,46 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     @Override
     public Contact create(Contact contact) throws PersistException {
         return persist(contact);
+    }
+
+    @Override
+    public void addCommentToContact(Comment comment, int contact_id) {
+        int commentInsertedId = 0;
+        try (PreparedStatement statement = super.getConnection().prepareStatement(ADD_COMMENT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, comment.getComment());
+            statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new PersistException("On persist modify more then 1 record: " + count);
+            }
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                commentInsertedId = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new PersistException(e);
+        }
+
+        try (PreparedStatement statement = super.getConnection().prepareStatement(ADD_COMMENT_TO_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, commentInsertedId);
+            statement.setInt(2, contact_id);
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new PersistException("On persist modify more then 1 record: " + count);
+            }
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                commentInsertedId = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new PersistException(e);
+        }
+
+
+    }
+
+    @Override
+    public void addFileToContact() {
+
     }
 }

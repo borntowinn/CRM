@@ -2,6 +2,7 @@
 <ul class="nav nav-pills nav-stacked">
     <li class="active"><a href="#">Home</a></li>
     <li><a href="/crm/dashboard">Рабочий стол</a></li>
+    <li><a href="/crm/add_contact">Добавить контакт</a></li>
     <li><a href="#">Сделки</a></li>
     <li><a href="#">Контакты</a></li>
     <li><a href="#">Задачи</a></li>

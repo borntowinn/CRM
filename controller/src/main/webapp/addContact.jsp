@@ -21,7 +21,7 @@
 
 
             <h2 class="page-header">Добавить контакт</h2>
-               <form id="addContactForm" method="post" class="form-horizontal">
+               <form id="addContactForm" method="post" class="form-horizontal" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="contact_name" class="control-label col-xs-2">Имя Фамилия</label>
 
