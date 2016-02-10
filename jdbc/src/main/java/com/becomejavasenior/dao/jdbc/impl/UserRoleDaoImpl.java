@@ -7,7 +7,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRoleDao<UserRole> {
@@ -50,7 +50,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRo
 
     @Override
     protected List<UserRole> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<UserRole> result = new LinkedList<UserRole>();
+        ArrayList<UserRole> result = new ArrayList<UserRole>();
         try {
             while (rs.next()) {
                 UserRole userRole = new UserRole();

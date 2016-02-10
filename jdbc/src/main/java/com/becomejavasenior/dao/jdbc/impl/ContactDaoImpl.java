@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
     @Override
     protected List<Contact> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Contact> result = new LinkedList<>();
+        ArrayList<Contact> result = new ArrayList<>();
         try {
             while (rs.next()) {
                 Contact contact = new Contact();

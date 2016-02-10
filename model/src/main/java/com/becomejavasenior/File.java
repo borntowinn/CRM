@@ -2,7 +2,6 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by Default71721 on 22.01.16
@@ -10,14 +9,14 @@ import java.util.Date;
 public class File implements Serializable {
     private Integer id;
     private LocalDateTime creationDate;
-    private Byte[] file;
+    private byte[] file;
     private String fileName;
 
     public File() {
 
     }
 
-    public void setFile(Byte[] file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 
@@ -45,7 +44,7 @@ public class File implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Byte[] getFile() {
+    public byte[] getFile() {
         return file;
     }
 }

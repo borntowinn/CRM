@@ -6,7 +6,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   @Override
   protected List parseResultSet(ResultSet rs) throws PersistException {
-    List<Task> result = new LinkedList<>();
+    List<Task> result = new ArrayList<>();
     try {
       while (rs.next()) {
         Task task = new Task();

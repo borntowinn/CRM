@@ -8,7 +8,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyDao<Company> {
@@ -52,7 +52,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
 
     @Override
     protected List<Company> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Company> result = new LinkedList<Company>();
+        ArrayList<Company> result = new ArrayList<Company>();
         try {
             while (rs.next()) {
                 Company company = new Company();

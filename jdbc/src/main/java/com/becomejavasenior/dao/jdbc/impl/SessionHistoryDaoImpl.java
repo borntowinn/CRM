@@ -11,7 +11,7 @@ import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +58,7 @@ public class SessionHistoryDaoImpl extends AbstractJDBCDao<SessionHistory> imple
 
     @Override
     protected List<SessionHistory> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<SessionHistory> resultList = new LinkedList<>();
+        ArrayList<SessionHistory> resultList = new ArrayList<>();
         try {
             while (rs.next()) {
                 SessionHistory sessionHistory = new SessionHistory();
