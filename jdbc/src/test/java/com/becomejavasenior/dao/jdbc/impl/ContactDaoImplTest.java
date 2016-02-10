@@ -1,4 +1,4 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Company;
 import com.becomejavasenior.Contact;
@@ -7,7 +7,9 @@ import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -21,10 +23,10 @@ import static org.junit.Assert.*;
  * Created by valkos on 02.02.16.
  */
 public class ContactDaoImplTest {
-    ContactDao<Contact> contactDao;
+    private static ContactDao<Contact> contactDao;
 
-    @Before
-    public void beforeScenario()
+    @BeforeClass
+    public static void beforeScenario()
     {
         Connection connection = ConnectionFactory.getConnection();
         contactDao = DaoFactory.getContactDAO();
@@ -36,6 +38,13 @@ public class ContactDaoImplTest {
             e.printStackTrace();
         }
     }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        contactDao.closeCurrentConnection();
+    }
+
     @Test
     public void getByPKTest()
     {
@@ -61,6 +70,7 @@ public class ContactDaoImplTest {
         assertEquals("phone", testContact.getPhoneNumber());
         assertEquals("skype1", testContact.getSkype());
         assertSame(1, testContact.getCreatedBy().getId());
+        assertSame(1, testContact.getResponsible().getId());
 
         contactDao.delete(testContact.getId());
     }
@@ -86,6 +96,7 @@ public class ContactDaoImplTest {
         contactDao.update(newContact);
 
         assertSame(3, contactDao.getByPK(id).getPhoneType());
+        assertSame(1, contactDao.getByPK(id).getResponsible().getId());
     }
 
     @Test
@@ -111,6 +122,7 @@ public class ContactDaoImplTest {
         contact.setCreationTime(LocalDateTime.now());
         contact.setCompanyId(company);
         contact.setCreatedBy(user);
+        contact.setResponsible(user);
     }
 
 }

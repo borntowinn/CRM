@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <ul class="nav nav-pills nav-stacked">
     <li class="active"><a href="#">Home</a></li>
     <li><a href="/crm/dashboard">Рабочий стол</a></li>
     <li><a href="/crm/add_contact">Добавить контакт</a></li>
     <li><a href="#">Сделки</a></li>
     <li><a href="#">Контакты</a></li>
-    <li><a href="#">Задачи</a></li>
+    <li><a href="/company">Добавить компанию</a></li>
+
+    <li><a href="<c:url value="/tasks">
+    <c:param name="action" value="view" />
+    </c:url>">Задачи</a></li>
+
     <li><a href="#">Аналитика</a></li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Настройки

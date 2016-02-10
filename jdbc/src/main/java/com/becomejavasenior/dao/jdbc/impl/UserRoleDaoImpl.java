@@ -6,6 +6,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRo
                 userRole.setUserRole(rs.getString("role"));
                 result.add(userRole);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
         return result;
@@ -67,7 +68,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRo
     protected void prepareStatementForInsert(PreparedStatement statement, UserRole object) throws PersistException {
         try {
             statement.setString(1,object.getUserRole());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
     }
@@ -77,7 +78,7 @@ public class UserRoleDaoImpl extends AbstractJDBCDao<UserRole> implements UserRo
         try {
             statement.setString(1, object.getUserRole());
             statement.setInt(2, object.getId());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
     }

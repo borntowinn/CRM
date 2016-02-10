@@ -115,4 +115,15 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
             throw new PersistException(e);
         }
     }
+
+    public void closeCurrentConnection()
+    {
+        try {
+            connection.close();
+        }
+        catch (SQLException e)
+        {
+            throw new PersistException("Unable to close database connection");
+        }
+    }
 }

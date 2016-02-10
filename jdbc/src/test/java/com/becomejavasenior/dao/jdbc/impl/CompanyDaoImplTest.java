@@ -1,4 +1,4 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Company;
 import com.becomejavasenior.User;
@@ -6,9 +6,7 @@ import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,13 +17,13 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertSame;
 
 public class CompanyDaoImplTest {
-    private CompanyDao<Company> companyDao;
+    private static CompanyDao<Company> companyDao;
 
     public CompanyDaoImplTest() {
     }
 
-    @Before
-    public void setUpConnection() {
+    @BeforeClass
+    public static void setUpConnection() {
         Connection connection = ConnectionFactory.getConnection();
         companyDao = DaoFactory.getCompanyDAO();
         try {
@@ -34,6 +32,12 @@ public class CompanyDaoImplTest {
             e.printStackTrace();
         }
 
+    }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        companyDao.closeCurrentConnection();
     }
 
     @Test
@@ -62,6 +66,7 @@ public class CompanyDaoImplTest {
         assertEquals("Slaves&Bosses", lastInsertedObject.getCompanyName());
         assertEquals("+737 37 37", lastInsertedObject.getPhoneNumber());
         assertEquals("slaves&bosses@google.com", lastInsertedObject.getEmail());
+        assertSame(5, lastInsertedObject.getResponsible().getId());
         assertSame(5, lastInsertedObject.getCreatedBy().getId());
 
         //remove testing data from the database
@@ -120,7 +125,7 @@ public class CompanyDaoImplTest {
         User userCreator = new User();
         userCreator.setId(5);
         newCompany.setCompanyName("Slaves&Bosses");
-        newCompany.setPhoneType(1);
+        newCompany.setResponsible(userCreator);
         newCompany.setPhoneNumber("+737 37 37");
         newCompany.setEmail("slaves&bosses@google.com");
         newCompany.setWebsite("slaves&bosses.com");

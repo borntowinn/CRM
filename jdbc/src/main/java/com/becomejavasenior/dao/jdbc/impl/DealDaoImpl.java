@@ -13,10 +13,10 @@ import java.util.List;
  * Created by Default71721 on 28.01.16.
  */
 public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> {
-    private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal";
-    private static final String SELECT_BY_PK_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted FROM deal WHERE deal_id = ?";
-    private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE deal SET createdby = ?, budget = ?, phase_id  = ?, responsible = ?, date_creation = ?, company_id = ?, contact_id = ?, isdeleted = ? WHERE deal_id=?";
+    private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal";
+    private static final String SELECT_BY_PK_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal WHERE deal_id = ?";
+    private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE deal SET createdby = ?, budget = ?, phase_id  = ?, responsible = ?, date_creation = ?, company_id = ?, contact_id = ?, isdeleted = ?, name = ? WHERE deal_id=?";
     private static final String DELETE_QUERY = "DELETE FROM deal WHERE deal_id= ?;";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -64,6 +64,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
                 deal.setCompany(companyDao.getByPK(rs.getInt("company_id")));
                 deal.setContact(contactDao.getByPK(rs.getInt("contact_id")));
                 deal.setDeleted(rs.getBoolean("isdeleted"));
+                deal.setDealName(rs.getString("name"));
                 resultList.add(deal);
             }
         }
@@ -85,6 +86,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
             statement.setInt(6, deal.getCompany().getId());
             statement.setInt(7, deal.getContact().getId());
             statement.setBoolean(8, deal.getDeleted());
+            statement.setString(9, deal.getDealName());
         }
         catch (SQLException e)
         {
@@ -103,7 +105,8 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
             statement.setInt(6, deal.getCompany().getId());
             statement.setInt(7, deal.getContact().getId());
             statement.setBoolean(8, deal.getDeleted());
-            statement.setInt(9, deal.getId());
+            statement.setString(9, deal.getDealName());
+            statement.setInt(10, deal.getId());
         }
         catch (SQLException e)
         {

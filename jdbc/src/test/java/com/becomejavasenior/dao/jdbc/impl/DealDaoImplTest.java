@@ -1,13 +1,11 @@
-package java.com.becomejavasenior.dao.jdbc.impl;
+package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -19,16 +17,16 @@ import java.util.List;
  * Created by Default71721 on 29.01.16.
  */
 public class DealDaoImplTest {
-    private Deal deal;
-    private Contact contact;
-    private Company company;
-    private User user;
-    private Phase phase;
+    private static Deal deal;
+    private static Contact contact;
+    private static Company company;
+    private static User user;
+    private static Phase phase;
     private List<Deal> deals;
-    private DealDao<Deal> dealDao;
+    private static DealDao<Deal> dealDao;
 
-    @Before
-    public void setupAndConnection()
+    @BeforeClass
+    public static void setupAndConnection()
     {
         Connection connection = ConnectionFactory.getConnection();
         dealDao = DaoFactory.getDealDao();
@@ -49,12 +47,19 @@ public class DealDaoImplTest {
         deal.setCreatedBy(user);
         deal.setResponsible(user);
         deal.setPhase(phase);
+        deal.setDealName("testing name");
 
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterClass
+    public static void closeConnection()
+    {
+        dealDao.closeCurrentConnection();
     }
 
     @Test
@@ -72,6 +77,7 @@ public class DealDaoImplTest {
         Assert.assertEquals(deal.getDeleted(), localDeal.getDeleted());
         Assert.assertEquals(deal.getResponsible().getId(), localDeal.getResponsible().getId());
         Assert.assertEquals(deal.getCreatedBy().getId(), localDeal.getCreatedBy().getId());
+        Assert.assertEquals(deal.getDealName(), localDeal.getDealName());
     }
 
     @Test
@@ -89,6 +95,7 @@ public class DealDaoImplTest {
         Assert.assertEquals(deal.getDeleted(), dealDao.getByPK(id).getDeleted());
         Assert.assertEquals(deal.getResponsible().getId(), dealDao.getByPK(id).getResponsible().getId());
         Assert.assertEquals(deal.getCreatedBy().getId(), dealDao.getByPK(id).getCreatedBy().getId());
+        Assert.assertEquals(deal.getDealName(), dealDao.getByPK(id).getDealName());
     }
 
     @Test

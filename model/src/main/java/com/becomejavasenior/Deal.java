@@ -2,9 +2,7 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import java.util.List;
  */
 public class Deal implements Serializable {
     private Integer id;
+    private String dealName;
     private User createdBy;
     private BigDecimal budget;
     private Phase phase;
@@ -32,6 +31,14 @@ public class Deal implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getDealName() {
+        return dealName;
+    }
+
+    public void setDealName(String dealName) {
+        this.dealName = dealName;
     }
 
     public void setId(Integer id) {
