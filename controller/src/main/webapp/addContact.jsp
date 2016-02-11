@@ -21,7 +21,7 @@
 
 
             <h2 class="page-header">Добавить контакт</h2>
-               <form id="addContactForm" method="post" class="form-horizontal" enctype="multipart/form-data">
+               <form id="addContactForm" class="form-horizontal" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="contact_name" class="control-label col-xs-2">Имя Фамилия</label>
 
@@ -102,7 +102,7 @@
                        <label for="file" class="control-label col-xs-2">Добавить файлы</label>
 
                        <div class="col-xs-10">
-                           <input type = "file" id = "file">
+                           <input id="file" type="file" name="file" />
                        </div>
                    </div>
 
@@ -183,10 +183,9 @@
                     <label for="task_type" class="control-label col-xs-2">Тип задачи</label>
                     <div class="col-xs-10">
                         <select class="form-control" id="task_type" name="task_type">
-                            <option value="1">Встреча</option>
-                            <option value="2">Домашний</option>
-                            <option value="3">Рабочий</option>
-                            <option value="4">Факс</option>
+                            <c:forEach items="${taskTypeList}" var="taskType">
+                                <option value="${taskType}">${taskType}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -254,10 +253,9 @@
                     <label for="company" class="control-label col-xs-2">Компания</label>
                     <div class="col-xs-10">
                         <select class="form-control" id="company" name="phase">
-                            <option value="1">Компания1</option>
-                            <option value="2">Компания2</option>
-                            <option value="3">Компания3</option>
-                            <option value="4">Компания4</option>
+                            <c:forEach items="${companyList}" var="company">
+                                <option value="${company.id}">${company.companyName}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>

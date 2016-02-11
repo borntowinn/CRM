@@ -6,6 +6,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   private final static String CREATE_QUERY = "INSERT INTO task (period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
   private final static String DELETE_QUERY = "DELETE FROM task WHERE task_id= ?;";
+  private final static String GET_TYPES = "SELECT DISTINCT task_type FROM task;";
 
   private UserDao<User> userDao = DaoFactory.getUserDAO();
   private DealDao<Deal> dealDao = DaoFactory.getDealDao();
@@ -167,5 +169,20 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   @Override
   public Task create(Task object) throws PersistException {
     return persist(object);
+  }
+
+  @Override
+  public List<String> getTaskTypes() {
+    List<String> typesList = new ArrayList<>();
+    try (PreparedStatement statement = super.getConnection().prepareStatement(GET_TYPES)) {
+      ResultSet rs = statement.executeQuery();
+      while (rs.next()) {
+        typesList.add(rs.getString("task_type"));
+      }
+    } catch (SQLException e) {
+      throw new PersistException(e);
+    }
+
+    return typesList;
   }
 }

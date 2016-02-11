@@ -11,6 +11,10 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
 
     private Connection connection = ConnectionFactory.getConnection();
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     protected abstract String getSelectQuery();
     protected abstract String getUpdateQuery();
     protected abstract String getDeleteQuery();
