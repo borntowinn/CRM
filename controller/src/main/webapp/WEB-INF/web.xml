@@ -19,13 +19,4 @@
         <welcome-file>dashboard.jsp</welcome-file>
     </welcome-file-list>
 
-    <servlet>
-        <servlet-name>CompanyServlet</servlet-name>
-        <servlet-class>com.becomejavasenior.web.CompanyServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CompanyServlet</servlet-name>
-        <url-pattern>/company</url-pattern>
-    </servlet-mapping>
-
 </web-app>
