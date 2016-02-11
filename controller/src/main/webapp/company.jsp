@@ -167,10 +167,9 @@
                             </tr>
                             <c:forEach var="company" items="${companies}">
                                 <tr>
-                                    <td class="active">
-                                        <p>${company.companyName}</p></td>
-                                    <td class="active"><p>${company.phoneNumber}</p></td>
-                                    <td class="active"><p>${company.email}</p></td>
+                                    <td class="active"><p><a href="javascript:void(0)">${company.companyName}</a></p></td>
+                                    <td class="active"><p><a href="javascript:void(0)">${company.phoneNumber}</a></p></td>
+                                    <td class="active"><p><a href="javascript:void(0)">${company.email}</a></p></td>
                                 </tr>
                             </c:forEach>
                         </table>
