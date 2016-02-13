@@ -1,8 +1,12 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.Comment;
 import com.becomejavasenior.Company;
+import com.becomejavasenior.File;
 import com.becomejavasenior.User;
+import com.becomejavasenior.dao.CommentDao;
 import com.becomejavasenior.dao.CompanyDao;
+import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
@@ -17,8 +21,20 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, responsible = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"company\" WHERE company_id= ?;";
+    private final static String GET_ALL_FILES_FOR_COMPANY_QUERY = "SELECT * " +
+            "FROM file INNER JOIN files_to_company " +
+            "ON files_to_company.file_id=file.file_id " +
+            "WHERE files_to_company.company_id=";
+    private final static String GET_ALL_COMMENTS_FOR_COMPANY_QUERY = "SELECT * " +
+            "FROM comment INNER JOIN comments_to_company " +
+            "ON comments_to_company.comment_id=comment.comment_id " +
+            "WHERE comments_to_company.company_id=";
+    private final static String INSERT_FILES_TO_COMPANY_QUERY = "INSERT INTO files_to_company (file_id, company_id) VALUES (";
+    private final static String INSERT_COMMENTS_TO_COMPANY_QUERY = "INSERT INTO comments_to_company (comment_id, company_id) VALUES (";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
+    private FileDao<File> fileDao = DaoFactory.getFileDao();
+    private CommentDao<Comment> commentDao = DaoFactory.getCommentDao();
 
     @Override
     public String getSelectQuery() {
@@ -103,5 +119,59 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
         statement.setString(7, object.getAddress());
         statement.setBoolean(8, object.getDeleted());
         statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));
+    }
+
+    @Override
+    public void addFileForCompany(File file, Company company) {
+        int id;
+        id = fileDao.create(file).getId();
+        executeQuery(INSERT_FILES_TO_COMPANY_QUERY + id + ", " + company.getId() + ");");
+    }
+
+    @Override
+    public void addCommentForCompany(Comment comment, Company company) {
+        int id;
+        id = commentDao.create(comment).getId();
+        executeQuery(INSERT_COMMENTS_TO_COMPANY_QUERY + id + ", " + company.getId() + ");");
+    }
+
+    @Override
+    public List<File> getAllFilesForCompany(Company company) {
+        ResultSet resultSet = executeQuery(GET_ALL_FILES_FOR_COMPANY_QUERY+company.getId());
+        File file = new File();
+        List<File> fileList= new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                file.setId(resultSet.getInt("file_id"));
+                file.setCreationDate(resultSet.getTimestamp("date_creation").toLocalDateTime());
+                file.setFileName(resultSet.getString("file_name"));
+                file.setFile(resultSet.getBytes("file"));
+                fileList.add(file);
+            }
+        }
+        catch (SQLException e)
+        {
+            throw new PersistException(e.getMessage());
+        }
+        return fileList;
+    }
+
+    @Override
+    public List<Comment> getAllCommentsForCompany(Company company) {
+
+        ResultSet resultSet = executeQuery(GET_ALL_COMMENTS_FOR_COMPANY_QUERY + company.getId());
+        Comment comment = new Comment();
+        List<Comment> commentList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                comment.setId(resultSet.getInt("comment_id"));
+                comment.setCreationDate(resultSet.getTimestamp("data_creation").toLocalDateTime());
+                comment.setComment(resultSet.getString("comment"));
+                commentList.add(comment);
+            }
+        } catch (SQLException e) {
+            throw new PersistException(e.getMessage());
+        }
+        return commentList;
     }
 }
