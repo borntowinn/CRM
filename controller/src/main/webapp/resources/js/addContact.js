@@ -74,6 +74,16 @@ $(document).ready(function() {
         $('#addContactForm').submit();
     });
 
+    $('#addCompanyToContactButton').click(function(){
+        addHiddenFieldToForm(addContactForm, 'company_id', $('#company_id').val() );
+        addHiddenFieldToForm(addContactForm, 'company_name', $('#company_name').val() );
+        addHiddenFieldToForm(addContactForm, 'company_phone', $('#company_phone').val() );
+        addHiddenFieldToForm(addContactForm, 'web_address', $('#web_address').val() );
+        addHiddenFieldToForm(addContactForm, 'company_address', $('#company_address').val() );
+        $('#addContactForm').submit();
+    });
+
+
 });
 
 

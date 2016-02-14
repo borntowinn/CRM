@@ -1,9 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="com.becomejavasenior.User" %>
-<%@ page import="java.util.List" %>
 <%@page isELIgnored="false" %>
 
 <html>
@@ -305,7 +302,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-3 col-xs-3">
-                        <button type="submit" class="btn btn-primary">Добавить контакт и компанию</button>
+                        <button type="button" class="btn btn-primary" id="addCompanyToContactButton">Добавить контакт и компанию</button>
                     </div>
                 </div>
             </form>

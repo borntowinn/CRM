@@ -62,8 +62,6 @@ public class AddContactServlet extends HttpServlet {
         String companyWebAddress = request.getParameter("web_address");
         String companyAddress = request.getParameter("company_address");
 
-
-
         //File upload
         Collection<Part> parts = request.getParts();
 
@@ -88,7 +86,10 @@ public class AddContactServlet extends HttpServlet {
             Company newCompany = new Company();
             newCompany.setCompanyName(companyName);
             if (companyPhone != null) newCompany.setPhoneNumber(companyPhone);
-            newContact.setCompanyId(new Company());
+            if (companyWebAddress != null ) newCompany.setWebsite(companyWebAddress);
+            if (companyAddress != null) newCompany.setAddress(companyAddress);
+            Company insertedCompany = (Company) companyDao.create(newCompany);
+            newContact.setCompanyId(insertedCompany);
         }
 
         Contact contact = (Contact) contactDao.create(newContact);
