@@ -2,6 +2,7 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.DashboardDao;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -10,6 +11,8 @@ import java.sql.*;
  * Created by ipvinner on 30.01.2016.
  */
 public class DashboardDaoImpl implements DashboardDao {
+
+    private static final Logger log = Logger.getLogger(DashboardDaoImpl.class);
 
     private final String SELECT_DEALS = "SELECT * FROM deal";
     private final String SELECT_DEALS_Budget_SUM = "SELECT SUM(budget) from deal";
@@ -27,6 +30,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
 
     private int getCount(String sql) {
+        log.info("DashboardDaoImpl getCount()");
         Statement s = null;
         int count = 0;
         try {
