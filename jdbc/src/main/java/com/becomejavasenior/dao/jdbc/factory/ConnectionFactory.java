@@ -4,7 +4,6 @@ import com.becomejavasenior.dao.exception.PersistException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,10 +12,11 @@ import java.util.Properties;
 public class ConnectionFactory {
     public static Connection getConnection() {
         Properties props = new Properties();
+        FileInputStream fis;
         Connection connection;
-        ClassLoader classLoader = ConnectionFactory.class.getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream("jdbc.properties");){
-            props.load(inputStream);
+        try {
+            fis = new FileInputStream("F://java//projects//crm//jdbc//src//main//resources/jdbc.properties");
+            props.load(fis);
 
             Class.forName(props.getProperty("DRIVER"));
 

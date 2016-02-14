@@ -1,0 +1,1 @@
+ALTER TABLE files_to_contact ALTER COLUMN files_to_contact_id SET DEFAULT nextval('files_to_contact_files_to_contact_id_seq'::regclass);

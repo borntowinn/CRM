@@ -1,10 +1,7 @@
 package com.becomejavasenior.web;
 
 import com.becomejavasenior.*;
-import com.becomejavasenior.dao.CompanyDao;
-import com.becomejavasenior.dao.ContactDao;
-import com.becomejavasenior.dao.TaskDao;
-import com.becomejavasenior.dao.UserDao;
+import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
@@ -19,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,6 +30,8 @@ public class AddContactServlet extends HttpServlet {
     private UserDao userDao;
     private TaskDao taskDao;
     private CompanyDao companyDao;
+    private PhaseDao phaseDao;
+    private DealDao dealDao;
 
 
     @Override
@@ -39,22 +40,32 @@ public class AddContactServlet extends HttpServlet {
         this.userDao = DaoFactory.getUserDAO();
         this.taskDao = DaoFactory.getTaskDao();
         this.companyDao = DaoFactory.getCompanyDAO();
+        this.phaseDao = DaoFactory.getPhaseDao();
+        this.dealDao = DaoFactory.getDealDao();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         // get addContactForm parameters
         String name = request.getParameter("contact_name");
-        Integer responsible = Integer.valueOf(request.getParameter("responsible"));
-        Integer phoneType = Integer.valueOf(request.getParameter("phone_type"));
+        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
+        Integer phoneType = (request.getParameter("phone_type") != null) ? Integer.valueOf(request.getParameter("phone_type")) : 0;
         String phone = request.getParameter("phone_number");
         String email = request.getParameter("email");
         String skype = request.getParameter("skype");
         String position = request.getParameter("position");
         String comment = request.getParameter("note");
 
+        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
+        String companyName = request.getParameter("company_name");
+        String companyPhone = request.getParameter("company_phone");
+        String companyWebAddress = request.getParameter("web_address");
+        String companyAddress = request.getParameter("company_address");
+
+
+
         //File upload
-        Part filePart = request.getPart("file");
+        Collection<Part> parts = request.getParts();
 
         // create contact for insert to db
         Contact newContact = new Contact();
@@ -69,10 +80,22 @@ public class AddContactServlet extends HttpServlet {
         newContact.setDeleted(false);
         newContact.setResponsible((User) userDao.getByPK(responsible));
 
-
-        newContact.setCompanyId(new Company());
+        // set Company for contact:
+        if(company_id != null && company_id != 0){
+            Company chosenCompany = (Company) companyDao.getByPK(company_id);
+            newContact.setCompanyId(chosenCompany);
+        }else if(company_id != null && company_id == 0){
+            Company newCompany = new Company();
+            newCompany.setCompanyName(companyName);
+            if (companyPhone != null) newCompany.setPhoneNumber(companyPhone);
+            newContact.setCompanyId(new Company());
+        }
 
         Contact contact = (Contact) contactDao.create(newContact);
+
+        // Fast adding deal
+
+
         if(!comment.isEmpty()){
             Comment commentNew = new Comment();
             commentNew.setComment(comment);
@@ -80,13 +103,15 @@ public class AddContactServlet extends HttpServlet {
             contactDao.addCommentToContact(commentNew, contact.getId());
         }
 
-        if(!(filePart == null)){
-            File file = new File();
-            file.setFileName(filePart.getSubmittedFileName());
-            file.setCreationDate(LocalDateTime.now());
-            file.setFile(convertPartToBlob(filePart));
+        for (Part part : parts) {
+            if(part.getContentType() != null){
+                File file = new File();
+                file.setFileName(part.getSubmittedFileName());
+                file.setCreationDate(LocalDateTime.now());
+                file.setFile(convertPartToBlob(part));
+                contactDao.addFileToContact(file, contact.getId());
+            }
         }
-
         response.sendRedirect("dashboard");
 
     }
@@ -95,16 +120,19 @@ public class AddContactServlet extends HttpServlet {
         List<User> userList = userDao.getAll();
         List<String> taskTypeList = taskDao.getTaskTypes();
         List<Company> companyList = companyDao.getAll();
+        List<Phase> phaseList = phaseDao.getAll();
+
         request.setAttribute("userList", userList);
         request.setAttribute("taskTypeList", taskTypeList);
         request.setAttribute("companyList", companyList);
+        request.setAttribute("phaseList", phaseList);
+
         response.setContentType("text/html");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("addContact.jsp");
         requestDispatcher.forward(request, response);
-
     }
 
-    private Byte[] convertPartToBlob(Part filePart) {
+    private byte[] convertPartToBlob(Part filePart) {
         InputStream fileContent = null;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         try {
@@ -118,11 +146,7 @@ public class AddContactServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        byte[] primBytes = buffer.toByteArray();
-        Byte[] objectBytes = new Byte[primBytes.length];
-        for(int i = 0; i < objectBytes.length; i++) {
-            objectBytes[i] = primBytes[i];
-        }
-        return objectBytes ;
+
+        return buffer.toByteArray() ;
     }
 }

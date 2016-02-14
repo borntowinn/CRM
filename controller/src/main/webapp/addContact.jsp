@@ -26,7 +26,7 @@
                         <label for="contact_name" class="control-label col-xs-2">Имя Фамилия</label>
 
                         <div class="col-xs-10">
-                            <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Имя Фамилия">
+                            <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Имя Фамилия" required >
                         </div>
                     </div>
 
@@ -102,14 +102,14 @@
                        <label for="file" class="control-label col-xs-2">Добавить файлы</label>
 
                        <div class="col-xs-10">
-                           <input id="file" type="file" name="file" />
+                           <input id="file" type="file" name="file" multiple data-show-upload="false" data-show-caption="true" />
                        </div>
                    </div>
 
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-3">
-                            <button type="submit" class="btn btn-primary">Добавить контакт</button>
+                            <button type="submit" name="submitButton" class="btn btn-primary">Добавить контакт</button>
                         </div>
                     </div>
                 </form>
@@ -212,7 +212,7 @@
                     <label for="deal_name" class="control-label col-xs-2">Название</label>
 
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" id="deal_name" name="contact_name" placeholder="Название">
+                        <input type="text" class="form-control" id="deal_name" name="deal_name" placeholder="Название">
                     </div>
                 </div>
 
@@ -220,16 +220,15 @@
                     <label for="phase" class="control-label col-xs-2">Этап</label>
                     <div class="col-xs-10">
                         <select class="form-control" id="phase" name="phase">
-                            <option value="1">Первичный контакт</option>
-                            <option value="2">Домашний</option>
-                            <option value="3">Рабочий</option>
-                            <option value="4">Факс</option>
+                            <c:forEach items="${phaseList}" var="phase">
+                                <option value="${phase.id}">${phase.phase}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="budget" class="control-label col-xs-2">Название</label>
+                    <label for="budget" class="control-label col-xs-2">Бюджет</label>
 
                     <div class="col-xs-10">
                         <input type="text" class="form-control" id="budget" name="budget" placeholder="Бюджет">
@@ -238,7 +237,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-3 col-xs-3">
-                        <button type="submit" class="btn btn-primary">Добавить сделку</button>
+                        <button type="submit" class="btn btn-primary">Добавить сделку и контакт</button>
                     </div>
                 </div>
             </form>
@@ -248,25 +247,35 @@
 
         <div class="col-sm-5 col-md-5 main">
             <h2 class="page-header">Добавить компанию</h2>
+
             <form id="setCompanyForm" method="post" class="form-horizontal">
                 <div class="form-group">
                     <label for="company" class="control-label col-xs-2">Компания</label>
                     <div class="col-xs-10">
-                        <select class="form-control" id="company" name="phase">
+                        <select class="form-control" id="company" name="company">
+                            <option selected value="0">Выберите компанию</option>
                             <c:forEach items="${companyList}" var="company">
                                 <option value="${company.id}">${company.companyName}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div class="col-xs-offset-3 col-xs-3">
+                        <button type="button" class="btn btn-primary" id="setCompanyToContactButton" >Выбрать компанию и добавить контакт</button>
+                    </div>
+                </div>
+
             </form>
             <h3 class="page-header">Новая компания</h3>
             <form id="addCompanyForm" method="post" class="form-horizontal">
+                <input type="hidden" id="company_id" value="0"/>
                 <div class="form-group">
-                    <label for="conpany_name" class="control-label col-xs-2">Название</label>
+                    <label for="company_name" class="control-label col-xs-2">Название</label>
 
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" id="conpany_name" name="conpany_name" placeholder="Название">
+                        <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Название">
                     </div>
                 </div>
 
@@ -296,7 +305,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-3 col-xs-3">
-                        <button type="submit" class="btn btn-primary">Добавить компанию</button>
+                        <button type="submit" class="btn btn-primary">Добавить контакт и компанию</button>
                     </div>
                 </div>
             </form>
@@ -304,6 +313,11 @@
 
     </div>
 </div>
+
+<jsp:include page="fragments/footer.jsp"/>
+<script src="http://formvalidation.io/vendor/formvalidation/js/formValidation.min.js"></script>
+<script src="http://formvalidation.io/vendor/formvalidation/js/framework/bootstrap.min.js"></script>
+<script src="resources/js/addContact.js"></script>
 
 
 </body>

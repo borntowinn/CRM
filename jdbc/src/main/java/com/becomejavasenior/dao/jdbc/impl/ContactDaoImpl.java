@@ -1,15 +1,13 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.Comment;
-import com.becomejavasenior.Company;
-import com.becomejavasenior.Contact;
-import com.becomejavasenior.User;
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -20,13 +18,16 @@ import java.util.List;
  */
 public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactDao<Contact> {
 
-    private final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
-    private final String SELECT_BY_PK_QUERY = "SELECT contact_id, responsible, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
-    private final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
-    private final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
-    private final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation) VALUES (?, ?)";
-    private final String ADD_COMMENT_TO_CONTACT_QUERY = "INSERT INTO comment_to_contact (comment_id, contact_id) VALUES (?, ?)";
+    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
+    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, responsible, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
+    private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
+    private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
+    private static final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation) VALUES (?, ?)";
+    private static final String ADD_COMMENT_TO_CONTACT_QUERY = "INSERT INTO comment_to_contact (comment_id, contact_id) VALUES (?, ?)";
+    private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name) VALUES (?, ?, ?)";
+    private static final String ADD_FILE_TO_CONTACT_QUERY = "INSERT INTO files_to_contact(file_id, contact_id) VALUES (?, ?)";
+
 
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -73,7 +74,10 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 contact.setDeleted(rs.getBoolean("isdeleted"));
                 contact.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
                 contact.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
-                contact.setCompanyId(companyDAO.getByPK(rs.getInt("company_id")));
+                if(rs.getInt("company_id") != 0){
+                    contact.setCompanyId(companyDAO.getByPK(rs.getInt("company_id")));
+                }
+
                 contact.setResponsible(userDao.getByPK(rs.getInt("responsible")));
                 result.add(contact);
             }
@@ -88,7 +92,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
         try {
             int user_id = (contact.getCreatedBy().getId() == null) ? new Integer(1) : contact.getCreatedBy().getId();
             int responsible_id = (contact.getResponsible().getId() == null) ? new Integer(1) : contact.getResponsible().getId();
-            int company_id = (contact.getCompanyId().getId() == null) ? new Integer(1) : contact.getCompanyId().getId();
+            //int company_id = (contact.getCompanyId().getId() == null) ? new Integer(1) : contact.getCompanyId().getId();
             statement.setString(1, contact.getNameSurname());
             statement.setInt(2, contact.getPhoneType());
             statement.setString(3, contact.getPhoneNumber());
@@ -98,7 +102,13 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setBoolean(7, contact.getDeleted());
             statement.setTimestamp(8, Timestamp.valueOf(contact.getCreationTime()));
             statement.setInt(9, user_id);
-            statement.setInt(10, company_id);
+
+            if(contact.getCompanyId() == null){
+                statement.setNull(10, Types.INTEGER);
+            }else{
+                statement.setInt(10, contact.getCompanyId().getId());
+            }
+
             statement.setInt(11, responsible_id);
         } catch (SQLException e) {
             throw new PersistException(e);
@@ -130,10 +140,11 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
         return persist(contact);
     }
 
-    @Override
+
     public void addCommentToContact(Comment comment, int contact_id) {
         int commentInsertedId = 0;
         try (PreparedStatement statement = super.getConnection().prepareStatement(ADD_COMMENT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+
             statement.setString(1, comment.getComment());
             statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             int count = statement.executeUpdate();
@@ -166,8 +177,59 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
     }
 
-    @Override
-    public void addFileToContact() {
 
+    public void addFileToContact(File file, int contact_id) {
+        int fileInsertedId = 0;
+        PreparedStatement insertFile = null;
+        PreparedStatement insertFileToFileContact = null;
+        Connection connection = super.getConnection();
+
+        try {
+            super.getConnection().setAutoCommit(false);
+            insertFile = connection.prepareStatement(ADD_FILE_QUERY, Statement.RETURN_GENERATED_KEYS);
+            insertFileToFileContact = connection.prepareStatement(ADD_FILE_TO_CONTACT_QUERY);
+
+            insertFile.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            insertFile.setBytes(2, file.getFile());
+            insertFile.setString(3, file.getFileName());
+
+            int count = insertFile.executeUpdate();
+            if (count != 1) {
+                throw new PersistException("On persist modify more then 1 record: " + count);
+            }
+            ResultSet rs = insertFile.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                fileInsertedId = rs.getInt(1);
+            }
+
+            insertFileToFileContact.setInt(1, fileInsertedId);
+            insertFileToFileContact.setInt(2, contact_id);
+            insertFileToFileContact.executeUpdate();
+            connection.commit();
+
+
+        } catch (SQLException e) {
+            throw new PersistException(e);
+        } finally {
+            if (insertFile != null) {
+                try {
+                    insertFile.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (insertFile != null) {
+                try {
+                    insertFile.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
