@@ -3,11 +3,14 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.dao.AbstractDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.sql.*;
 import java.util.List;
 
 public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
+
+    private DataSource dataSource = DataSource.getInstance();
 
     protected abstract String getSelectQuery();
 
@@ -26,7 +29,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws PersistException;
 
     private int addData(T object) {
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             int lastInsertedId = 0;
             String sql = getCreateQuery();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -53,7 +56,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
 
     @Override
     public ResultSet executeQuery(String query) throws PersistException {
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(query);
             return statement.executeQuery();
@@ -71,7 +74,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
@@ -95,7 +98,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     public List<T> getAll() throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
@@ -108,7 +111,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     @Override
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
@@ -123,7 +126,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     @Override
     public void delete(Integer id) throws PersistException {
         String sql = getDeleteQuery();
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             try {
                 statement.setObject(1, id);

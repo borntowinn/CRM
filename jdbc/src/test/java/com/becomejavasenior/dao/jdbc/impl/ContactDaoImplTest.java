@@ -7,6 +7,7 @@ import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,15 +25,15 @@ import static org.junit.Assert.*;
  */
 public class ContactDaoImplTest {
     private static ContactDao<Contact> contactDao;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void beforeScenario()
     {
-        Connection connection = ConnectionFactory.getConnection();
         contactDao = DaoFactory.getContactDAO();
 
 
-        try {
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

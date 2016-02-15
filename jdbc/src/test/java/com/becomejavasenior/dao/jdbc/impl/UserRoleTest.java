@@ -5,6 +5,7 @@ import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.sql.Connection;
@@ -19,15 +20,15 @@ public class UserRoleTest {
     private static UserRole lastInsertedObject = null;
     private List<UserRole> userRoles = null;
     private static UserRoleDao<UserRole> userRoleDao = null;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
         userRoleDao = DaoFactory.getUserRoleDAO();
         userRole = new UserRole();
         lastInsertedObject = new UserRole();
 
-        try {
+        try(Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

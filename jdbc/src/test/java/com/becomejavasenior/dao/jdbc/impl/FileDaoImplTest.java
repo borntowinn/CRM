@@ -7,6 +7,7 @@ import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -25,11 +26,11 @@ public class FileDaoImplTest {
     private static File file;
     private List<File> files;
     private static FileDao<File> fileDao;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
     {
-        Connection connection = ConnectionFactory.getConnection();
         byte[] bytes = {1, 2, 3, 4};
         fileDao = DaoFactory.getFileDao();
         file = new File();
@@ -37,7 +38,7 @@ public class FileDaoImplTest {
         file.setCreationDate(LocalDateTime.now());
         file.setFile(bytes);
 
-        try {
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -5,6 +5,7 @@ import com.becomejavasenior.dao.PhaseDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.sql.Connection;
@@ -19,16 +20,16 @@ public class PhaseDaoImplTest {
     private static Phase phase;
     private List<Phase> phases;
     private static PhaseDao<Phase> phaseDao;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
     {
-        Connection connection = ConnectionFactory.getConnection();
         phaseDao = DaoFactory.getPhaseDao();
         phase = new Phase();
         phase.setPhase("First");
 
-        try {
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

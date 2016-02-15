@@ -5,6 +5,7 @@ import com.becomejavasenior.dao.CommentDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -23,18 +24,17 @@ public class CommentDaoImplTest {
     private static Comment comment;
     private List<Comment> comments;
     private static CommentDao<Comment> commentDao;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
     {
-        Connection connection = ConnectionFactory.getConnection();
-        connection = ConnectionFactory.getConnection();
         commentDao = DaoFactory.getCommentDao();
         comment = new Comment();
         comment.setComment("Test comment");
         comment.setCreationDate(LocalDateTime.now());
 
-        try {
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

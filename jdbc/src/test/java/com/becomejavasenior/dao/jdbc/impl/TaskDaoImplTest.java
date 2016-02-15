@@ -6,6 +6,7 @@ import com.becomejavasenior.dao.TaskDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.sql.Connection;
@@ -24,15 +25,15 @@ public class TaskDaoImplTest {
     private static Task lastInsertedObject = null;
     private List<Task> tasks = null;
     private static TaskDao taskDao =null;
+    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
         taskDao = DaoFactory.getTaskDao();
         newTask = new Task();
         lastInsertedObject = new Task();
 
-        try {
+        try (Connection connection = dataSource.getConnection()){
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,7 +1,10 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.Comment;
 import com.becomejavasenior.dao.DashboardDao;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -23,7 +26,16 @@ public class DashboardDaoImpl implements DashboardDao {
     private final String SELECT_CONTACTS = "SELECT * FROM contact";
     private final String SELECT_COMPANIES = "SELECT * FROM company";
 
-    private Connection connection = ConnectionFactory.getConnection();
+    private Connection connection;
+
+    {
+        try {
+             connection = DataSource.getInstance().getConnection();
+        } catch (SQLException e)
+        {
+            throw new PersistException(e);
+        }
+    }
 
 
     private int getCount(String sql) {

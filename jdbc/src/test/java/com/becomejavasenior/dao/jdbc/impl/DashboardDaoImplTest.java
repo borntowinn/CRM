@@ -2,8 +2,10 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 
 import com.becomejavasenior.dao.DashboardDao;
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,7 +26,12 @@ public class DashboardDaoImplTest {
 
     @BeforeClass
     public static void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
+        try {
+            Connection connection =DataSource.getInstance().getConnection();
+        } catch (SQLException e)
+        {
+            throw new PersistException(e);
+        }
         dashboardDao = DaoFactory.getDashboardDao();
     }
 

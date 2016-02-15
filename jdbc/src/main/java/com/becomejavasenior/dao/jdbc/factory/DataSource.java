@@ -20,7 +20,7 @@ public class DataSource {
     private DataSource() {
         ds = new BasicDataSource();
         Properties props = new Properties();
-        ClassLoader classLoader = ConnectionFactory.class.getClassLoader();
+        ClassLoader classLoader = DataSource.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream("jdbc.properties")) {
             props.load(inputStream);
 
