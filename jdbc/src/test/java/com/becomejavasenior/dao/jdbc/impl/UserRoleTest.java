@@ -35,11 +35,6 @@ public class UserRoleTest {
     }
 
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        userRoleDao.closeCurrentConnection();
-    }
 
     @Test
     public void testCreateAndUpdateAndGetByPK(){

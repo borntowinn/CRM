@@ -39,11 +39,7 @@ public class ContactDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        contactDao.closeCurrentConnection();
-    }
+
 
     @Test
     public void getByPKTest()

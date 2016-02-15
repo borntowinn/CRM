@@ -39,11 +39,6 @@ public class TaskDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void after() {
-        taskDao.closeCurrentConnection();
-    }
-
     @Test
     public void testCreateAndUpdateAndGetByPK(){
         User user = new User();

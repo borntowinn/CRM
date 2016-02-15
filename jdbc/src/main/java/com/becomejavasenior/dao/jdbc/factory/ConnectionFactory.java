@@ -2,6 +2,8 @@ package com.becomejavasenior.dao.jdbc.factory;
 
 import com.becomejavasenior.dao.exception.PersistException;
 
+import javax.annotation.Resource;
+import javax.naming.NamingException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,19 +13,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
+
+    private static DataSource dataSource;
+
     public static Connection getConnection() {
-        Properties props = new Properties();
-        Connection connection;
-        ClassLoader classLoader = ConnectionFactory.class.getClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream("jdbc.properties");){
-            props.load(inputStream);
-
-            Class.forName(props.getProperty("DRIVER"));
-
-            connection = DriverManager.getConnection(props.getProperty("URL"), props.getProperty("USER"), props.getProperty("PASSWORD"));
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            throw new PersistException(e);
+        try {
+            dataSource = DataSource.getInstance();
+            return dataSource.getConnection();
+        } catch (SQLException sqlException) {
+            throw new PersistException(sqlException.getMessage());
         }
-        return connection;
     }
 }

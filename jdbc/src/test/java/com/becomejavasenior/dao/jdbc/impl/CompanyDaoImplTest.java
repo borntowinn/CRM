@@ -35,12 +35,6 @@ public class CompanyDaoImplTest {
 
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        companyDao.closeCurrentConnection();
-    }
-
     @Test
     public void getByPKTest() {
         //when

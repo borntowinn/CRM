@@ -28,6 +28,7 @@ public class CommentDaoImplTest {
     public static void setupAndConnection()
     {
         Connection connection = ConnectionFactory.getConnection();
+        connection = ConnectionFactory.getConnection();
         commentDao = DaoFactory.getCommentDao();
         comment = new Comment();
         comment.setComment("Test comment");
@@ -38,12 +39,6 @@ public class CommentDaoImplTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    @AfterClass
-    public static void closeConnection()
-    {
-        commentDao.closeCurrentConnection();
     }
 
     @Test

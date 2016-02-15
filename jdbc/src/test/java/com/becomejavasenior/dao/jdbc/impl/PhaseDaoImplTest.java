@@ -35,11 +35,7 @@ public class PhaseDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        phaseDao.closeCurrentConnection();
-    }
+
 
     @Test
     public void createDbEntry_Phase_PhaseFromDb()

@@ -56,11 +56,6 @@ public class DealDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        dealDao.closeCurrentConnection();
-    }
 
     @Test
     public void createDbEntry_LocalDeal_DealFromDb()

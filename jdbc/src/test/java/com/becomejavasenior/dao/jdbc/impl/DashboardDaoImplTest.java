@@ -6,6 +6,7 @@ import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -19,10 +20,10 @@ import static org.junit.Assert.*;
  */
 public class DashboardDaoImplTest {
 
-    private DashboardDao dashboardDao = null;
+    private static DashboardDao dashboardDao = null;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         Connection connection = ConnectionFactory.getConnection();
         dashboardDao = DaoFactory.getDashboardDao();
     }

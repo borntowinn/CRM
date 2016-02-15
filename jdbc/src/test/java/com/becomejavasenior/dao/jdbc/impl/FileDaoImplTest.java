@@ -44,11 +44,6 @@ public class FileDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        fileDao.closeCurrentConnection();
-    }
 
     @Test
     public void createDbEntry_File_FileFromDb()

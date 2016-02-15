@@ -42,11 +42,6 @@ public class SessionHistoryDaoImplTest {
         }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        sessionHistoryDao.closeCurrentConnection();
-    }
 
     @Test
     public void createDbEntry_SessionHistory_LocalSessionHistory()
