@@ -6,7 +6,6 @@ import com.becomejavasenior.User;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
@@ -20,7 +19,6 @@ import static junit.framework.TestCase.assertSame;
 
 public class CompanyDaoImplTest {
     private static CompanyDao<Company> companyDao;
-    private static DataSource dataSource = DataSource.getInstance();
 
     public CompanyDaoImplTest() {
     }
@@ -28,11 +26,6 @@ public class CompanyDaoImplTest {
     @BeforeClass
     public static void setUpConnection() {
         companyDao = DaoFactory.getCompanyDAO();
-        try (Connection connection = dataSource.getConnection()){
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
     }
 

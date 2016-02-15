@@ -2,7 +2,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.AbstractDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.sql.*;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
 
-    private DataSource dataSource = DataSource.getInstance();
+    protected DataSource dataSource = DataSource.getInstance();
 
     protected abstract String getSelectQuery();
 

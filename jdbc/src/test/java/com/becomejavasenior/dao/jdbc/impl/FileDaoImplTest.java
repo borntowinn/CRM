@@ -5,7 +5,6 @@ import com.becomejavasenior.File;
 import com.becomejavasenior.dao.CommentDao;
 import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
@@ -26,7 +25,6 @@ public class FileDaoImplTest {
     private static File file;
     private List<File> files;
     private static FileDao<File> fileDao;
-    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
@@ -37,12 +35,6 @@ public class FileDaoImplTest {
         file.setFileName("TestFilename");
         file.setCreationDate(LocalDateTime.now());
         file.setFile(bytes);
-
-        try (Connection connection = dataSource.getConnection()){
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 

@@ -4,7 +4,6 @@ import com.becomejavasenior.SessionHistory;
 import com.becomejavasenior.User;
 import com.becomejavasenior.dao.SessionHistoryDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
@@ -22,7 +21,6 @@ public class SessionHistoryDaoImplTest {
     private static User user;
     private List<SessionHistory> sessionHistories;
     private static SessionHistoryDao<SessionHistory> sessionHistoryDao;
-    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
@@ -35,12 +33,6 @@ public class SessionHistoryDaoImplTest {
         sessionHistory.setCreationDate(LocalDateTime.now());
         sessionHistory.setUserId(user);
         sessionHistory.setIpAddress("192.168.0.1");
-
-        try (Connection connection = dataSource.getConnection()){
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 

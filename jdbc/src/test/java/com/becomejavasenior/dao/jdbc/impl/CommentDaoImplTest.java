@@ -3,7 +3,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.Comment;
 import com.becomejavasenior.dao.CommentDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
@@ -24,7 +23,6 @@ public class CommentDaoImplTest {
     private static Comment comment;
     private List<Comment> comments;
     private static CommentDao<Comment> commentDao;
-    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
@@ -33,12 +31,6 @@ public class CommentDaoImplTest {
         comment = new Comment();
         comment.setComment("Test comment");
         comment.setCreationDate(LocalDateTime.now());
-
-        try (Connection connection = dataSource.getConnection()){
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.Comment;
 import com.becomejavasenior.dao.DashboardDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.math.BigDecimal;

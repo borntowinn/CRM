@@ -3,7 +3,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
@@ -25,7 +24,6 @@ public class DealDaoImplTest {
     private static Phase phase;
     private List<Deal> deals;
     private static DealDao<Deal> dealDao;
-    private static DataSource dataSource = DataSource.getInstance();
 
     @BeforeClass
     public static void setupAndConnection()
@@ -50,11 +48,6 @@ public class DealDaoImplTest {
         deal.setPhase(phase);
         deal.setDealName("testing name");
 
-        try (Connection connection = dataSource.getConnection()){
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 

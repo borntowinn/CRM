@@ -1,9 +1,7 @@
 package com.becomejavasenior.dao.jdbc.factory;
 
-import com.becomejavasenior.dao.exception.PersistException;
 import org.apache.commons.dbcp.BasicDataSource;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -23,7 +21,6 @@ public class DataSource {
         ClassLoader classLoader = DataSource.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream("jdbc.properties")) {
             props.load(inputStream);
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
