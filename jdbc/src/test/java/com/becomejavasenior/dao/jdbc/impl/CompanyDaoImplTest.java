@@ -1,6 +1,7 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Company;
+import com.becomejavasenior.File;
 import com.becomejavasenior.User;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
@@ -66,6 +67,7 @@ public class CompanyDaoImplTest {
         assertEquals("Slaves&Bosses", lastInsertedObject.getCompanyName());
         assertEquals("+737 37 37", lastInsertedObject.getPhoneNumber());
         assertEquals("slaves&bosses@google.com", lastInsertedObject.getEmail());
+        assertSame(5, lastInsertedObject.getResponsible().getId());
         assertSame(5, lastInsertedObject.getCreatedBy().getId());
 
         //remove testing data from the database
@@ -124,7 +126,7 @@ public class CompanyDaoImplTest {
         User userCreator = new User();
         userCreator.setId(5);
         newCompany.setCompanyName("Slaves&Bosses");
-        newCompany.setPhoneType(1);
+        newCompany.setResponsible(userCreator);
         newCompany.setPhoneNumber("+737 37 37");
         newCompany.setEmail("slaves&bosses@google.com");
         newCompany.setWebsite("slaves&bosses.com");

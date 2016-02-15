@@ -9,7 +9,6 @@
     <servlet>
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>com.becomejavasenior.web.DashboardServlet</servlet-class>
-
     </servlet>
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>

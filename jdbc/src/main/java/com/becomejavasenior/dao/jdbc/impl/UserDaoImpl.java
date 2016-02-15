@@ -8,7 +8,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
@@ -52,7 +52,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<User> result = new LinkedList<User>();
+        ArrayList<User> result = new ArrayList<User>();
         try {
             while (rs.next()) {
                 User user = new User();

@@ -8,7 +8,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Pha
 
     @Override
     protected List<Phase> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Phase> resultList = new LinkedList<Phase>();
+        ArrayList<Phase> resultList = new ArrayList<Phase>();
         try {
             while (rs.next()) {
                 Phase phase = new Phase();

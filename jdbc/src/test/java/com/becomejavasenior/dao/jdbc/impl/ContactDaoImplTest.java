@@ -70,6 +70,7 @@ public class ContactDaoImplTest {
         assertEquals("phone", testContact.getPhoneNumber());
         assertEquals("skype1", testContact.getSkype());
         assertSame(1, testContact.getCreatedBy().getId());
+        assertSame(1, testContact.getResponsible().getId());
 
         contactDao.delete(testContact.getId());
     }
@@ -95,6 +96,7 @@ public class ContactDaoImplTest {
         contactDao.update(newContact);
 
         assertSame(3, contactDao.getByPK(id).getPhoneType());
+        assertSame(1, contactDao.getByPK(id).getResponsible().getId());
     }
 
     @Test
@@ -120,6 +122,7 @@ public class ContactDaoImplTest {
         contact.setCreationTime(LocalDateTime.now());
         contact.setCompanyId(company);
         contact.setCreatedBy(user);
+        contact.setResponsible(user);
     }
 
 }

@@ -46,6 +46,23 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
     }
 
     @Override
+    public ResultSet executeQuery(String query) throws PersistException {
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            return statement.executeQuery();
+        }
+        catch (SQLException e)
+        {
+            /*SQLException will be ignored only for queries that don't produce a result set, for example INSERT or
+            * UPDATE. In this case null value will be returned instead of a valid result set*/
+            if (e.getErrorCode()!=0) {
+                throw new PersistException();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();

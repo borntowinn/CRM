@@ -13,8 +13,8 @@ public class DashboardDaoImpl implements DashboardDao {
 
     private final String SELECT_DEALS = "SELECT * FROM deal";
     private final String SELECT_DEALS_Budget_SUM = "SELECT SUM(budget) from deal";
-    private final String SELECT_SUCCESS_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'Успешно реализовано')";
-    private final String SELECT_FAILED_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'Закрыто и нереализовано')";
+    private final String SELECT_SUCCESS_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'First')";
+    private final String SELECT_FAILED_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'зnewPhase')";
     private final String SELECT_DEALS_WITHOUT_TASK = "SELECT * FROM deal WHERE deal_id NOT IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private final String SELECT_DEALS_WITH_TASK = "SELECT * FROM deal WHERE deal_id IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private final String SELECT_TASKS = "SELECT * FROM task";
@@ -26,7 +26,7 @@ public class DashboardDaoImpl implements DashboardDao {
     private Connection connection = ConnectionFactory.getConnection();
 
 
-    private int getCount(String sql){
+    private int getCount(String sql) {
         Statement s = null;
         int count = 0;
         try {

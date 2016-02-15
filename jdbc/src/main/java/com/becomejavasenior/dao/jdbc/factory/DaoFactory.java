@@ -40,5 +40,11 @@ public class DaoFactory {
         return new DashboardDaoImpl();
     }
 
+    public static CommentDao getCommentDao() {
+        return new CommentDaoImpl();
+    }
 
+    public static FileDao getFileDao() {
+        return new FileDaoImpl();
+    }
 }

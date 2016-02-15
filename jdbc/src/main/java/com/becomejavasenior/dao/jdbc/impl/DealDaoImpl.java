@@ -6,7 +6,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
 
     @Override
     protected List<Deal> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Deal> resultList = new LinkedList<>();
+        ArrayList<Deal> resultList = new ArrayList<>();
         try {
             while (rs.next()) {
                 Deal deal = new Deal();
