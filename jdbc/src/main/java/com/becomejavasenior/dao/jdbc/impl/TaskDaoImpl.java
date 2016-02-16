@@ -21,6 +21,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
   private final static String DELETE_QUERY = "DELETE FROM task WHERE task_id= ?;";
   private final static String GET_TYPES = "SELECT DISTINCT task_type FROM task;";
+  private final static String GET_PERIODS = "SELECT DISTINCT period FROM task";
 
   private UserDao<User> userDao = DaoFactory.getUserDAO();
   private DealDao<Deal> dealDao = DaoFactory.getDealDao();
@@ -173,16 +174,40 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   @Override
   public List<String> getTaskTypes() {
-    List<String> typesList = new ArrayList<>();
-    try (PreparedStatement statement = super.getConnection().prepareStatement(GET_TYPES)) {
+    return getListFromColumn("task_type", GET_TYPES);
+  }
+
+  @Override
+  public List<String> getTaskPeriods() {
+    return getListFromColumn("period", GET_PERIODS );
+  }
+
+  private List<String> getListFromColumn(String columnName, String sql){
+    List<String> list = new ArrayList<>();
+    PreparedStatement statement = null;
+    Connection connection = null;
+    try {
+      connection = super.getConnection();
+      statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       while (rs.next()) {
-        typesList.add(rs.getString("task_type"));
+        list.add(rs.getString(columnName));
       }
     } catch (SQLException e) {
       throw new PersistException(e);
+    } finally {
+      try{
+        if(statement != null)
+          statement.close();
+      }catch(SQLException e){
+        throw new PersistException(e);
+      }
+//      try{
+//        if(connection != null) connection.close();
+//      }catch(SQLException se){
+//        se.printStackTrace();
+//      }
     }
-
-    return typesList;
+    return list;
   }
 }

@@ -23,7 +23,7 @@
                         <label for="contact_name" class="control-label col-xs-2">Имя Фамилия</label>
 
                         <div class="col-xs-10">
-                            <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Имя Фамилия" required >
+                            <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Петр Иванов" required >
                         </div>
                     </div>
 
@@ -118,44 +118,37 @@
             <form id="addTaskForm" method="post" class="form-horizontal">
                 <div class="form-group">
 
-                    <div class="col-xs-6">
-                        <input type="date" class="form-control" id="date_from" name="date_from" >
+                    <div class="form-group">
+                        <label for="task_name" class="control-label col-xs-2">Название задачи</label>
+
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" id="task_name" name="task_name" placeholder="Уточнить детали заказа">
+                        </div>
                     </div>
 
-                    <div class="col-xs-6">
-                        <select class="form-control" id="from_time" name="from_time">
-                            <option value="1">05:00</option>
-                            <option value="2">06:00</option>
-                            <option value="3">07:00</option>
-                            <option value="4">08:00</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <div class="col-xs-6">
+                    <div class="col-xs-3">
                         <input type="date" class="form-control" id="date_to" name="date_to" >
                     </div>
 
-                    <div class="col-xs-6">
-                        <select class="form-control" id="time_to" name="time_to">
-                            <option value="1">05:00</option>
-                            <option value="2">06:00</option>
-                            <option value="3">07:00</option>
-                            <option value="4">08:00</option>
+                    <div class="col-xs-3">
+                        <select class="form-control" id="to_time" name="to_time">
+                            <c:forEach items="${hourList}" var="hour">
+                                <option value="${hour}">${hour}</option>
+                            </c:forEach>
                         </select>
                     </div>
+
+
                 </div>
+
 
                 <div class="form-group">
 
                     <div class="col-xs-6">
-                        <select class="form-control" id="period" name="period">
-                            <option value="1">Следующая неделя</option>
-                            <option value="2">Весь день</option>
-                            <option value="3">Следующий меся</option>
-                            <option value="4">Сегодня</option>
+                        <select class="form-control" id="task_period" name="task_period">
+                            <c:forEach items="${taskPeriods}" var="period">
+                                <option value="${period}">${period}</option>
+                            </c:forEach>
                         </select>
                     </div>
 
@@ -165,9 +158,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="responsible_task" class="control-label col-xs-2">Ответственный</label>
+                    <label for="task_responsible" class="control-label col-xs-2">Ответственный</label>
                     <div class="col-xs-10">
-                        <select class="form-control" id="responsible_task" name="responsible">
+                        <select class="form-control" id="task_responsible" name="task_responsible">
                             <c:forEach items="${userList}" var="user">
                                 <option value="${user.id}">${user.name}</option>
                             </c:forEach>
@@ -196,7 +189,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-xs-offset-3 col-xs-3">
-                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <button type="button" class="btn btn-primary" id="addTaskToContactButton">Добавить задачу и контакт</button>
                     </div>
                 </div>
             </form>
@@ -234,7 +227,7 @@
 
                 <div class="form-group">
                     <div class="col-xs-offset-3 col-xs-3">
-                        <button type="submit" class="btn btn-primary">Добавить сделку и контакт</button>
+                        <button type="button" class="btn btn-primary" id="addDealToContactButton">Добавить сделку и контакт</button>
                     </div>
                 </div>
             </form>

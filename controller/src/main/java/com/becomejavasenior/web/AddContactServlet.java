@@ -15,7 +15,9 @@ import javax.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class AddContactServlet extends HttpServlet {
         this.companyDao = DaoFactory.getCompanyDAO();
         this.phaseDao = DaoFactory.getPhaseDao();
         this.dealDao = DaoFactory.getDealDao();
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,11 +59,24 @@ public class AddContactServlet extends HttpServlet {
         String position = request.getParameter("position");
         String comment = request.getParameter("note");
 
+        // Company
         Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
         String companyName = request.getParameter("company_name");
         String companyPhone = request.getParameter("company_phone");
         String companyWebAddress = request.getParameter("web_address");
         String companyAddress = request.getParameter("company_address");
+
+        // Deal
+        String dealName = request.getParameter("deal_name");
+        Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
+        BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
+
+        // Task
+        String taskName = request.getParameter("task_name");
+        String dateTimeTo = request.getParameter("datetime_to");
+        String taskPeriod = request.getParameter("task_period");
+        Integer taskResponsible = Integer.valueOf(request.getParameter("task_responsible"));
+        String taskType = request.getParameter("task_type");
 
         //File upload
         Collection<Part> parts = request.getParts();
@@ -88,15 +104,44 @@ public class AddContactServlet extends HttpServlet {
             if (companyPhone != null) newCompany.setPhoneNumber(companyPhone);
             if (companyWebAddress != null ) newCompany.setWebsite(companyWebAddress);
             if (companyAddress != null) newCompany.setAddress(companyAddress);
+            newCompany.setResponsible((User) userDao.getByPK(responsible));
+            newCompany.setDeleted(false);
+            newCompany.setCreationTime(LocalDateTime.now());
             Company insertedCompany = (Company) companyDao.create(newCompany);
             newContact.setCompanyId(insertedCompany);
         }
 
         Contact contact = (Contact) contactDao.create(newContact);
 
-        // Fast adding deal
+        // Add deal to contact
+        if(dealName != null){
+            Deal newDeal = new Deal();
+            newDeal.setDealName(dealName);
+            if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
+            if (dealBudget != BigDecimal.ZERO) newDeal.setBudget(dealBudget);
+            newDeal.setCreationDate(LocalDateTime.now());
+            newDeal.setDeleted(false);
+            newDeal.setContact(contact);
+            dealDao.create(newDeal);
+        }
 
+        // Add task to contact
+        if(taskName != null){
+            Task newTask = new Task();
+            newTask.setTaskName(taskName);
+            if(dateTimeTo != null) newTask.setPlanTime(LocalDateTime.parse(dateTimeTo));
+            if(taskPeriod != null) newTask.setPeriod(taskPeriod);
+            if(taskType != null) newTask.setTaskType(taskType);
+            newTask.setResponsible((User) userDao.getByPK(taskResponsible));
+            newTask.setAuthor((User) userDao.getByPK(taskResponsible)); // temporary, when authorization will done will be changed to user from session
+            newTask.setCreationTime(LocalDateTime.now());
+            newTask.setDeleted(false);
+            newTask.setDone(false);
+            newTask.setContact(contact);
+            taskDao.create(newTask);
+        }
 
+        // Add comment
         if(!comment.isEmpty()){
             Comment commentNew = new Comment();
             commentNew.setComment(comment);
@@ -104,6 +149,7 @@ public class AddContactServlet extends HttpServlet {
             contactDao.addCommentToContact(commentNew, contact.getId());
         }
 
+        // Adding files to DB
         for (Part part : parts) {
             if(part.getContentType() != null){
                 File file = new File();
@@ -122,11 +168,14 @@ public class AddContactServlet extends HttpServlet {
         List<String> taskTypeList = taskDao.getTaskTypes();
         List<Company> companyList = companyDao.getAll();
         List<Phase> phaseList = phaseDao.getAll();
+        List<String > taskPeriodList = taskDao.getTaskPeriods();
 
         request.setAttribute("userList", userList);
         request.setAttribute("taskTypeList", taskTypeList);
         request.setAttribute("companyList", companyList);
         request.setAttribute("phaseList", phaseList);
+        request.setAttribute("hourList", getHoursList());
+        request.setAttribute("taskPeriods", taskPeriodList);
 
         response.setContentType("text/html");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("addContact.jsp");
@@ -149,5 +198,17 @@ public class AddContactServlet extends HttpServlet {
         }
 
         return buffer.toByteArray() ;
+    }
+
+    private List<String> getHoursList(){
+        List<String> hours = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            if(i < 10){
+                hours.add("0" + i + ":" + "00");
+            }else{
+                hours.add(i + ":" + "00");
+            }
+        }
+        return hours;
     }
 }

@@ -67,10 +67,10 @@ $(document).ready(function() {
         $('#addContactForm').submit();
     });
 
-    $('#addDeal').click(function(){
+    $('#addDealToContactButton').click(function(){
         addHiddenFieldToForm(addContactForm, 'deal_name', $('#deal_name').val() );
-        addHiddenFieldToForm(addContactForm, 'phase', $('#phase').val() );
-        addHiddenFieldToForm(addContactForm, 'budget', $('#budget').val() );
+        addHiddenFieldToForm(addContactForm, 'deal_phase', $('#phase').val() );
+        addHiddenFieldToForm(addContactForm, 'deal_budget', $('#budget').val() );
         $('#addContactForm').submit();
     });
 
@@ -80,6 +80,15 @@ $(document).ready(function() {
         addHiddenFieldToForm(addContactForm, 'company_phone', $('#company_phone').val() );
         addHiddenFieldToForm(addContactForm, 'web_address', $('#web_address').val() );
         addHiddenFieldToForm(addContactForm, 'company_address', $('#company_address').val() );
+        $('#addContactForm').submit();
+    });
+
+    $('#addTaskToContactButton').click(function(){
+        addHiddenFieldToForm(addContactForm, 'task_name', $('#task_name').val() );
+        addHiddenFieldToForm(addContactForm, 'datetime_to', ($('#date_to').val() + "T" + $('#to_time').val() + ":00"));
+        addHiddenFieldToForm(addContactForm, 'task_period', $('#task_period').val());
+        addHiddenFieldToForm(addContactForm, 'task_type', $('#task_type').val());
+        addHiddenFieldToForm(addContactForm, 'task_responsible', $('#task_responsible').val());
         $('#addContactForm').submit();
     });
 

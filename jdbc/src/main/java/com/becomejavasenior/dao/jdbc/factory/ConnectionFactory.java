@@ -15,7 +15,7 @@ public class ConnectionFactory {
         FileInputStream fis;
         Connection connection;
         try {
-            fis = new FileInputStream("F://java//projects//crm//jdbc//src//main//resources/jdbc.properties");
+            fis = new FileInputStream("G:\\java\\projects\\crm-atlas\\jdbc\\src\\main\\resources\\jdbc.properties");
             props.load(fis);
 
             Class.forName(props.getProperty("DRIVER"));

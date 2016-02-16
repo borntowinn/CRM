@@ -35,7 +35,7 @@ INSERT INTO company(company_name, phone_number, email, web_site, createdby, addr
 INSERT INTO company(company_name, phone_number, email, web_site, createdby, address, isdeleted, creation_time, responsible )
   VALUES ('Twitter', '1 (605) 238-8', 'twitter@twitter.com', 'www.twitter.com', 2, '1355 Market Street Suite 900, San Francisco, CA 94103', false, '1999-12-25 00:00:00', 1);
 INSERT INTO company(company_name, phone_number, email, web_site, createdby, address, isdeleted, creation_time, responsible )
-  VALUES ('Uber', '1 (877) 223-8', 'support@uber.com', 'www.uber.com', 1, '1455 Market St 4th Fl, San Francisco, CA ', false, '1999-12-25 00:00:00');
+  VALUES ('Uber', '1 (877) 223-8', 'support@uber.com', 'www.uber.com', 1, '1455 Market St 4th Fl, San Francisco, CA ', false, '1999-12-25 00:00:00', 3);
 
 INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Martin', 1, '+38-248-88-99', 'king@gmail.com', 'martin.king', 'CEO', false, '2011-11-09 00:00:00', 2, 3);
 INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Lora', 2, '+48-222-56-66', 'fauler@yahoo.com', 'lorochka', 'finance manager', false, '2012-11-08 00:00:00', 3, 1);

@@ -7,4 +7,5 @@ import java.util.List;
  */
 public interface TaskDao<T> extends AbstractDao<T> {
     List<String> getTaskTypes();
+    List<String> getTaskPeriods();
 }

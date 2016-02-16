@@ -104,7 +104,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setInt(9, user_id);
 
             if(contact.getCompanyId() == null){
-                statement.setNull(10, Types.INTEGER);
+                statement.setInt(10, 1); // temp value
             }else{
                 statement.setInt(10, contact.getCompanyId().getId());
             }
