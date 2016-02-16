@@ -1,8 +1,6 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.Comment;
 import com.becomejavasenior.dao.DashboardDao;
-import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.math.BigDecimal;
@@ -25,22 +23,10 @@ public class DashboardDaoImpl implements DashboardDao {
     private final String SELECT_CONTACTS = "SELECT * FROM contact";
     private final String SELECT_COMPANIES = "SELECT * FROM company";
 
-    private Connection connection;
-
-    {
-        try {
-             connection = DataSource.getInstance().getConnection();
-        } catch (SQLException e)
-        {
-            throw new PersistException(e);
-        }
-    }
-
-
     private int getCount(String sql) {
         Statement s = null;
         int count = 0;
-        try {
+        try (Connection connection = DataSource.getInstance().getConnection()) {
             s = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet r = s.executeQuery(sql);
             r.last();
@@ -62,7 +48,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public BigDecimal getDealsBudgetSum() {
         BigDecimal value = new BigDecimal(String.valueOf(BigDecimal.ZERO));
 
-        try {
+        try (Connection connection = DataSource.getInstance().getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_DEALS_Budget_SUM);
             ResultSet result = statement.executeQuery();
             result.next();
