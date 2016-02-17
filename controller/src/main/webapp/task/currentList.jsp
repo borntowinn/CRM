@@ -23,20 +23,19 @@
                         <tr>
                             <th class="col-md-3 info">На сегодня</th>
                             <th class="col-md-3 success">На завтра</th>
-<c:if test="${not empty overdueList}">
+                            <c:if test="${not empty overdueList}">
                             <th class="col-md-3 danger">Просроченые</th>
-    </c:if>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
                         <td>
                             <c:if test="${not empty todayList}">
                                 <div class="panel-group">
-                                    <c:forEach items="${todayList}" var="task">
+                                    <c:forEach var="task" items="${todayList}">
                                         <fmt:parseDate value="${task.planTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
                                         <fmt:formatDate value="${parsedDate}" var="stdDatum" type="date" pattern="dd.MM.yyyy" />
                                         <fmt:formatDate value="${parsedDate}" var="stdTime" type="time" pattern="HH:mm" />
-
                                         <div class="panel panel-info">
                                             <div class="panel-heading">${stdDatum}</div>
                                             <table class="table">
@@ -55,7 +54,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Текст Задачи:</strong></h5></td>
-                                                    <td><h5><p class="text-left"></p></h5></td>
+                                                    <td><h5><p class="text-left">${task.comment}</p></h5></td>
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Наименование:</strong></h5></td>
@@ -71,13 +70,11 @@
 
                         <td>
                             <c:if test="${not empty tomorrowList}">
-
                                 <div class="panel-group">
                                     <c:forEach items="${tomorrowList}" var="task">
                                         <fmt:parseDate value="${task.planTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
                                         <fmt:formatDate value="${parsedDate}" var="stdDatum" type="date" pattern="dd.MM.yyyy" />
                                         <fmt:formatDate value="${parsedDate}" var="stdTime" type="time" pattern="HH:mm" />
-
                                         <div class="panel panel-success">
                                             <div class="panel-heading">${stdDatum}</div>
                                             <table class="table">
@@ -96,7 +93,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Текст Задачи:</strong></h5></td>
-                                                    <td><h5><p class="text-left"></p></h5></td>
+                                                    <td><h5><p class="text-left">${task.comment}</p></h5></td>
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Наименование:</strong></h5></td>
@@ -110,15 +107,13 @@
                             </c:if>
                         </td><%--На Завтра--%>
 
-
-                            <c:if test="${not empty overdueList}">
+                        <c:if test="${not empty overdueList}">
                         <td>
-                                <div class="panel-group">
+                            <div class="panel-group">
                                 <c:forEach items="${overdueList}" var="task">
-                                        <fmt:parseDate value="${task.planTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
-                                        <fmt:formatDate value="${parsedDate}" var="stdDatum" type="date" pattern="dd.MM.yyyy" />
-                                        <fmt:formatDate value="${parsedDate}" var="stdTime" type="time" pattern="HH:mm" />
-
+                                    <fmt:parseDate value="${task.planTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
+                                    <fmt:formatDate value="${parsedDate}" var="stdDatum" type="date" pattern="dd.MM.yyyy" />
+                                    <fmt:formatDate value="${parsedDate}" var="stdTime" type="time" pattern="HH:mm" />
                                         <div class="panel panel-danger">
                                             <div class="panel-heading">${stdDatum}</div>
                                             <table class="table">
@@ -137,7 +132,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Текст Задачи:</strong></h5></td>
-                                                    <td><h5><p class="text-left"></p></h5></td>
+                                                    <td><h5><p class="text-left">${task.comment}</p></h5></td>
                                                 </tr>
                                                 <tr>
                                                     <td><h5><strong>Наименование:</strong></h5></td>
@@ -149,7 +144,7 @@
                                 </c:forEach>
                                 </div><%--panel-group--%>
                         </td><%--Просроченые--%>
-                            </c:if>
+                        </c:if>
 
                         </tbody>
                     </table>

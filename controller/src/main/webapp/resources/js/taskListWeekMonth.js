@@ -72,6 +72,7 @@ $(document).ready(function(){
                             start: start,
                             end: end,
                             allDay: allDayFlag,
+                            taskComment: task.comment,
                             target: target,
                             targetName: targetName
                         });
@@ -86,6 +87,7 @@ $(document).ready(function(){
             $('#modalHeader').text(event.title);
             $('#modalTarget').text(event.target);
             $('#modalTargetName').text(event.targetName);
+            $('#modalText').text(event.taskComment);
             $('#myModal').modal('toggle');
         }
 

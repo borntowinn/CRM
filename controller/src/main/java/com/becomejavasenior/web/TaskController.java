@@ -21,66 +21,73 @@ import java.util.Map;
 )
 public class TaskController extends HttpServlet {
 
-    private final String CREATE = "/create";
-    private final String ADD = "/add";
-    private final String LIST_ALL = "/listAll";
-    private final String LIST_CURRENT = "/listCurrent";
-    private final String LIST_DAY = "/listDay";
-    private final String LIST_WEEK = "/listWeek";
-    private final String LIST_MONTH = "/listMonth";
+    private final String URI_CREATE = "/create";
+    private final String URI_ADD = "/add";
+    private final String URI_LIST_ALL = "/listAll";
+    private final String URI_LIST_CURRENT = "/listCurrent";
+    private final String URI_LIST_DAY = "/listDay";
+    private final String URI_LIST_WEEK = "/listWeek";
+    private final String URI_LIST_MONTH = "/listMonth";
+    private final String URL_LIST_MONTH = "/task/monthList.jsp";
+    private final String URL_LIST_DAY = "/task/dayList.jsp";
+    private final String URL_LIST_CURRENT = "/task/currentList.jsp";
+    private final String URL_LIST_ALL = "/task/allList.jsp";
+    private final String URL_ADD = "/task/addTask.jsp";
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String url = "";
 
-        if (requestURI.endsWith(LIST_ALL)) {
-            url = this.listAll(request, response);
-        } else if (requestURI.endsWith(CREATE)) {
-            url = this.createTask(request, response);
-        } else if (requestURI.endsWith(LIST_CURRENT)) {
-            url = this.listCurrent(request, response);
-        } else if (requestURI.endsWith(LIST_DAY)) {
-            url = this.listDay(request, response);
-        } else if (requestURI.endsWith(LIST_WEEK)) {
-            url = this.listWeek(request, response);
-        } else if (requestURI.endsWith(LIST_MONTH)) {
-            url = this.listMonth(request, response);
+        if (requestURI.endsWith(URI_LIST_ALL)) {
+            url = this.listAll(request);
+        } else if (requestURI.endsWith(URI_CREATE)) {
+            url = this.createTask(request);
+        } else if (requestURI.endsWith(URI_LIST_CURRENT)) {
+            url = this.listCurrent(request);
+        } else if (requestURI.endsWith(URI_LIST_DAY)) {
+            url = this.listDay(request);
+        } else if (requestURI.endsWith(URI_LIST_WEEK)) {
+            url = this.listWeek();
+        } else if (requestURI.endsWith(URI_LIST_MONTH)) {
+            url = this.listMonth();
         }
 
         request.getRequestDispatcher(url)
                 .forward(request, response);
     }
 
-    private String listMonth(HttpServletRequest request, HttpServletResponse response) {
-        return "/task/monthList.jsp";
+    private String listMonth() {
+        return URL_LIST_MONTH;
     }
 
-    private String listWeek(HttpServletRequest request, HttpServletResponse response) {
+    private String listWeek() {
         return "/task/weekList.jsp";
     }
 
-    private String listDay(HttpServletRequest request, HttpServletResponse response) {
+    private String listDay(HttpServletRequest request) {
         List<String> timeList = TaskService.getTimeList();
         request.setAttribute("timeList", timeList);
 
-        return "/task/dayList.jsp";
+        return URL_LIST_DAY;
     }
 
-    private String listCurrent(HttpServletRequest request, HttpServletResponse response) {
+    private String listCurrent(HttpServletRequest request) {
         List<Task> todayList = TaskService.getTodayList();
         List<Task> tomorrowList = TaskService.getTomorrowList();
         List<Task> overdueList = TaskService.getOverdueList();
 
         if(todayList != null && todayList.size() > 0){
             request.setAttribute("todayList", todayList);
-        } else if(tomorrowList != null && tomorrowList.size() > 0){
+        }
+        if(tomorrowList != null && tomorrowList.size() > 0){
             request.setAttribute("tomorrowList", tomorrowList);
-        } else if(overdueList != null && overdueList.size() > 0){
+        }
+        if(overdueList != null && overdueList.size() > 0){
             request.setAttribute("overdueList", overdueList);
         }
 
-        return "/task/currentList.jsp";
+        return URL_LIST_CURRENT;
     }
 
     @Override
@@ -88,15 +95,15 @@ public class TaskController extends HttpServlet {
         String requestURI = request.getRequestURI();
         String url = "";
 
-        if (requestURI.endsWith(ADD)) {
-            url = this.addTask(request, response);
+        if (requestURI.endsWith(URI_ADD)) {
+            url = this.addTask(request);
         }
 
         request.getRequestDispatcher(url)
                 .forward(request, response);
     }
 
-    private String addTask(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+    private String addTask(HttpServletRequest request)  throws ServletException, IOException {
         Task task = new Task();
         task.setPeriod(request.getParameter("periodName"));
         task.setTaskName(request.getParameter("task_name"));
@@ -132,15 +139,17 @@ public class TaskController extends HttpServlet {
         LocalDateTime planTime = LocalDateTime.of(date, time);
         task.setPlanTime(planTime);
 
-        if(TaskService.saveTask(task)){
+        String taskText = request.getParameter("commentName");
+
+        if(TaskService.saveTask(task, taskText)){
             String message = TaskService.getSuccessMessage();
             request.setAttribute("message", message);
         }
 
-        return "/task/allList.jsp";
+        return URL_LIST_ALL;
     }
 
-    private String createTask(HttpServletRequest request, HttpServletResponse response){
+    private String createTask(HttpServletRequest request){
         List<String> timeList = TaskService.getTimeList();
         Map<String, String> periodMap = TaskService.getPeriodMap();
         Map<String, String> nameMap = TaskService.getNameMap();
@@ -159,13 +168,13 @@ public class TaskController extends HttpServlet {
         request.setAttribute("contactMap", contactMap);
         request.setAttribute("userMap", userMap);
 
-        return "/task/addTask.jsp";
+        return URL_ADD;
     }
 
-    private String listAll(HttpServletRequest request, HttpServletResponse response) {
+    private String listAll(HttpServletRequest request) {
         List<Task> taskList = TaskService.getAllTasks();
         request.setAttribute("taskList", taskList);
 
-        return "/task/allList.jsp";
+        return URL_LIST_ALL;
     }
 }

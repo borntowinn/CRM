@@ -117,6 +117,7 @@ processData = function(data){
         var id = (hour.length == 6) ? hour : ('0' + hour);
 
         var taskType = task.taskType;
+        var taskComment = task.comment;
         var target;
         var targetName;
 
@@ -131,18 +132,18 @@ processData = function(data){
             targetName = task.company.companyName;
         }
 
-        insertTaskDiv(id, taskType, target, targetName);
+        insertTaskDiv(id, taskType, taskComment, target, targetName);
     }
 };
 
-insertTaskDiv = function(id, taskType, target, targetName){
+insertTaskDiv = function(id, taskType, taskComment, target, targetName){
 
     $('#tr_' + id).addClass('success');
 
     $('#td_' + id).append('<div class="col-md-6"><div class="panel panel-danger">'+
         '<div class="panel-heading text-center">' + taskType + '</div><table class="table">' +
         '<tbody><tr><td><h5><strong>Текст Задачи:</strong></h5></td>'+
-        '<td><h5><p class="text-left"></p></h5></td></tr>'+
+        '<td><h5><p class="text-left">' + taskComment + '</p></h5></td></tr>'+
         '<tr><td class="col-md-1"><h5><strong>' + target + '</strong></h5></td>'+
         '<td><h5><p class="text-left">' + targetName + '</p></h5></td></tr>' +
         '</tbody></table></div></div>');

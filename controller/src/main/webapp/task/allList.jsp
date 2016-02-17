@@ -31,10 +31,14 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${taskList}" var="task">
+                                    <fmt:parseDate value="${task.planTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" />
+                                    <fmt:formatDate value="${parsedDate}" var="stdDatum" type="date" pattern="dd.MM.yyyy" />
+                                    <fmt:formatDate value="${parsedDate}" var="stdTime" type="time" pattern="HH:mm" />
+
                                     <tr>
-                                        <td><a href="#" >${task.planTime}/${task.responsible.name}</a></td>
+                                        <td><a href="#" >${stdDatum}/${stdTime}/${task.responsible.name}</a></td>
                                         <td>${task.taskName}</td>
-                                        <td>${task.taskType}</td>
+                                        <td>${task.taskType}/${task.comment}</td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

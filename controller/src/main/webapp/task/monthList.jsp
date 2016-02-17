@@ -38,15 +38,15 @@
                 <form class="form-inline">
                     <label for="modalText">Текст Задачи:</label>
                     <div class="form-group">
-                        <div id="modalText"></div><hr>
-                    </div><hr>
-
+                        <div id="modalText"></div>
+                    </div>
+                </form>
+                <form class="form-inline">
                     <label for="modalTargetName" id="modalTarget"></label>
                     <div class="form-group">
                         <div id="modalTargetName"></div>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
