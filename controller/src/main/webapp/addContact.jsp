@@ -126,6 +126,12 @@
                         </div>
                     </div>
 
+                </div>
+
+                <div class="form-group">
+
+                    <label for="task_name" class="control-label col-xs-2">Время выполнения</label>
+
                     <div class="col-xs-3">
                         <input type="date" class="form-control" id="date_to" name="date_to" >
                     </div>
@@ -137,14 +143,12 @@
                             </c:forEach>
                         </select>
                     </div>
-
-
                 </div>
 
 
                 <div class="form-group">
-
-                    <div class="col-xs-6">
+                    <label for="task_name" class="control-label col-xs-2">Время выполнения</label>
+                    <div class="col-xs-5">
                         <select class="form-control" id="task_period" name="task_period">
                             <c:forEach items="${taskPeriods}" var="period">
                                 <option value="${period}">${period}</option>
@@ -152,7 +156,7 @@
                         </select>
                     </div>
 
-                    <div class="col-xs-6">
+                    <div class="col-xs-5">
                         <label><input type="checkbox" value=""> Весь день</label>
                     </div>
                 </div>

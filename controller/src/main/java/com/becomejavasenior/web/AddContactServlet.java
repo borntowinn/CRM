@@ -4,6 +4,7 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.sun.deploy.net.HttpRequest;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,6 +29,8 @@ import java.util.List;
 @MultipartConfig
 public class AddContactServlet extends HttpServlet {
 
+    public static final String ADD_CONTACT_URL = "addContact.jsp";
+
     private ContactDao contactDao;
     private UserDao userDao;
     private TaskDao taskDao;
@@ -49,116 +52,37 @@ public class AddContactServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        // get addContactForm parameters
-        String name = request.getParameter("contact_name");
-        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
-        Integer phoneType = (request.getParameter("phone_type") != null) ? Integer.valueOf(request.getParameter("phone_type")) : 0;
-        String phone = request.getParameter("phone_number");
-        String email = request.getParameter("email");
-        String skype = request.getParameter("skype");
-        String position = request.getParameter("position");
-        String comment = request.getParameter("note");
-
-        // Company
-        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
-        String companyName = request.getParameter("company_name");
-        String companyPhone = request.getParameter("company_phone");
-        String companyWebAddress = request.getParameter("web_address");
-        String companyAddress = request.getParameter("company_address");
-
-        // Deal
-        String dealName = request.getParameter("deal_name");
-        Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
-        BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
-
-        // Task
-        String taskName = request.getParameter("task_name");
-        String dateTimeTo = request.getParameter("datetime_to");
-        String taskPeriod = request.getParameter("task_period");
-        Integer taskResponsible = Integer.valueOf(request.getParameter("task_responsible"));
-        String taskType = request.getParameter("task_type");
-
-        //File upload
-        Collection<Part> parts = request.getParts();
-
         // create contact for insert to db
         Contact newContact = new Contact();
-        newContact.setNameSurname(name);
-        newContact.setPhoneType(phoneType);
-        newContact.setPhoneNumber(phone);
-        newContact.setEmail(email);
-        newContact.setSkype(skype);
-        newContact.setPosition(position);
-        newContact.setCreationTime(LocalDateTime.now());
-        newContact.setCreatedBy((User) userDao.getByPK(responsible));
-        newContact.setDeleted(false);
-        newContact.setResponsible((User) userDao.getByPK(responsible));
+
+        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
+        String dealName = request.getParameter("deal_name");
+        String taskName = request.getParameter("task_name");
 
         // set Company for contact:
         if(company_id != null && company_id != 0){
             Company chosenCompany = (Company) companyDao.getByPK(company_id);
             newContact.setCompanyId(chosenCompany);
         }else if(company_id != null && company_id == 0){
-            Company newCompany = new Company();
-            newCompany.setCompanyName(companyName);
-            if (companyPhone != null) newCompany.setPhoneNumber(companyPhone);
-            if (companyWebAddress != null ) newCompany.setWebsite(companyWebAddress);
-            if (companyAddress != null) newCompany.setAddress(companyAddress);
-            newCompany.setResponsible((User) userDao.getByPK(responsible));
-            newCompany.setDeleted(false);
-            newCompany.setCreationTime(LocalDateTime.now());
-            Company insertedCompany = (Company) companyDao.create(newCompany);
-            newContact.setCompanyId(insertedCompany);
+            newContact.setCompanyId(buildCompany(request));
         }
 
         Contact contact = (Contact) contactDao.create(newContact);
+        addFilesToContact(request, contact);
+
 
         // Add deal to contact
+
         if(dealName != null){
-            Deal newDeal = new Deal();
-            newDeal.setDealName(dealName);
-            if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
-            if (dealBudget != BigDecimal.ZERO) newDeal.setBudget(dealBudget);
-            newDeal.setCreationDate(LocalDateTime.now());
-            newDeal.setDeleted(false);
-            newDeal.setContact(contact);
-            dealDao.create(newDeal);
+            dealDao.create(buildDeal(request, contact));
         }
 
         // Add task to contact
         if(taskName != null){
-            Task newTask = new Task();
-            newTask.setTaskName(taskName);
-            if(dateTimeTo != null) newTask.setPlanTime(LocalDateTime.parse(dateTimeTo));
-            if(taskPeriod != null) newTask.setPeriod(taskPeriod);
-            if(taskType != null) newTask.setTaskType(taskType);
-            newTask.setResponsible((User) userDao.getByPK(taskResponsible));
-            newTask.setAuthor((User) userDao.getByPK(taskResponsible)); // temporary, when authorization will done will be changed to user from session
-            newTask.setCreationTime(LocalDateTime.now());
-            newTask.setDeleted(false);
-            newTask.setDone(false);
-            newTask.setContact(contact);
-            taskDao.create(newTask);
+            taskDao.create(buildDeal(request, contact));
         }
 
-        // Add comment
-        if(!comment.isEmpty()){
-            Comment commentNew = new Comment();
-            commentNew.setComment(comment);
-            commentNew.setCreationDate(LocalDateTime.now());
-            contactDao.addCommentToContact(commentNew, contact.getId());
-        }
 
-        // Adding files to DB
-        for (Part part : parts) {
-            if(part.getContentType() != null){
-                File file = new File();
-                file.setFileName(part.getSubmittedFileName());
-                file.setCreationDate(LocalDateTime.now());
-                file.setFile(convertPartToBlob(part));
-                contactDao.addFileToContact(file, contact.getId());
-            }
-        }
         response.sendRedirect("dashboard");
 
     }
@@ -178,7 +102,7 @@ public class AddContactServlet extends HttpServlet {
         request.setAttribute("taskPeriods", taskPeriodList);
 
         response.setContentType("text/html");
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("addContact.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADD_CONTACT_URL);
         requestDispatcher.forward(request, response);
     }
 
@@ -210,5 +134,122 @@ public class AddContactServlet extends HttpServlet {
             }
         }
         return hours;
+    }
+
+    private Contact buildContact(HttpServletRequest request){
+
+        Contact newContact = new Contact();
+        // get addContactForm parameters
+        String name = request.getParameter("contact_name");
+        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
+        Integer phoneType = (request.getParameter("phone_type") != null) ? Integer.valueOf(request.getParameter("phone_type")) : 0;
+        String phone = request.getParameter("phone_number");
+        String email = request.getParameter("email");
+        String skype = request.getParameter("skype");
+        String position = request.getParameter("position");
+        String comment = request.getParameter("note");
+
+        newContact.setNameSurname(name);
+        newContact.setPhoneType(phoneType);
+        newContact.setPhoneNumber(phone);
+        newContact.setEmail(email);
+        newContact.setSkype(skype);
+        newContact.setPosition(position);
+        newContact.setCreationTime(LocalDateTime.now());
+        newContact.setCreatedBy((User) userDao.getByPK(responsible));
+        newContact.setDeleted(false);
+        newContact.setResponsible((User) userDao.getByPK(responsible));
+
+        return newContact;
+    }
+
+    private void addCommentToContact(HttpServletRequest request, Contact contact){
+        String comment = request.getParameter("note");
+        if(!comment.isEmpty()){
+            Comment commentNew = new Comment();
+            commentNew.setComment(comment);
+            commentNew.setCreationDate(LocalDateTime.now());
+            contactDao.addCommentToContact(commentNew, contact.getId());
+        }
+    }
+
+    private void addFilesToContact(HttpServletRequest request, Contact contact) throws IOException, ServletException {
+        //File upload
+        Collection<Part> parts = request.getParts();
+
+        // Adding files to DB
+        for (Part part : parts) {
+            if(part.getContentType() != null){
+                File file = new File();
+                file.setFileName(part.getSubmittedFileName());
+                file.setCreationDate(LocalDateTime.now());
+                file.setFile(convertPartToBlob(part));
+                contactDao.addFileToContact(file, contact.getId());
+            }
+        }
+    }
+
+    private Company buildCompany(HttpServletRequest request){
+        // Company
+        Company newCompany = new Company();
+        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
+        String companyName = request.getParameter("company_name");
+        String companyPhone = request.getParameter("company_phone");
+        String companyWebAddress = request.getParameter("web_address");
+        String companyAddress = request.getParameter("company_address");
+
+        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
+
+        newCompany.setCompanyName(companyName);
+        if (companyPhone != null) newCompany.setPhoneNumber(companyPhone);
+        if (companyWebAddress != null ) newCompany.setWebsite(companyWebAddress);
+        if (companyAddress != null) newCompany.setAddress(companyAddress);
+        newCompany.setResponsible((User) userDao.getByPK(responsible));
+        newCompany.setDeleted(false);
+        newCompany.setCreationTime(LocalDateTime.now());
+        Company insertedCompany = (Company) companyDao.create(newCompany);
+        return newCompany;
+    }
+
+    private Deal buildDeal(HttpServletRequest request, Contact contact){
+        // Deal
+        Deal newDeal = new Deal();
+        String dealName = request.getParameter("deal_name");
+        Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
+        BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
+
+        newDeal.setDealName(dealName);
+        if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
+        if (dealBudget != BigDecimal.ZERO) newDeal.setBudget(dealBudget);
+        newDeal.setCreationDate(LocalDateTime.now());
+        newDeal.setDeleted(false);
+        newDeal.setContact(contact);
+
+        return newDeal;
+    }
+
+
+
+    private Task buildTask(HttpServletRequest request, Contact contact){
+        // Task
+        Task newTask = new Task();
+        String taskName = request.getParameter("task_name");
+        String dateTimeTo = request.getParameter("datetime_to");
+        String taskPeriod = request.getParameter("task_period");
+        Integer taskResponsible = Integer.valueOf(request.getParameter("task_responsible"));
+        String taskType = request.getParameter("task_type");
+
+        newTask.setTaskName(taskName);
+        if(dateTimeTo != null) newTask.setPlanTime(LocalDateTime.parse(dateTimeTo));
+        if(taskPeriod != null) newTask.setPeriod(taskPeriod);
+        if(taskType != null) newTask.setTaskType(taskType);
+        newTask.setResponsible((User) userDao.getByPK(taskResponsible));
+        newTask.setAuthor((User) userDao.getByPK(taskResponsible)); // temporary, when authorization will done will be changed to user from session
+        newTask.setCreationTime(LocalDateTime.now());
+        newTask.setDeleted(false);
+        newTask.setDone(false);
+        newTask.setContact(contact);
+
+        return newTask;
     }
 }
