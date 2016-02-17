@@ -10,12 +10,15 @@ import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyDao<Company> {
+    private static final Logger log = Logger.getLogger(CompanyDaoImpl.class);
+
     private final static String SELECT_QUERY = "SELECT company_id, company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\"";
     private final static String LAST_INSERT_ID_QUERY = "SELECT company_id, company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time FROM \"company\" WHERE company_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -85,6 +88,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 result.add(company);
             }
         } catch (SQLException e) {
+            log.error("error while parse result set: " + e.getMessage());
             throw new PersistException(e);
         }
         return result;
@@ -96,6 +100,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
             prepareStatement(statement, object);
             statement.setInt(10, object.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update Company " + e.getMessage());
             throw new PersistException(e);
         }
     }
@@ -105,6 +110,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
         try {
             prepareStatement(statement, object);
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert Company " + e.getMessage());
             throw new PersistException(e);
         }
     }
@@ -151,6 +157,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
         }
         catch (SQLException e)
         {
+            log.error("couldn't get files " + e.getMessage());
             throw new PersistException(e.getMessage());
         }
         return fileList;
@@ -170,6 +177,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 commentList.add(comment);
             }
         } catch (SQLException e) {
+            log.error("couldn't get comment for Company " + e.getMessage());
             throw new PersistException(e.getMessage());
         }
         return commentList;

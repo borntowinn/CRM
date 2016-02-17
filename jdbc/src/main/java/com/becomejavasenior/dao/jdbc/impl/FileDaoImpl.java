@@ -5,6 +5,7 @@ import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.AbstractDao;
 import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.exception.PersistException;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +19,9 @@ import java.util.List;
  * Created by Default71721 on 10.02.16.
  */
 public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> {
+
+    private static final Logger log = Logger.getLogger(AbstractJDBCDao.class);
+
     private final static String SELECT_QUERY = "SELECT file_id, date_creation, file, file_name FROM file";
     private final static String SELECT_BY_PK_QUERY = "SELECT file_id, date_creation, file, file_name FROM file WHERE file_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO file (date_creation, file, file_name) VALUES (?, ?, ?);";
@@ -67,6 +71,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
                 result.add(file);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -79,6 +84,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
             statement.setBytes(2, file.getFile());
             statement.setString(3, file.getFileName());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert File " + e);
             throw new PersistException(e);
         }
     }
@@ -91,6 +97,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
             statement.setString(3, file.getFileName());
             statement.setInt(4, file.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update File " + e);
             throw new PersistException(e);
         }
     }

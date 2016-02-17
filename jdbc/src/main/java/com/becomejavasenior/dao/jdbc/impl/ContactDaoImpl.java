@@ -8,6 +8,7 @@ import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +21,9 @@ import java.util.List;
  * Created by valkos on 02.02.16.
  */
 public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactDao<Contact> {
+
+    private static final Logger log = Logger.getLogger(ContactDaoImpl.class);
+
     private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact";
     private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact WHERE contact_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -75,6 +79,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 result.add(contact);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -98,6 +103,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setInt(10, company_id);
             statement.setInt(11, responsible_id);
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert Comment " + e);
             throw new PersistException(e);
         }
     }
@@ -118,6 +124,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setInt(11, contact.getResponsible().getId());
             statement.setInt(12, contact.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update Comment " + e);
             throw new PersistException(e);
         }
     }

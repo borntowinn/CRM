@@ -30,7 +30,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
 
     private int getCount(String sql) {
-        log.info("DashboardDaoImpl getCount()");
+
         Statement s = null;
         int count = 0;
         try {
@@ -40,6 +40,7 @@ public class DashboardDaoImpl implements DashboardDao {
             count = r.getRow();
             r.beforeFirst();
         } catch (SQLException e) {
+            log.error("getCount failed " + e);
             e.printStackTrace();
         }
 
@@ -61,6 +62,7 @@ public class DashboardDaoImpl implements DashboardDao {
             result.next();
             value = result.getBigDecimal(1);
         } catch (SQLException e) {
+            log.error("getDealsCount failed " + e);
             e.printStackTrace();
         }
         return value;
