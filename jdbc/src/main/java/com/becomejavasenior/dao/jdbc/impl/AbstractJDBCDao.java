@@ -2,28 +2,36 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.AbstractDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.sql.*;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
+public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
 
-    private Connection connection = ConnectionFactory.getConnection();
+    protected DataSource dataSource = DataSource.getInstance();
 
     protected abstract String getSelectQuery();
+
     protected abstract String getUpdateQuery();
+
     protected abstract String getDeleteQuery();
+
     protected abstract String getCreateQuery();
+
     protected abstract String getSelectPKQuery();
+
     protected abstract List<T> parseResultSet(ResultSet rs) throws PersistException;
+
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws PersistException;
+
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws PersistException;
 
-    private int addData(T object){
-        int lastInsertedId = 0;
-        String sql = getCreateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    private int addData(T object) {
+        try (Connection connection = dataSource.getConnection()) {
+            int lastInsertedId = 0;
+            String sql = getCreateQuery();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
@@ -47,15 +55,14 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
 
     @Override
     public ResultSet executeQuery(String query) throws PersistException {
-        try {
+        try (Connection connection = dataSource.getConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(query);
             return statement.executeQuery();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             /*SQLException will be ignored only for queries that don't produce a result set, for example INSERT or
             * UPDATE. In this case null value will be returned instead of a valid result set*/
-            if (e.getErrorCode()!=0) {
+            if (e.getErrorCode() != 0) {
                 throw new PersistException();
             }
         }
@@ -66,23 +73,23 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
     public T getByPK(Integer id) throws PersistException {
         List<T> list;
         String sql = getSelectPKQuery();
+        try (Connection connection = dataSource.getConnection()) {
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
+
+            if (list == null || list.size() == 0) {
+                throw new PersistException("Record with PK = " + id + " not found.");
+            }
+
+            if (list.size() > 1) {
+                throw new PersistException("Received more than one record.");
+            }
         } catch (SQLException e) {
             throw new PersistException(e);
         }
-
-        if (list == null || list.size() == 0) {
-            throw new PersistException("Record with PK = " + id + " not found.");
-        }
-
-        if (list.size() > 1) {
-            throw new PersistException("Received more than one record.");
-        }
-
         return list.iterator().next();
     }
 
@@ -90,7 +97,8 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
     public List<T> getAll() throws PersistException {
         List<T> list;
         String sql = getSelectQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (SQLException e) {
@@ -102,14 +110,14 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
     @Override
     public void update(T object) throws PersistException {
         String sql = getUpdateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new PersistException("On update modify more than 1 record: " + count);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new PersistException(e);
         }
     }
@@ -117,7 +125,8 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
     @Override
     public void delete(Integer id) throws PersistException {
         String sql = getDeleteQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             try {
                 statement.setObject(1, id);
             } catch (Exception e) {
@@ -127,20 +136,8 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T>{
             if (count != 1) {
                 throw new PersistException("On delete modify more than 1 record: " + count);
             }
-            statement.close();
         } catch (SQLException e) {
             throw new PersistException(e);
-        }
-    }
-
-    public void closeCurrentConnection()
-    {
-        try {
-            connection.close();
-        }
-        catch (SQLException e)
-        {
-            throw new PersistException("Unable to close database connection");
         }
     }
 }

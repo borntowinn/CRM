@@ -4,8 +4,8 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.TaskDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.sql.Connection;
@@ -27,21 +27,9 @@ public class TaskDaoImplTest {
 
     @BeforeClass
     public static void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
         taskDao = DaoFactory.getTaskDao();
         newTask = new Task();
         lastInsertedObject = new Task();
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @AfterClass
-    public static void after() {
-        taskDao.closeCurrentConnection();
     }
 
     @Test
