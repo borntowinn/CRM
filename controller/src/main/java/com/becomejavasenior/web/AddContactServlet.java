@@ -72,7 +72,6 @@ public class AddContactServlet extends HttpServlet {
 
 
         // Add deal to contact
-
         if(dealName != null){
             dealDao.create(buildDeal(request, contact));
         }
@@ -81,8 +80,6 @@ public class AddContactServlet extends HttpServlet {
         if(taskName != null){
             taskDao.create(buildDeal(request, contact));
         }
-
-
         response.sendRedirect("dashboard");
 
     }
