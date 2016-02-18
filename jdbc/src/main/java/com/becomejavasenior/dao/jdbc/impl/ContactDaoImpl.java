@@ -35,6 +35,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     private static final String ADD_COMMENT_TO_CONTACT_QUERY = "INSERT INTO comment_to_contact (comment_id, contact_id) VALUES (?, ?)";
     private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name) VALUES (?, ?, ?)";
     private static final String ADD_FILE_TO_CONTACT_QUERY = "INSERT INTO files_to_contact(file_id, contact_id) VALUES (?, ?)";
+    private static final String GET_ALL_TAGS = "SELECT tag FROM tag";
 
 
 
@@ -247,5 +248,24 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public List<String> getAllTegs() {
+        List<String> list = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_TAGS);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("tag"));
+            }
+
+
+        } catch (SQLException e) {
+            log.error("Couldn't get all entities " + e.getMessage());
+            throw new PersistException(e);
+        }
+        return list;
     }
 }
