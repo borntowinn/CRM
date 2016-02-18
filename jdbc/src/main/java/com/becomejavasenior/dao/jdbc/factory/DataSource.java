@@ -27,29 +27,11 @@ public class DataSource {
             throw new RuntimeException(e);
         }
         ds.setDriverClassName(props.getProperty("DRIVER"));
+        ds.setUrl(props.getProperty("URL"));
+        ds.addConnectionProperty("ssl", "true");
+        ds.addConnectionProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
         ds.setUsername(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
-        ds.setUrl(props.getProperty("URL"));
-        //ds.addConnectionProperty("sslmode", "require");
-
-        /*try {
-            String s = (System.getenv("HEROKU_DATABASE_URL"));
-            URI dbUri = new URI(System.getenv("HEROKU_DATABASE_URL"));
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
-            ds.setUrl(dbUrl);
-            ds.setUsername(username);
-            ds.setPassword(password);
-            System.out.println(dbUrl);
-            System.out.println(username);
-            System.out.println(password);
-        }
-        catch (URISyntaxException e)
-        {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public static DataSource getInstance() {
