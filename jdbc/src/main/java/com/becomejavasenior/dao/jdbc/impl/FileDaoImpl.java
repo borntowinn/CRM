@@ -3,7 +3,9 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
+import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +19,10 @@ import java.util.List;
  * Created by Default71721 on 10.02.16.
  */
 public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> {
+
+
+    private static final Logger log = Logger.getLogger(AbstractJDBCDao.class);
+
     private final static String SELECT_QUERY = "SELECT file_id, date_creation, file, file_name, company_id, contact_id, deal_id, user_id FROM file";
     private final static String SELECT_BY_PK_QUERY = "SELECT file_id, date_creation, file, file_name, company_id, contact_id, deal_id, user_id FROM file WHERE file_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO file (date_creation, file, file_name, company_id, contact_id, deal_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -75,6 +81,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
                 result.add(file);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -91,6 +98,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
             statement.setInt(6, file.getDealId().getId());
             statement.setInt(7, file.getUserId().getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert File " + e);
             throw new PersistException(e);
         }
     }
@@ -107,6 +115,7 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
             statement.setInt(7, file.getUserId().getId());
             statement.setInt(8, file.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update File " + e);
             throw new PersistException(e);
         }
     }

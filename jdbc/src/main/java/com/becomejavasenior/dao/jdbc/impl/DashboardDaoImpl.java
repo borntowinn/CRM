@@ -1,6 +1,7 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.DashboardDao;
+import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.math.BigDecimal;
@@ -10,6 +11,8 @@ import java.sql.*;
  * Created by ipvinner on 30.01.2016.
  */
 public class DashboardDaoImpl implements DashboardDao {
+
+    private static final Logger log = Logger.getLogger(DashboardDaoImpl.class);
 
     private final String SELECT_DEALS = "SELECT * FROM deal";
     private final String SELECT_DEALS_Budget_SUM = "SELECT SUM(budget) from deal";
@@ -24,6 +27,7 @@ public class DashboardDaoImpl implements DashboardDao {
     private final String SELECT_COMPANIES = "SELECT * FROM company";
 
     private int getCount(String sql) {
+
         Statement s = null;
         int count = 0;
         try (Connection connection = DataSource.getInstance().getConnection()) {
@@ -33,6 +37,7 @@ public class DashboardDaoImpl implements DashboardDao {
             count = r.getRow();
             r.beforeFirst();
         } catch (SQLException e) {
+            log.error("getCount failed " + e);
             e.printStackTrace();
         }
 
@@ -54,6 +59,7 @@ public class DashboardDaoImpl implements DashboardDao {
             result.next();
             value = result.getBigDecimal(1);
         } catch (SQLException e) {
+            log.error("getDealsCount failed " + e);
             e.printStackTrace();
         }
         return value;
