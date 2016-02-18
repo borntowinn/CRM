@@ -3,6 +3,7 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
+import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
@@ -13,10 +14,14 @@ import java.util.List;
  * Created by Default71721 on 10.02.16.
  */
 public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentDao<Comment> {
+
+    private static final Logger log = Logger.getLogger(CommentDaoImpl.class);
+
     private final static String SELECT_QUERY = "SELECT comment_id, comment, data_creation, file_name, company_id, contact_id, deal_id, task_id FROM comment;";
     private final static String SELECT_BY_PK_QUERY = "SELECT comment_id, comment, data_creation, company_id, contact_id, deal_id, task_id FROM comment WHERE comment_id = ?;";
     private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String UPDATE_QUERY = "UPDATE comment SET comment = ?, data_creation = ?, company_id = ?, contact_id = ?, deal_id = ?, task_id = ? WHERE comment_id = ?;";
+
     private final static String DELETE_QUERY = "DELETE FROM comment WHERE comment_id= ?;";
 
     @Override
@@ -82,6 +87,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
                 result.add(comment);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -118,6 +124,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
             }
 
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert " + e);
             throw new PersistException(e);
         }
     }
@@ -133,6 +140,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
             statement.setInt(6, comment.getTaskId().getId());
             statement.setInt(7, comment.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update " + e);
             throw new PersistException(e);
         }
     }

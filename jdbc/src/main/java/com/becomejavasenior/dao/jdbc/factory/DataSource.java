@@ -4,6 +4,8 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -25,9 +27,13 @@ public class DataSource {
             throw new RuntimeException(e);
         }
         ds.setDriverClassName(props.getProperty("DRIVER"));
+        ds.setUrl(props.getProperty("URL"));
+        if (!props.getProperty("URL").contains("localhost")) {
+            ds.addConnectionProperty("ssl", "true");
+            ds.addConnectionProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
+        }
         ds.setUsername(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
-        ds.setUrl(props.getProperty("URL"));
     }
 
     public static DataSource getInstance() {

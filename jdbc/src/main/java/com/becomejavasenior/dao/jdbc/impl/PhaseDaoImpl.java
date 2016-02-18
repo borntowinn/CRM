@@ -3,6 +3,7 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.Phase;
 import com.becomejavasenior.dao.PhaseDao;
 import com.becomejavasenior.dao.exception.PersistException;
+import org.apache.log4j.Logger;
 
 
 import java.sql.PreparedStatement;
@@ -15,6 +16,9 @@ import java.util.List;
  * Created by Default71721 on 29.01.16.
  */
 public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Phase> {
+
+    private static final Logger log = Logger.getLogger(PhaseDaoImpl.class);
+
     private final static String SELECT_QUERY = "SELECT phase_id, phase FROM phase";
     private final static String SELECT_BY_PK_QUERY = "SELECT phase_id, phase FROM phase WHERE phase_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO phase (phase) VALUES (?);";
@@ -62,6 +66,7 @@ public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Pha
                 resultList.add(phase);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return resultList;
@@ -72,6 +77,7 @@ public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Pha
         try {
             statement.setString(1, object.getPhase());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert Phase " + e);
             throw new PersistException(e);
         }
     }
@@ -82,6 +88,7 @@ public class PhaseDaoImpl extends AbstractJDBCDao<Phase> implements PhaseDao<Pha
             statement.setString(1, object.getPhase());
             statement.setInt(2, object.getId());
         } catch (Exception e) {
+            log.error("couldn't prepared Statement for Update " + this.getClass().getName() + e);
             throw new PersistException(e);
         }
     }

@@ -4,6 +4,7 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +15,8 @@ import java.util.List;
  * Created by kast0615 on 2/1/2016.
  */
 public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> {
-
+ 
+  private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
   private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
   private final static String SELECT_QUERY = "SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id";
   private final static String SELECT_BY_PK = "SELECT * FROM task WHERE task_id=?";
@@ -93,6 +95,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       }
 
     } catch (Exception e) {
+      log.error("result has not parsed " + e);
       throw new PersistException(e);
     }
     return result;
@@ -109,6 +112,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
     try {
       statement.setInt(13, object.getId());
     } catch (SQLException e) {
+      log.error("couldn't prepared Statement for Insert " + e);
       e.printStackTrace();
     }
   }
@@ -167,6 +171,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
       }
 
     } catch (SQLException e) {
+      log.error("couldn't prepared Statement for Update " + e);
       throw new PersistException(e);
     }
   }
