@@ -53,23 +53,12 @@ public class AddContactServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         // create contact for insert to db
-        Contact newContact = new Contact();
-
-        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
         String dealName = request.getParameter("deal_name");
         String taskName = request.getParameter("task_name");
 
-        // set Company for contact:
-        if(company_id != null && company_id != 0){
-            Company chosenCompany = (Company) companyDao.getByPK(company_id);
-            newContact.setCompanyId(chosenCompany);
-        }else if(company_id != null && company_id == 0){
-            newContact.setCompanyId(buildCompany(request));
-        }
-
+        Contact newContact = buildContact(request);
         Contact contact = (Contact) contactDao.create(newContact);
         addFilesToContact(request, contact);
-
 
         // Add deal to contact
         if(dealName != null){
@@ -134,8 +123,17 @@ public class AddContactServlet extends HttpServlet {
     }
 
     private Contact buildContact(HttpServletRequest request){
-
         Contact newContact = new Contact();
+
+        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
+        // set Company for contact:
+        if(company_id != null && company_id != 0){
+            Company chosenCompany = (Company) companyDao.getByPK(company_id);
+            newContact.setCompanyId(chosenCompany);
+        }else if(company_id != null && company_id == 0){
+            newContact.setCompanyId(buildCompany(request));
+        }
+
         // get addContactForm parameters
         String name = request.getParameter("contact_name");
         Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;

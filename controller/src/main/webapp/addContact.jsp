@@ -31,7 +31,7 @@
                        <label for="tegs" class="control-label col-xs-2">Теги</label>
 
                        <div class="col-xs-10">
-                           <input type="text" class="form-control" id="tegs" name="tegs" placeholder="Теги">
+                           <input type="text" class="form-control" id="tegs" name="tegs" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" >
                        </div>
                    </div>
 
