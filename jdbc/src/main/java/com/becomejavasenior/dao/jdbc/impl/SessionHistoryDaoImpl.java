@@ -7,6 +7,7 @@ import com.becomejavasenior.dao.SessionHistoryDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +19,9 @@ import java.util.List;
  * Created by Default71721 on 31.01.16.
  */
 public class SessionHistoryDaoImpl extends AbstractJDBCDao<SessionHistory> implements SessionHistoryDao<SessionHistory> {
+
+    private static final Logger log = Logger.getLogger(SessionHistoryDaoImpl.class);
+
     private final static String SELECT_QUERY = "SELECT session_history_id, user_id, ip_address, browser, data_session FROM session_history";
     private final static String SELECT_BY_PK_QUERY = "SELECT session_history_id, user_id, ip_address, browser, data_session FROM session_history WHERE session_history_id= ?";
     private final static String CREATE_QUERY = "INSERT INTO session_history (user_id, ip_address, browser, data_session) VALUES (?, ?, ?, ?);";
@@ -70,6 +74,7 @@ public class SessionHistoryDaoImpl extends AbstractJDBCDao<SessionHistory> imple
                 resultList.add(sessionHistory);
             }
         } catch (Exception e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return resultList;
@@ -83,6 +88,7 @@ public class SessionHistoryDaoImpl extends AbstractJDBCDao<SessionHistory> imple
             statement.setString(3, sessionHistory.getBrowser());
             statement.setTimestamp(4, Timestamp.valueOf(sessionHistory.getCreationDate()));
         } catch (Exception e) {
+            log.error("couldn't prepared Statement for Insert " + e);
             throw new PersistException(e);
         }
     }
@@ -96,6 +102,7 @@ public class SessionHistoryDaoImpl extends AbstractJDBCDao<SessionHistory> imple
             statement.setTimestamp(4, Timestamp.valueOf(sessionHistory.getCreationDate()));
             statement.setInt(5, sessionHistory.getId());
         } catch (Exception e) {
+            log.error("couldn't prepared Statement for Update " + e);
             throw new PersistException(e);
         }
     }
