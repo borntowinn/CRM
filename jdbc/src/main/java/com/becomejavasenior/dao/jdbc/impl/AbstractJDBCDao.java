@@ -2,7 +2,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.AbstractDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import java.sql.*;
@@ -12,10 +11,7 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
 
     private static final Logger log = Logger.getLogger(AbstractJDBCDao.class);
 
-    private Connection connection = ConnectionFactory.getConnection();
-
     protected DataSource dataSource = DataSource.getInstance();
-
 
     protected abstract String getSelectQuery();
 
@@ -155,19 +151,6 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
         } catch (SQLException e) {
             log.error("couldn't delete " + e.getMessage());
             throw new PersistException(e);
-        }
-    }
-
-
-    public void closeCurrentConnection()
-    {
-        try {
-            connection.close();
-        }
-        catch (SQLException e)
-        {
-            log.error("couldn't close connection " + e.getMessage());
-            throw new PersistException("Unable to close database connection");
         }
     }
 }
