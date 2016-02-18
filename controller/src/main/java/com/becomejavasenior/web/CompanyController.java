@@ -87,10 +87,6 @@ public class CompanyController extends HttpServlet {
                 quickAddDeal(req, company, contact);
             }
         }
-
-        userDao.closeCurrentConnection();
-        companyDao.closeCurrentConnection();
-        commentDao.closeCurrentConnection();
     }
 
     private Contact createContact(HttpServletRequest req, Company company)
@@ -112,7 +108,6 @@ public class CompanyController extends HttpServlet {
         contact.setPhoneType(Integer.valueOf(req.getParameter("phoneType")));
         contact.setCompanyId(company);
 
-        companyDao.closeCurrentConnection();
         return contactDao.create(contact);
     }
 
@@ -136,10 +131,5 @@ public class CompanyController extends HttpServlet {
         deal.setCreationDate(LocalDateTime.now());
 
         dealDao.create(deal);
-        dealDao.closeCurrentConnection();
-        phaseDao.closeCurrentConnection();
-        userDao.closeCurrentConnection();
-        contactDao.closeCurrentConnection();
-        companyDao.closeCurrentConnection();
     }
 }

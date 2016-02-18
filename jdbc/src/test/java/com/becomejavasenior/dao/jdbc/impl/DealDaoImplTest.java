@@ -3,8 +3,8 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.DealDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.math.BigDecimal;
@@ -28,7 +28,6 @@ public class DealDaoImplTest {
     @BeforeClass
     public static void setupAndConnection()
     {
-        Connection connection = ConnectionFactory.getConnection();
         dealDao = DaoFactory.getDealDao();
         deal = new Deal();
         company = new Company();
@@ -49,18 +48,8 @@ public class DealDaoImplTest {
         deal.setPhase(phase);
         deal.setDealName("testing name");
 
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        dealDao.closeCurrentConnection();
-    }
 
     @Test
     public void createDbEntry_LocalDeal_DealFromDb()

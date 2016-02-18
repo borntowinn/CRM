@@ -2,18 +2,53 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by Default71721 on 22.01.16
  */
-public class Comment implements Serializable{
+public class Comment implements Serializable {
     private Integer id;
     private String comment;
     private LocalDateTime creationDate;
+    private Company companyId;
+    private Deal dealId;
+    private Contact contactId;
+    private Task taskId;
 
     public Comment() {
 
+    }
+
+    public Task getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Task taskId) {
+        this.taskId = taskId;
+    }
+
+    public Company getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Company companyId) {
+        this.companyId = companyId;
+    }
+
+    public Deal getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(Deal dealId) {
+        this.dealId = dealId;
+    }
+
+    public Contact getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Contact contactId) {
+        this.contactId = contactId;
     }
 
     public Integer getId() {

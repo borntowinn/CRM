@@ -30,5 +30,4 @@ public class CompanyService {
     public static Map<Integer, String> getPhoneTypeMap() {
         return phoneTypeMap;
     }
-
 }

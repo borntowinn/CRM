@@ -5,8 +5,8 @@ import com.becomejavasenior.Contact;
 import com.becomejavasenior.User;
 import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,22 +28,11 @@ public class ContactDaoImplTest {
     @BeforeClass
     public static void beforeScenario()
     {
-        Connection connection = ConnectionFactory.getConnection();
         contactDao = DaoFactory.getContactDAO();
 
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        contactDao.closeCurrentConnection();
-    }
+
 
     @Test
     public void getByPKTest()
