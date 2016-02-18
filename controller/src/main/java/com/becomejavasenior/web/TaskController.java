@@ -36,21 +36,17 @@ public class TaskController extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String requestURI = request.getRequestURI();
-        String url = "";
+        String requestURI = request.getPathInfo();
+        String url;
 
-        if (requestURI.endsWith(URI_LIST_ALL)) {
-            url = this.listAll(request);
-        } else if (requestURI.endsWith(URI_CREATE)) {
-            url = this.createTask(request);
-        } else if (requestURI.endsWith(URI_LIST_CURRENT)) {
-            url = this.listCurrent(request);
-        } else if (requestURI.endsWith(URI_LIST_DAY)) {
-            url = this.listDay(request);
-        } else if (requestURI.endsWith(URI_LIST_WEEK)) {
-            url = this.listWeek();
-        } else if (requestURI.endsWith(URI_LIST_MONTH)) {
-            url = this.listMonth();
+        switch(requestURI){
+            case URI_LIST_ALL: url = this.listAll(request); break;
+            case URI_CREATE: url = this.createTask(request); break;
+            case URI_LIST_CURRENT: url = this.listCurrent(request); break;
+            case URI_LIST_DAY: url = this.listDay(request); break;
+            case URI_LIST_WEEK: url = this.listWeek(); break;
+            case URI_LIST_MONTH:  url = this.listMonth(); break;
+            default: url = this.listAll(request); break;
         }
 
         request.getRequestDispatcher(url)
@@ -92,11 +88,12 @@ public class TaskController extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String requestURI = request.getRequestURI();
-        String url = "";
+        String requestURI = request.getPathInfo();
+        String url;
 
-        if (requestURI.endsWith(URI_ADD)) {
-            url = this.addTask(request);
+        switch(requestURI){
+            case URI_ADD: url = this.addTask(request); break;
+            default: url = this.addTask(request); break;
         }
 
         request.getRequestDispatcher(url)

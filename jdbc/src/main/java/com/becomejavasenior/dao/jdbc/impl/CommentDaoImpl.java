@@ -3,7 +3,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 import java.sql.*;
@@ -19,7 +18,6 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
     private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String UPDATE_QUERY = "UPDATE comment SET comment = ?, data_creation = ?, company_id = ?, contact_id = ?, deal_id = ?, task_id = ? WHERE comment_id = ?;";
     private final static String DELETE_QUERY = "DELETE FROM comment WHERE comment_id= ?;";
-    private final static String GET_TASK_COMMENT = "SELECT comment FROM comment WHERE task_id= ?;";
 
     @Override
     public String getSelectQuery() {
@@ -134,29 +132,6 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
             statement.setInt(5, comment.getDealId().getId());
             statement.setInt(6, comment.getTaskId().getId());
             statement.setInt(7, comment.getId());
-        } catch (SQLException e) {
-            throw new PersistException(e);
-        }
-    }
-
-    @Override
-    public String getTaskComment(Integer task_id) throws PersistException {
-        String comment = "";
-        String sql = CommentDaoImpl.GET_TASK_COMMENT;
-        try (Connection connection = ConnectionFactory.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, task_id);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("comment") != null) {
-                    comment = new String(rs.getString("comment"));
-                }
-            }
-
-            if(rs != null){
-                rs.close();
-            }
-
-            return comment;
         } catch (SQLException e) {
             throw new PersistException(e);
         }
