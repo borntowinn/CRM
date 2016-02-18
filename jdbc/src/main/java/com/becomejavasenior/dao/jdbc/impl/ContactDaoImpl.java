@@ -172,7 +172,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             throw new PersistException(e);
         }
 
-        try (PreparedStatement statement = super.getConnection().prepareStatement(ADD_COMMENT_TO_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_TO_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, commentInsertedId);
             statement.setInt(2, contact_id);
             int count = statement.executeUpdate();

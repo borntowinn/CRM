@@ -2,7 +2,6 @@ package com.becomejavasenior.web;
 
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.sun.deploy.net.HttpRequest;
 

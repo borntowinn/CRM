@@ -4,6 +4,7 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -192,7 +193,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
     PreparedStatement statement = null;
     Connection connection = null;
     try {
-      connection = super.getConnection();
+      connection = DataSource.getInstance().getConnection();
       statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       while (rs.next()) {

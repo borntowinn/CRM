@@ -13,10 +13,6 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
 
     protected DataSource dataSource = DataSource.getInstance();
 
-    public Connection getConnection() {
-        return connection;
-    }
-
     protected abstract String getSelectQuery();
 
     protected abstract String getUpdateQuery();
