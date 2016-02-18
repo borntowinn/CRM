@@ -1,7 +1,6 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.DashboardDao;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
