@@ -4,11 +4,8 @@ import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import org.junit.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -22,24 +19,12 @@ public class UserRoleTest {
 
     @BeforeClass
     public static void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
         userRoleDao = DaoFactory.getUserRoleDAO();
         userRole = new UserRole();
         lastInsertedObject = new UserRole();
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 
-    @AfterClass
-    public static void closeConnection()
-    {
-        userRoleDao.closeCurrentConnection();
-    }
 
     @Test
     public void testCreateAndUpdateAndGetByPK(){

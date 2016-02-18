@@ -1,7 +1,8 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.dao.DashboardDao;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import org.apache.log4j.Logger;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -11,10 +12,12 @@ import java.sql.*;
  */
 public class DashboardDaoImpl implements DashboardDao {
 
+    private static final Logger log = Logger.getLogger(DashboardDaoImpl.class);
+
     private final String SELECT_DEALS = "SELECT * FROM deal";
     private final String SELECT_DEALS_Budget_SUM = "SELECT SUM(budget) from deal";
-    private final String SELECT_SUCCESS_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'Успешно реализовано')";
-    private final String SELECT_FAILED_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'Закрыто и нереализовано')";
+    private final String SELECT_SUCCESS_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'First')";
+    private final String SELECT_FAILED_DEALS = "SELECT * FROM deal WHERE phase_id IN (SELECT phase_id FROM phase WHERE phase = 'зnewPhase')";
     private final String SELECT_DEALS_WITHOUT_TASK = "SELECT * FROM deal WHERE deal_id NOT IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private final String SELECT_DEALS_WITH_TASK = "SELECT * FROM deal WHERE deal_id IN (SELECT deal_id from task WHERE deal_id = deal_id)";
     private final String SELECT_TASKS = "SELECT * FROM task";
@@ -23,19 +26,18 @@ public class DashboardDaoImpl implements DashboardDao {
     private final String SELECT_CONTACTS = "SELECT * FROM contact";
     private final String SELECT_COMPANIES = "SELECT * FROM company";
 
-    private Connection connection = ConnectionFactory.getConnection();
+    private int getCount(String sql) {
 
-
-    private int getCount(String sql){
         Statement s = null;
         int count = 0;
-        try {
+        try (Connection connection = DataSource.getInstance().getConnection()) {
             s = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet r = s.executeQuery(sql);
             r.last();
             count = r.getRow();
             r.beforeFirst();
         } catch (SQLException e) {
+            log.error("getCount failed " + e);
             e.printStackTrace();
         }
 
@@ -51,12 +53,13 @@ public class DashboardDaoImpl implements DashboardDao {
     public BigDecimal getDealsBudgetSum() {
         BigDecimal value = new BigDecimal(String.valueOf(BigDecimal.ZERO));
 
-        try {
+        try (Connection connection = DataSource.getInstance().getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_DEALS_Budget_SUM);
             ResultSet result = statement.executeQuery();
             result.next();
             value = result.getBigDecimal(1);
         } catch (SQLException e) {
+            log.error("getDealsCount failed " + e);
             e.printStackTrace();
         }
         return value;

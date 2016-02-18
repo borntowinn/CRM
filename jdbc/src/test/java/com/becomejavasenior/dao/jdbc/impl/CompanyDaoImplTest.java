@@ -1,11 +1,12 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.Company;
+import com.becomejavasenior.File;
 import com.becomejavasenior.User;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.junit.*;
 
 import java.sql.Connection;
@@ -24,20 +25,8 @@ public class CompanyDaoImplTest {
 
     @BeforeClass
     public static void setUpConnection() {
-        Connection connection = ConnectionFactory.getConnection();
         companyDao = DaoFactory.getCompanyDAO();
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-    }
-
-    @AfterClass
-    public static void closeConnection()
-    {
-        companyDao.closeCurrentConnection();
     }
 
     @Test

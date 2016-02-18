@@ -4,15 +4,19 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Default71721 on 28.01.16.
  */
 public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> {
+
+    private static final Logger log = Logger.getLogger(DealDaoImpl.class);
+
     private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal";
     private static final String SELECT_BY_PK_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal WHERE deal_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -51,7 +55,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
 
     @Override
     protected List<Deal> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Deal> resultList = new LinkedList<>();
+        ArrayList<Deal> resultList = new ArrayList<>();
         try {
             while (rs.next()) {
                 Deal deal = new Deal();
@@ -70,6 +74,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
+            log.error("result has not parsed " + e);
             throw new PersistException();
         }
         return resultList;
@@ -90,6 +95,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
+            log.error("couldn't prepared Statement for Insert Deal " + e);
             throw new PersistException();
         }
     }
@@ -110,6 +116,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
+            log.error("couldn't prepared Statement for Update Deal " + e);
             throw new PersistException();
         }
     }

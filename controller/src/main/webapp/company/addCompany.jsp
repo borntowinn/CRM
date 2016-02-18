@@ -11,25 +11,32 @@
 <html>
 <jsp:include page="../fragments/headTag.jsp"/>
 
+<head>
+    <style>
+        div {
+            line-height: 70%;
+        }
+    </style>
+</head>
+
 <body>
 <jsp:include page="../fragments/header.jsp"/>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-2 col-md-2 sidebar">
             <jsp:include page="../fragments/leftMenu.jsp"/>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Добавление компании</h3>
-                    </div>
-                    <br><br>
-
-                    <form class="form-horizontal" role="form" method="POST" action="/company?action=createCompany"
-                          accept-charset="UTF-8">
+            <form class="form-horizontal" role="form" method="POST" action = "/company"
+                  accept-charset="UTF-8">
+                <div class="col-sm-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Добавление компании</h3>
+                        </div>
+                        <br><br>
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="companyName">Название компании:</label>
@@ -42,8 +49,8 @@
                             <label class="control-label col-sm-5" for="responsibleList">Ответственный:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="responsibleList" name="responsibleName">
-                                    <c:forEach var="entry" items="${userMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
+                                    <c:forEach var="user" items="${userList}">
+                                        <option value="${user.id}">${user.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -72,25 +79,22 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Добавить</button>
-                            </div>
+                            <label class="control-label col-sm-5">Добавить файлы</label>
+                            <input id="input-files" name="inputFiles[]" type="file" class="file"
+                                   multiple data-show-upload="false" data-show-caption="true">
                         </div>
-                    </form>
 
-                </div>
-
-                <%--panel--%>
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Добавление контакта</h3>
                     </div>
-                    <br><br>
 
-                    <form class="form-horizontal" role="form" method="POST" action="/company?action=createContact"
-                          accept-charset="UTF-8">
+                    <%--panel--%>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Добавление контакта</h3>
+                        </div>
+                        <br><br>
+
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="nameSurname">Имя Фамилия:</label>
@@ -102,18 +106,8 @@
                             <label class="control-label col-sm-5" for="responsibleListContact">Ответственный:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="responsibleListContact" name="responsibleNameContact">
-                                    <c:forEach var="entry" items="${userMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-5" for="companyList">Компания:</label>
-                            <div class="col-sm-5">
-                                <select class="form-control" id="companyList" name="companyId">
-                                    <c:forEach var="entry" items="${companyMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
+                                    <c:forEach var="user" items="${userList}">
+                                        <option value="${user.id}">${user.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -144,26 +138,19 @@
                             <label class="control-label col-sm-5" for="skype">Skype:</label>
                             <input type="text" id="skype" name="skype">
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Добавить</button>
-                            </div>
-                        </div>
-                    </form>
+
+
+                    </div>
+                    <%--col-sm-9--%>
 
                 </div>
-                <%--col-sm-9--%>
+                <div class="col-sm-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Быстрое добавление сделки</h3>
+                        </div>
+                        <br><br>
 
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Быстрое добавление сделки</h3>
-                    </div>
-                    <br><br>
-
-                    <form class="form-horizontal" role="form" method="POST" action="/company?action=quickAddDeal"
-                          accept-charset="UTF-8">
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="dealName">Название сделки:</label>
@@ -175,8 +162,8 @@
                             <label class="control-label col-sm-5" for="phaseList">Этап:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="phaseList" name="phase">
-                                    <c:forEach var="entry" items="${phaseMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
+                                    <c:forEach var="phase" items="${phaseList}">
+                                        <option value="${phase.id}">${phase.phase}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -185,18 +172,17 @@
                             <label class="control-label col-sm-5" for="position">Бюджет:</label>
                             <input type="text" id="budget" name="budget">
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default">Добавить</button>
-                            </div>
-                        </div>
-                    </form>
+
+                    </div>
+                    <%--col-sm-9--%>
 
                 </div>
-                <%--col-sm-9--%>
-
-            </div>
-
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Добавить</button>
+                    </div>
+                </div>
+            </form>
             <%--row--%>
         </div>
         <%--main--%>

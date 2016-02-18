@@ -1,6 +1,9 @@
 package com.becomejavasenior.dao;
 
 import com.becomejavasenior.dao.exception.PersistException;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -13,5 +16,5 @@ public interface AbstractDao<T> {
     List<T> getAll() throws PersistException;
     void update(T object) throws PersistException;
     void delete(Integer id) throws PersistException;
-    void closeCurrentConnection() throws PersistException;
+    ResultSet executeQuery(String query) throws PersistException;
 }

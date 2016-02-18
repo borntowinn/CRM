@@ -15,31 +15,9 @@ import java.util.Map;
  */
 public class CompanyService {
 
-    private static Map<Integer, String> userMap;
     private static Map<Integer, String> phoneTypeMap;
-    private static Map<Integer, String> companyMap;
-    private static Map<Integer, String> phaseMap;
 
     static {
-        userMap = new HashMap<>();
-        List<User> userList = DaoFactory.getUserDAO().getAll();
-        for (User user : userList) {
-            userMap.put(user.getId(), user.getName());
-        }
-
-        companyMap = new HashMap<>();
-        List<Company> companyList = DaoFactory.getCompanyDAO().getAll();
-        for (Company company : companyList) {
-            companyMap.put(company.getId(), company.getCompanyName());
-        }
-
-        phaseMap = new HashMap<>();
-        List<Phase> phaseList = DaoFactory.getPhaseDao().getAll();
-        for (Phase phase : phaseList) {
-            phaseMap.put(phase.getId(), phase.getPhase());
-
-        }
-
         phoneTypeMap = new HashMap<>();
         phoneTypeMap.put(1, "Домашний");
         phoneTypeMap.put(2, "Рабочий");
@@ -48,20 +26,8 @@ public class CompanyService {
         phoneTypeMap.put(5, "Другой");
     }
 
-    public static Map<Integer, String> getPhaseMap() {
-        return phaseMap;
-    }
-
-    public static Map<Integer, String> getUserMap() {
-
-        return userMap;
-    }
 
     public static Map<Integer, String> getPhoneTypeMap() {
         return phoneTypeMap;
-    }
-
-    public static Map<Integer, String> getCompanyMap() {
-        return companyMap;
     }
 }

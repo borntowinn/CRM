@@ -6,12 +6,15 @@ import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.UserRoleDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
+    private static final Logger log = Logger.getLogger(UserDaoImpl.class);
+
     private final static String SELECT_QUERY = "SELECT * FROM \"user\"";
     private final static String LAST_INSERT_ID_QUERY = "SELECT user_id, name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language FROM \"user\" WHERE user_id=?";
     private final static String CREATE_QUERY = "INSERT INTO \"user\" (name, password, description, date_creation, email, mobile_phone, work_phone, user_role_id, language) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -52,7 +55,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<User> result = new LinkedList<User>();
+        ArrayList<User> result = new ArrayList<User>();
         try {
             while (rs.next()) {
                 User user = new User();
@@ -71,6 +74,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
                 result.add(user);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -119,6 +123,7 @@ public class UserDaoImpl extends AbstractJDBCDao<User> implements UserDao<User>{
             statement.setInt(8, object.getUserRole().getId());
             statement.setInt(9, object.getLanguage());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert " + e);
             throw new PersistException(e);
         }
     }

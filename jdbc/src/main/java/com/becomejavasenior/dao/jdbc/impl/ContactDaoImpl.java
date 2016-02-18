@@ -6,11 +6,17 @@ import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-
-import javax.sql.rowset.serial.SerialBlob;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
+import org.apache.log4j.Logger;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +24,10 @@ import java.util.List;
  */
 public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactDao<Contact> {
 
-    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact";
-    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, responsible, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id  FROM contact WHERE contact_id = ?";
+    private static final Logger log = Logger.getLogger(ContactDaoImpl.class);
+
+    private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact";
+    private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact WHERE contact_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
@@ -60,7 +68,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
     @Override
     protected List<Contact> parseResultSet(ResultSet rs) throws PersistException {
-        LinkedList<Contact> result = new LinkedList<>();
+        ArrayList<Contact> result = new ArrayList<>();
         try {
             while (rs.next()) {
                 Contact contact = new Contact();
@@ -82,6 +90,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 result.add(contact);
             }
         } catch (SQLException e) {
+            log.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -111,6 +120,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
             statement.setInt(11, responsible_id);
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Insert Comment " + e);
             throw new PersistException(e);
         }
     }
@@ -131,6 +141,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setInt(11, contact.getResponsible().getId());
             statement.setInt(12, contact.getId());
         } catch (SQLException e) {
+            log.error("couldn't prepared Statement for Update Comment " + e);
             throw new PersistException(e);
         }
     }
@@ -143,12 +154,13 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
     public void addCommentToContact(Comment comment, int contact_id) {
         int commentInsertedId = 0;
-        try (PreparedStatement statement = super.getConnection().prepareStatement(ADD_COMMENT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, comment.getComment());
             statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             int count = statement.executeUpdate();
             if (count != 1) {
+                log.warn("On persist modify more then 1 record:");
                 throw new PersistException("On persist modify more then 1 record: " + count);
             }
             ResultSet rs = statement.getGeneratedKeys();
@@ -156,6 +168,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 commentInsertedId = rs.getInt(1);
             }
         } catch (SQLException e) {
+            log.error("Couldn't add comment to Contact" + e);
             throw new PersistException(e);
         }
 
@@ -171,6 +184,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 commentInsertedId = rs.getInt(1);
             }
         } catch (SQLException e) {
+            log.error("Couldn't add comment to Contact" + e);
             throw new PersistException(e);
         }
 
@@ -182,10 +196,10 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
         int fileInsertedId = 0;
         PreparedStatement insertFile = null;
         PreparedStatement insertFileToFileContact = null;
-        Connection connection = super.getConnection();
-
+        Connection connection = null;
         try {
-            super.getConnection().setAutoCommit(false);
+            connection = DataSource.getInstance().getConnection();
+            connection.setAutoCommit(false);
             insertFile = connection.prepareStatement(ADD_FILE_QUERY, Statement.RETURN_GENERATED_KEYS);
             insertFileToFileContact = connection.prepareStatement(ADD_FILE_TO_CONTACT_QUERY);
 
@@ -209,6 +223,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
 
         } catch (SQLException e) {
+            log.error("File adding failed" + e);
             throw new PersistException(e);
         } finally {
             if (insertFile != null) {
@@ -228,6 +243,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
+                log.error("Couldn't setAutoCommint to true");
                 e.printStackTrace();
             }
         }

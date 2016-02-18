@@ -4,11 +4,9 @@ package com.becomejavasenior.dao.jdbc.impl;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.TaskDao;
 import com.becomejavasenior.dao.exception.PersistException;
-import com.becomejavasenior.dao.jdbc.factory.ConnectionFactory;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
+import org.junit.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,23 +20,16 @@ import static junit.framework.TestCase.assertEquals;
  * Created by Katia on 03.02.2016.
  */
 public class TaskDaoImplTest {
-    private Task newTask = null;
-    private Task lastInsertedObject = null;
+    private static Task newTask = null;
+    private static Task lastInsertedObject = null;
     private List<Task> tasks = null;
-    private TaskDao taskDao =null;
+    private static TaskDao taskDao =null;
 
-    @Before
-    public void setUp() {
-        Connection connection = ConnectionFactory.getConnection();
+    @BeforeClass
+    public static void setUp() {
         taskDao = DaoFactory.getTaskDao();
         newTask = new Task();
         lastInsertedObject = new Task();
-
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test

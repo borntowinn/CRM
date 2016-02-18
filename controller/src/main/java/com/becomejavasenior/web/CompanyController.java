@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Default71721 on 06.02.16.
@@ -23,13 +24,18 @@ import java.util.Map;
         urlPatterns = {"/company"})
 
 public class CompanyController extends HttpServlet {
+    private final UserDao<User> userDao = DaoFactory.getUserDAO();
+    private final PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
+    /*Following lists were declared final to prevent unwanted changes in the concurrent environment.
+    Current approach has to be changed as soon as Ajax tool for continuous load from DB will be implemented.*/
+    private final List<User> userList = userDao.getAll();
+    private final List<Phase> phaseList = phaseDao.getAll();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("userMap", TaskService.getUserMap());
+        req.setAttribute("userList", userList);
         req.setAttribute("phoneTypeMap", CompanyService.getPhoneTypeMap());
-        req.setAttribute("companyMap", CompanyService.getCompanyMap());
-        req.setAttribute("phaseMap", CompanyService.getPhaseMap());
+        req.setAttribute("phaseList", phaseList);
 
         req.getRequestDispatcher("/company/addCompany.jsp")
                 .forward(req, resp);
@@ -37,32 +43,25 @@ public class CompanyController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("userMap", CompanyService.getUserMap());
+        req.setAttribute("userList", userList);
         req.setAttribute("phoneTypeMap", CompanyService.getPhoneTypeMap());
-        req.setAttribute("companyMap", CompanyService.getCompanyMap());
-        req.setAttribute("phaseMap", CompanyService.getPhaseMap());
+        req.setAttribute("phaseList", phaseList);
 
-        switch (req.getParameter("action"))
-        {
-            case "createCompany":
-                createCompany(req);
-                break;
-            case "createContact":
-                createContact(req);
-                break;
-            case "quickAddDeal":
-                quickAddDeal(req);
-                break;
-        }
+        createCompany(req);
+
         req.getRequestDispatcher("/company/addCompany.jsp")
                 .forward(req, resp);
     }
 
     private void createCompany(HttpServletRequest req)
     {
+        ArrayList<Integer> filesId = new ArrayList<>();
         Company company = new Company();
         UserDao<User> userDao = DaoFactory.getUserDAO();
         CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
+        Comment comment = new Comment();
+        CommentDao<Comment> commentDao = DaoFactory.getCommentDao();
+        Contact contact = new Contact();
 
         company.setCompanyName(req.getParameter("companyName"));
         company.setAddress(req.getParameter("address"));
@@ -74,13 +73,23 @@ public class CompanyController extends HttpServlet {
         company.setCreatedBy(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleName"))));
         company.setDeleted(false);
 
-        companyDao.create(company);
+        comment.setComment(req.getParameter("note"));
+        comment.setCreationDate(LocalDateTime.now());
+        company = companyDao.create(company);
+        comment = commentDao.create(comment);
+        companyDao.addCommentForCompany(comment, company);
 
-        userDao.closeCurrentConnection();
-        companyDao.closeCurrentConnection();
+        if(req.getParameter("nameSurname")!=null)
+        {
+            contact = createContact(req, company);
+            if(req.getParameter("dealName")!=null)
+            {
+                quickAddDeal(req, company, contact);
+            }
+        }
     }
 
-    private void createContact(HttpServletRequest req)
+    private Contact createContact(HttpServletRequest req, Company company)
     {
         ContactDao<Contact> contactDao = DaoFactory.getContactDao();
         UserDao<User> userDao = DaoFactory.getUserDAO();
@@ -97,14 +106,12 @@ public class CompanyController extends HttpServlet {
         contact.setEmail(req.getParameter("contactEmail"));
         contact.setSkype(req.getParameter("skype"));
         contact.setPhoneType(Integer.valueOf(req.getParameter("phoneType")));
-        contact.setCompanyId(companyDao.getByPK(Integer.valueOf(req.getParameter("companyId"))));
+        contact.setCompanyId(company);
 
-        contactDao.create(contact);
-        contactDao.closeCurrentConnection();
-        companyDao.closeCurrentConnection();
+        return contactDao.create(contact);
     }
 
-    private void quickAddDeal(HttpServletRequest req)
+    private void quickAddDeal(HttpServletRequest req, Company company, Contact contact)
     {
         PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
         DealDao<Deal> dealDao = DaoFactory.getDealDao();
@@ -118,16 +125,11 @@ public class CompanyController extends HttpServlet {
         deal.setPhase(phaseDao.getByPK(Integer.valueOf(req.getParameter("phase"))));
         deal.setResponsible(userDao.getByPK(1));
         deal.setCreatedBy(userDao.getByPK(1));
-        deal.setCompany(companyDao.getByPK(1));
-        deal.setContact(contactDao.getByPK(1));
+        deal.setCompany(company);
+        deal.setContact(contact);
         deal.setDeleted(false);
         deal.setCreationDate(LocalDateTime.now());
 
         dealDao.create(deal);
-        dealDao.closeCurrentConnection();
-        phaseDao.closeCurrentConnection();
-        userDao.closeCurrentConnection();
-        contactDao.closeCurrentConnection();
-        companyDao.closeCurrentConnection();
     }
 }

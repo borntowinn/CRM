@@ -2,7 +2,6 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by Default71721 on 22.01.16
@@ -12,13 +11,46 @@ public class File implements Serializable {
     private LocalDateTime creationDate;
     private byte[] file;
     private String fileName;
+    private Company companyId;
+    private Deal dealId;
+    private Contact contactId;
+    private User userId;
 
     public File() {
 
     }
 
-    public void setFile(byte[] file) {
-        this.file = file;
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public Company getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Company companyId) {
+        this.companyId = companyId;
+    }
+
+    public Deal getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(Deal dealId) {
+        this.dealId = dealId;
+    }
+
+    public Contact getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Contact contactId) {
+        this.contactId = contactId;
     }
 
     public String getFileName() {
@@ -47,5 +79,9 @@ public class File implements Serializable {
 
     public byte[] getFile() {
         return file;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
     }
 }
