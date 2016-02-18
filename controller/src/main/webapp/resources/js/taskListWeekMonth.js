@@ -3,7 +3,7 @@ $(document).ready(function(){
     var calendarView;
     var urlArray = location.pathname.split("/");
     if ( urlArray.length > 2 && urlArray[2] == "listWeek" ) {
-        calendarView = 'agendaWeek';
+        calendarView = 'agendaWeek'//basicWeek
     } else {
         calendarView = 'month';
     }
@@ -21,10 +21,10 @@ $(document).ready(function(){
         views: {
             month:{
                 timeFormat: 'HH:mm'
-            },
-            agendaWeek:{
-                //timeFormat: 'HH:mm'
             }
+            //agendaWeek:{
+            //    //timeFormat: 'HH:mm'
+            //}
 
         },
 
