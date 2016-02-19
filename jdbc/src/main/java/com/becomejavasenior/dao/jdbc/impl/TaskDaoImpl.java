@@ -15,8 +15,7 @@ import java.util.List;
  * Created by kast0615 on 2/1/2016.
  */
 public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> {
- 
-  private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
+
   private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
   private final static String SELECT_QUERY = "SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id";
   private final static String SELECT_BY_PK = "SELECT * FROM task WHERE task_id=?";
