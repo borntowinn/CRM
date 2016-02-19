@@ -78,6 +78,7 @@ public class AddContactServlet extends HttpServlet {
         List<Company> companyList = companyDao.getAll();
         List<Phase> phaseList = phaseDao.getAll();
         List<String > taskPeriodList = taskDao.getTaskPeriods();
+        List<String> tagList = contactDao.getAllTegs();
 
         request.setAttribute("userList", userList);
         request.setAttribute("taskTypeList", taskTypeList);
@@ -85,6 +86,7 @@ public class AddContactServlet extends HttpServlet {
         request.setAttribute("phaseList", phaseList);
         request.setAttribute("hourList", getHoursList());
         request.setAttribute("taskPeriods", taskPeriodList);
+        request.setAttribute("tagList", tagList);
 
         response.setContentType("text/html");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(ADD_CONTACT_URL);

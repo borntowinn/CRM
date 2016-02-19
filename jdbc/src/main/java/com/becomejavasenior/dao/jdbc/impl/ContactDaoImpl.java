@@ -261,7 +261,6 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 list.add(rs.getString("tag"));
             }
 
-
         } catch (SQLException e) {
             log.error("Couldn't get all entities " + e.getMessage());
             throw new PersistException(e);
