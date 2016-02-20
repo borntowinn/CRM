@@ -10,5 +10,4 @@
     <link rel='stylesheet' href="<c:url value="webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>">
     <link href="resources/css/style.css" rel="stylesheet">
     <link href="resources/css/dashboard.css" rel="stylesheet">
-    <link href="/resources/css/fullcalendar.css" rel="stylesheet">
 </head>
