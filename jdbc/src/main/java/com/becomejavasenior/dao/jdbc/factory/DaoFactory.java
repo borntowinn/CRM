@@ -47,4 +47,8 @@ public class DaoFactory {
     public static FileDao getFileDao() {
         return new FileDaoImpl();
     }
+
+    public static TagDao getTagDao() {
+        return new TagDaoImpl();
+    }
 }

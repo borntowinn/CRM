@@ -7,10 +7,7 @@ import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -101,10 +98,26 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
             statement.setTimestamp(1, Timestamp.valueOf(file.getCreationDate()));
             statement.setBytes(2, file.getFile());
             statement.setString(3, file.getFileName());
-            statement.setInt(4, file.getCompanyId().getId());
-            statement.setInt(5, file.getContactId().getId());
-            statement.setInt(6, file.getDealId().getId());
-            statement.setInt(7, file.getUserId().getId());
+            if (file.getCompanyId() != null) {
+                statement.setInt(4, file.getCompanyId().getId());
+            } else {
+                statement.setNull(4, Types.INTEGER);
+            }
+            if (file.getContactId() != null) {
+                statement.setInt(5, file.getContactId().getId());
+            } else {
+                statement.setNull(5, Types.INTEGER);
+            }
+            if (file.getDealId() != null)  {
+                statement.setInt(6, file.getDealId().getId());
+            } else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            if (file.getUserId() != null) {
+                statement.setInt(7, file.getUserId().getId());
+            } else {
+                statement.setNull(7, Types.INTEGER);
+            }
         } catch (SQLException e) {
             log.error("couldn't prepared Statement for Insert File " + e);
             throw new PersistException(e);

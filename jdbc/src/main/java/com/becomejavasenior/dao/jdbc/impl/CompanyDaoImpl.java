@@ -1,12 +1,8 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.Comment;
 import com.becomejavasenior.Company;
-import com.becomejavasenior.File;
 import com.becomejavasenior.User;
-import com.becomejavasenior.dao.CommentDao;
 import com.becomejavasenior.dao.CompanyDao;
-import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
@@ -24,20 +20,8 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, responsible = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"company\" WHERE company_id= ?;";
-    private final static String GET_ALL_FILES_FOR_COMPANY_QUERY = "SELECT * " +
-            "FROM file INNER JOIN files_to_company " +
-            "ON files_to_company.file_id=file.file_id " +
-            "WHERE files_to_company.company_id=";
-    private final static String GET_ALL_COMMENTS_FOR_COMPANY_QUERY = "SELECT * " +
-            "FROM comment INNER JOIN comments_to_company " +
-            "ON comments_to_company.comment_id=comment.comment_id " +
-            "WHERE comments_to_company.company_id=";
-    private final static String INSERT_FILES_TO_COMPANY_QUERY = "INSERT INTO files_to_company (file_id, company_id) VALUES (";
-    private final static String INSERT_COMMENTS_TO_COMPANY_QUERY = "INSERT INTO comments_to_company (comment_id, company_id) VALUES (";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
-    private FileDao<File> fileDao = DaoFactory.getFileDao();
-    private CommentDao<Comment> commentDao = DaoFactory.getCommentDao();
 
     @Override
     public String getSelectQuery() {
@@ -77,11 +61,15 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 Company company = new Company();
                 company.setId(rs.getInt("company_id"));
                 company.setCompanyName(rs.getString("company_name"));
-                company.setResponsible(userDao.getByPK(rs.getInt("responsible")));
+                if (rs.getInt("responsible") != 0) {
+                    company.setResponsible(userDao.getByPK(rs.getInt("responsible")));
+                }
                 company.setPhoneNumber(rs.getString("phone_number"));
                 company.setEmail(rs.getString("email"));
                 company.setWebsite(rs.getString("web_site"));
-                company.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
+                if (rs.getInt("createdby") != 0) {
+                    company.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
+                }
                 company.setAddress(rs.getString("address"));
                 company.setDeleted(rs.getBoolean("isdeleted"));
                 company.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
