@@ -4,6 +4,7 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.service.CompanyService;
+import com.becomejavasenior.service.TaskService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,9 @@ public class CompanyController extends HttpServlet {
         req.setAttribute("userList", userList);
         req.setAttribute("phoneTypeMap", CompanyService.getPhoneTypeMap());
         req.setAttribute("phaseList", phaseList);
+        req.setAttribute("periodMap", TaskService.getPeriodMap());
+        req.setAttribute("timeList", TaskService.getTimeList());
+        req.setAttribute("typeMap", TaskService.getTypeMap());
 
         req.getRequestDispatcher("/company/addCompany.jsp")
                 .forward(req, resp);
@@ -45,6 +51,9 @@ public class CompanyController extends HttpServlet {
         req.setAttribute("userList", userList);
         req.setAttribute("phoneTypeMap", CompanyService.getPhoneTypeMap());
         req.setAttribute("phaseList", phaseList);
+        req.setAttribute("periodMap", TaskService.getPeriodMap());
+        req.setAttribute("timeList", TaskService.getTimeList());
+        req.setAttribute("typeMap", TaskService.getTypeMap());
 
         createCompany(req);
 
@@ -68,22 +77,27 @@ public class CompanyController extends HttpServlet {
         company.setEmail(req.getParameter("email"));
         company.setPhoneNumber(req.getParameter("phoneNumber"));
         company.setCreationTime(LocalDateTime.now());
-        company.setResponsible(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleName"))));
-        company.setCreatedBy(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleName"))));
+        company.setResponsible(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleForCompany"))));
+        /*Must be changed to real creator as soon as user sessions will be implemented*/
+        company.setCreatedBy(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleForCompany"))));
         company.setDeleted(false);
-
-        comment.setComment(req.getParameter("note"));
-        comment.setCreationDate(LocalDateTime.now());
         company = companyDao.create(company);
-        comment = commentDao.create(comment);
 
-        if(req.getParameter("nameSurname")!=null)
+        if (!req.getParameter("note").equals("default")) {
+            comment.setComment(req.getParameter("note"));
+            comment.setCreationDate(LocalDateTime.now());
+            comment.setCompanyId(company);
+            commentDao.create(comment);
+        }
+
+        if(!req.getParameter("nameSurname").equals("default"))
         {
             contact = createContact(req, company);
-            if(req.getParameter("dealName")!=null)
+            if(!req.getParameter("dealName").equals("default"))
             {
                 quickAddDeal(req, company, contact);
             }
+            quickSubmitTask(req, company, contact);
         }
     }
 
@@ -95,8 +109,9 @@ public class CompanyController extends HttpServlet {
         Contact contact = new Contact();
 
         contact.setDeleted(false);
-        contact.setResponsible(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleNameContact"))));
-        contact.setCreatedBy(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleNameContact"))));
+        contact.setResponsible(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleForContact"))));
+        /*Must be changed to real creator as soon as user sessions will be implemented*/
+        contact.setCreatedBy(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleForContact"))));
         contact.setCreationTime(LocalDateTime.now());
         contact.setPosition(req.getParameter("position"));
         contact.setNameSurname(req.getParameter("nameSurname"));
@@ -122,6 +137,7 @@ public class CompanyController extends HttpServlet {
         deal.setBudget(BigDecimal.valueOf(Double.valueOf(req.getParameter("budget"))));
         deal.setPhase(phaseDao.getByPK(Integer.valueOf(req.getParameter("phase"))));
         deal.setResponsible(userDao.getByPK(1));
+        /*Must be changed to real creator as soon as user sessions will be implemented*/
         deal.setCreatedBy(userDao.getByPK(1));
         deal.setCompany(company);
         deal.setContact(contact);
@@ -129,5 +145,29 @@ public class CompanyController extends HttpServlet {
         deal.setCreationDate(LocalDateTime.now());
 
         dealDao.create(deal);
+    }
+
+    private void quickSubmitTask(HttpServletRequest req, Company company, Contact contact) {
+        Task task = new Task();
+        UserDao<User> userDao= DaoFactory.getUserDAO();
+
+        task.setTaskName("quicklySubmittedTask");
+        task.setComment(req.getParameter("comment"));
+        /*Must be changed to real creator as soon as user sessions will be implemented*/
+        task.setAuthor(userDao.getByPK(1));
+        task.setDeleted(false);
+        if (req.getParameter("periodName").equals("default")) {
+            return;
+        }
+        task.setPeriod(req.getParameter("periodName"));
+        task.setResponsible(userDao.getByPK(Integer.valueOf(req.getParameter("responsibleForDeal"))));
+
+        task.setCompany(company);
+        task.setContact(contact);
+        LocalDate date = (!req.getParameter("dateName").isEmpty()) ? LocalDate.parse(req.getParameter("dateName")) : LocalDate.now();
+        LocalTime time = (req.getParameter("timeName") != null) ? LocalTime.parse(req.getParameter("timeName")) : LocalTime.MIDNIGHT;
+        LocalDateTime planTime = LocalDateTime.of(date, time);
+        task.setPlanTime(planTime);
+        task.setTaskType(req.getParameter("typeName"));
     }
 }

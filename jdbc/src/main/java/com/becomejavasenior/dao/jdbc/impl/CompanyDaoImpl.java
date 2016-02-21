@@ -24,16 +24,6 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, responsible = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"company\" WHERE company_id= ?;";
-    private final static String GET_ALL_FILES_FOR_COMPANY_QUERY = "SELECT * " +
-            "FROM file INNER JOIN files_to_company " +
-            "ON files_to_company.file_id=file.file_id " +
-            "WHERE files_to_company.company_id=";
-    private final static String GET_ALL_COMMENTS_FOR_COMPANY_QUERY = "SELECT * " +
-            "FROM comment INNER JOIN comments_to_company " +
-            "ON comments_to_company.comment_id=comment.comment_id " +
-            "WHERE comments_to_company.company_id=";
-    private final static String INSERT_FILES_TO_COMPANY_QUERY = "INSERT INTO files_to_company (file_id, company_id) VALUES (";
-    private final static String INSERT_COMMENTS_TO_COMPANY_QUERY = "INSERT INTO comments_to_company (comment_id, company_id) VALUES (";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private FileDao<File> fileDao = DaoFactory.getFileDao();
