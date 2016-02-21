@@ -44,7 +44,6 @@ public class CommentDaoImplTest {
     {
         //when
         Integer id = commentDao.create(comment).getId();
-        System.out.println(id);
 
         //then
         Assert.assertTrue(comment.getComment().equals(commentDao.getByPK(id).getComment()));
@@ -67,7 +66,6 @@ public class CommentDaoImplTest {
         //when
         Integer id = commentDao.create(comment).getId();
         comment.setComment("newTestCommentWithoutSpaces");
-        System.out.println(comment.getId());
         comment.setId(id);
         commentDao.update(comment);
 

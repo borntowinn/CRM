@@ -1,8 +1,8 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
-import com.becomejavasenior.Comment;
-import com.becomejavasenior.File;
+import com.becomejavasenior.*;
 import com.becomejavasenior.dao.CommentDao;
+import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
@@ -25,16 +25,33 @@ public class FileDaoImplTest {
     private static File file;
     private List<File> files;
     private static FileDao<File> fileDao;
+    private static Contact contact;
+    private static Company company;
+    private static Deal deal;
+    private static User user;
 
     @BeforeClass
     public static void setupAndConnection()
     {
         byte[] bytes = {1, 2, 3, 4};
         fileDao = DaoFactory.getFileDao();
+        contact = new Contact();
+        contact.setId(1);
+        company = new Company();
+        company.setId(1);
+        user = new User();
+        user.setId(1);
+        deal = new Deal();
+        deal.setId(1);
+
         file = new File();
         file.setFileName("TestFilename");
         file.setCreationDate(LocalDateTime.now());
         file.setFile(bytes);
+        file.setContactId(contact);
+        file.setDealId(deal);
+        file.setCompanyId(company);
+        file.setUserId(user);
     }
 
 
@@ -73,7 +90,6 @@ public class FileDaoImplTest {
         //when
         Integer id = fileDao.create(file).getId();
         file.setFileName("newTestFileWithoutSpaces");
-        System.out.println(file.getId());
         file.setId(id);
         fileDao.update(file);
 

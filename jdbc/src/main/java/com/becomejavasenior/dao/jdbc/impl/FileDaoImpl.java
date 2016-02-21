@@ -74,14 +74,22 @@ public class FileDaoImpl extends AbstractJDBCDao<File> implements FileDao<File> 
                 file.setCreationDate(rs.getTimestamp("date_creation").toLocalDateTime());
                 file.setFile(rs.getBytes("file"));
                 file.setFileName(rs.getString("file_name"));
-                file.setCompanyId(companyDao.getByPK(rs.getInt("company_id")));
-                file.setContactId(contactDao.getByPK(rs.getInt("contact_id")));
-                file.setDealId(dealDao.getByPK(rs.getInt("deal_id")));
-                file.setUserId(userDao.getByPK(rs.getInt("user_id")));
+                if(rs.getInt("company_id") != 0) {
+                    file.setCompanyId(companyDao.getByPK(rs.getInt("company_id")));
+                }
+                if(rs.getInt("contact_id") != 0) {
+                    file.setContactId(contactDao.getByPK(rs.getInt("contact_id")));
+                }
+                if(rs.getInt("deal_id") != 0) {
+                    file.setDealId(dealDao.getByPK(rs.getInt("deal_id")));
+                }
+                if(rs.getInt("user_id") != 0) {
+                    file.setUserId(userDao.getByPK(rs.getInt("user_id")));
+                }
                 result.add(file);
             }
         } catch (SQLException e) {
-            log.error("result has not parsed " + e);
+            log.error("result has not been parsed " + e);
             throw new PersistException(e);
         }
         return result;

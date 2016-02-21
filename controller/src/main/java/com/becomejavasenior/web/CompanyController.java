@@ -4,7 +4,6 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import com.becomejavasenior.service.CompanyService;
-import com.becomejavasenior.service.TaskService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -77,7 +76,6 @@ public class CompanyController extends HttpServlet {
         comment.setCreationDate(LocalDateTime.now());
         company = companyDao.create(company);
         comment = commentDao.create(comment);
-        companyDao.addCommentForCompany(comment, company);
 
         if(req.getParameter("nameSurname")!=null)
         {
