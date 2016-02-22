@@ -3,7 +3,6 @@ package com.becomejavasenior.web;
 import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import com.sun.deploy.net.HttpRequest;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -175,7 +173,7 @@ public class AddContactServlet extends HttpServlet {
 
         // Adding files to DB
         for (Part part : parts) {
-            if(part.getContentType() != null){
+            if(part.getName().equals("file") && part.getContentType() != null && !part.getSubmittedFileName().isEmpty()){
                 File file = new File();
                 file.setFileName(part.getSubmittedFileName());
                 file.setCreationDate(LocalDateTime.now());

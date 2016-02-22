@@ -205,12 +205,12 @@
 
         <div class="col-sm-5 col-sm-offset-2 col-md-5 col-md-offset-2 main">
             <h2 class="page-header">Быстрое добавление сделки</h2>
-            <form id="addDeal" method="post" class="form-horizontal">
+            <form id="addDealForm" method="post" class="form-horizontal">
                 <div class="form-group">
                     <label for="deal_name" class="control-label col-xs-2">Название</label>
 
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" id="deal_name" name="deal_name" placeholder="Название">
+                        <input type="text" class="form-control" id="deal_name" name="deal_name" placeholder="Название" required>
                     </div>
                 </div>
 
@@ -229,7 +229,7 @@
                     <label for="budget" class="control-label col-xs-2">Бюджет</label>
 
                     <div class="col-xs-10">
-                        <input type="text" class="form-control" id="budget" name="budget" placeholder="Бюджет">
+                        <input type="text" class="form-control" id="budget" name="budget" placeholder="Бюджет" required>
                     </div>
                 </div>
 
@@ -313,8 +313,8 @@
 </div>
 
 <jsp:include page="fragments/footer.jsp"/>
-<script src="http://formvalidation.io/vendor/formvalidation/js/formValidation.min.js"></script>
-<script src="http://formvalidation.io/vendor/formvalidation/js/framework/bootstrap.min.js"></script>
+<%--<script src="http://formvalidation.io/vendor/formvalidation/js/formValidation.min.js"></script>--%>
+<%--<script src="http://formvalidation.io/vendor/formvalidation/js/framework/bootstrap.min.js"></script>--%>
 <script src="resources/js/addContact.js"></script>
 
 
