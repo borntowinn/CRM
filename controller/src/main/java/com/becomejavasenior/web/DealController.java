@@ -33,17 +33,6 @@ public class DealController extends HttpServlet {
 
     private final String CREATE_DEAL = "/deal/addDeal.jsp";
 
-    private final UserDao<User> USER_DAO = DaoFactory.getUserDAO();
-    private final PhaseDao<Phase> PHASE_DAO = DaoFactory.getPhaseDao();
-    private final TaskDao<Task> TASK_DAO = DaoFactory.getTaskDao();
-    private final CompanyDao<Company> COMPANY_DAO = DaoFactory.getCompanyDAO();
-    private final ContactDao<Contact> CONTACT_DAO = DaoFactory.getContactDAO();
-    private final DealDao<Deal> DEAL_DAO = DaoFactory.getDealDao();
-    private final TagDao<Tag> TAG_DAO = DaoFactory.getTagDao();
-    private final CommentDao<Comment> COMMENT_DAO = DaoFactory.getCommentDao();
-    private final FileDao<File> FILE_DAO = DaoFactory.getFileDao();
-
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("phoneTypeMap", CompanyService.getPhoneTypeMap());
@@ -75,6 +64,11 @@ public class DealController extends HttpServlet {
     }
 
     private void createDeal(HttpServletRequest request) {
+        UserDao<User> userDao = DaoFactory.getUserDAO();
+        PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
+        CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
+        ContactDao<Contact> contactDao = DaoFactory.getContactDAO();
+        DealDao<Deal> dealDao = DaoFactory.getDealDao();
         Deal deal = new Deal();
         try {
             deal.setDealName(request.getParameter("dealName"));
@@ -82,14 +76,14 @@ public class DealController extends HttpServlet {
             if (budgetString.contains(","))
                 throw new IllegalArgumentException("incorrect data input, use . ");
             deal.setBudget(new BigDecimal(Double.parseDouble(budgetString)));
-            deal.setCreatedBy(USER_DAO.getByPK(Integer.valueOf(request.getParameter("responsible"))));
-            deal.setPhase(PHASE_DAO.getByPK(Integer.valueOf(request.getParameter("phase"))));
-            deal.setResponsible(USER_DAO.getByPK(Integer.valueOf(request.getParameter("responsible"))));
+            deal.setCreatedBy(userDao.getByPK(Integer.valueOf(request.getParameter("responsible"))));
+            deal.setPhase(phaseDao.getByPK(Integer.valueOf(request.getParameter("phase"))));
+            deal.setResponsible(userDao.getByPK(Integer.valueOf(request.getParameter("responsible"))));
             deal.setCreationDate(LocalDateTime.now());
             String companyParameter = request.getParameter("company");
             Company company;
             if (!companyParameter.equals("")) {
-                company = COMPANY_DAO.getByPK(Integer.valueOf(companyParameter));
+                company = companyDao.getByPK(Integer.valueOf(companyParameter));
                 deal.setCompany(company);
             } else {
                 company = createCompany(request);
@@ -97,7 +91,7 @@ public class DealController extends HttpServlet {
             }
             String contactParameter = request.getParameter("contact");
             if (!contactParameter.equals("")) {
-                deal.setContact(CONTACT_DAO.getByPK(Integer.valueOf(contactParameter)));
+                deal.setContact(contactDao.getByPK(Integer.valueOf(contactParameter)));
             } else {
                 deal.setContact(createContact(request, company));
             }
@@ -114,9 +108,9 @@ public class DealController extends HttpServlet {
             if (request.getParameter("addTask") != null) {
                 createTask(request);
             }
-            DEAL_DAO.create(deal);
+            dealDao.create(deal);
             final String INSERT_INTO = "INSERT INTO tags_to_deal (tag_id, deal_id) VALUES";
-            DEAL_DAO.executeQuery(INSERT_INTO + " (" + createTag(request) + ", " + deal.getId() + ");");
+            dealDao.executeQuery(INSERT_INTO + " (" + createTag(request) + ", " + deal.getId() + ");");
         } catch (IllegalArgumentException | IOException | ServletException e) {
             LOGGER.error("incorrect data input" + e);
             e.printStackTrace();
@@ -124,6 +118,7 @@ public class DealController extends HttpServlet {
     }
 
     private List<File> createFile(HttpServletRequest request) throws IOException, ServletException {
+        FileDao<File> fileDao = DaoFactory.getFileDao();
         File file = new File();
         List<File> files = new ArrayList<>();
         file.setCreationDate(LocalDateTime.now());
@@ -136,56 +131,65 @@ public class DealController extends HttpServlet {
             array = IOUtils.toByteArray(fileContent);
             file.setFile(array);
         }
-        FILE_DAO.create(file);
+        fileDao.create(file);
         request.setAttribute("message", "File was added successfully");
         files.add(file);
         return files;
     }
 
     private Comment createComment(String note) {
+        CommentDao<Comment> commentDao = DaoFactory.getCommentDao();
         Comment comment = new Comment();
         comment.setCreationDate(LocalDateTime.now());
         comment.setComment(note);
-        return COMMENT_DAO.create(comment);
+        return commentDao.create(comment);
     }
 
     private int createTag(HttpServletRequest request) {
+        TagDao<Tag> tagDao = DaoFactory.getTagDao();
         Tag tag = new Tag();
         tag.setTag(request.getParameter("tags"));
-        return TAG_DAO.create(tag).getId();
+        return tagDao.create(tag).getId();
     }
 
     private void createTask(HttpServletRequest request) {
+        UserDao<User> userDAO = DaoFactory.getUserDAO();
+        TaskDao<Task> taskDao = DaoFactory.getTaskDao();
         Task task = new Task();
-        task.setResponsible(USER_DAO.getByPK(Integer.valueOf(request.getParameter("responsibleName"))));
-        task.setAuthor(USER_DAO.getByPK(1));
+        task.setResponsible(userDAO.getByPK(Integer.valueOf(request.getParameter("responsibleName"))));
+        task.setAuthor(userDAO.getByPK(1));
         task.setCreationTime(LocalDateTime.now());
         task.setDone(false);
         task.setDeleted(false);
         task.setPeriod(request.getParameter("periodName"));
-        TASK_DAO.create(task);
+        taskDao.create(task);
         request.setAttribute("message", "Task was added successfully");
     }
 
     private Company createCompany(HttpServletRequest request) {
+        UserDao<User> userDao = DaoFactory.getUserDAO();
+        CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
         Company company = new Company();
         company.setCompanyName(request.getParameter("companyName"));
         company.setPhoneNumber(request.getParameter("phoneNumber"));
         company.setEmail(request.getParameter("email"));
         company.setWebsite(request.getParameter("website"));
         company.setAddress(request.getParameter("address"));
-        company.setResponsible(USER_DAO.getByPK(1));
-        company.setCreatedBy(USER_DAO.getByPK(1));
+        company.setResponsible(userDao.getByPK(1));
+        company.setCreatedBy(userDao.getByPK(1));
         company.setDeleted(false);
         company.setCreationTime(LocalDateTime.now());
-        return  COMPANY_DAO.create(company);
+        return  companyDao.create(company);
     }
 
     private Contact createContact(HttpServletRequest request, Company company) {
+        CompanyDao<Company> companyDao = DaoFactory.getCompanyDAO();
+        ContactDao<Contact> contactDao = DaoFactory.getContactDAO();
+        UserDao<User> userDao = DaoFactory.getUserDAO();
         Contact contact = new Contact();
         contact.setNameSurname(request.getParameter("nameSurname"));
         if (company == null) {
-            contact.setCompanyId(COMPANY_DAO.getByPK(Integer.valueOf(request.getParameter("company"))));
+            contact.setCompanyId(companyDao.getByPK(Integer.valueOf(request.getParameter("company"))));
         } else {
             contact.setCompanyId(company);
         }
@@ -193,10 +197,10 @@ public class DealController extends HttpServlet {
         contact.setPhoneNumber(request.getParameter("phoneNumber"));
         contact.setEmail(request.getParameter("email"));
         contact.setSkype(request.getParameter("skype"));
-        contact.setCreatedBy(USER_DAO.getByPK(1));
-        contact.setResponsible(USER_DAO.getByPK(1));
+        contact.setCreatedBy(userDao.getByPK(1));
+        contact.setResponsible(userDao.getByPK(1));
         contact.setDeleted(false);
         contact.setCreationTime(LocalDateTime.now());
-        return CONTACT_DAO.create(contact);
+        return contactDao.create(contact);
     }
 }
