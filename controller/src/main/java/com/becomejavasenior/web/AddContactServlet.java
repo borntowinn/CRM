@@ -58,13 +58,13 @@ public class AddContactServlet extends HttpServlet {
         addFilesToContact(request, contact);
 
         // Add deal to contact
-        if(dealName != null){
+        if(dealName != null && !dealName.isEmpty()){
             dealDao.create(buildDeal(request, contact));
         }
 
         // Add task to contact
-        if(taskName != null){
-            taskDao.create(buildDeal(request, contact));
+        if(taskName != null && !taskName.isEmpty()){
+            taskDao.create(buildTask(request, contact));
         }
         response.sendRedirect("dashboard");
 
@@ -124,12 +124,16 @@ public class AddContactServlet extends HttpServlet {
     private Contact buildContact(HttpServletRequest request){
         Contact newContact = new Contact();
 
-        Integer company_id = (request.getParameter("company_id") != null) ? Integer.valueOf(request.getParameter("company_id")) : null;
+        String companyName = (request.getParameter("company_name") != null) ? request.getParameter("company_name") : null;
+        Integer chosenCompanyId = (request.getParameter("company") != null) ? Integer.valueOf(request.getParameter("company")) : null;
+
         // set Company for contact:
-        if(company_id != null && company_id != 0){
-            Company chosenCompany = (Company) companyDao.getByPK(company_id);
+        if(chosenCompanyId != null){
+            Company chosenCompany = (Company) companyDao.getByPK(chosenCompanyId);
             newContact.setCompanyId(chosenCompany);
-        }else if(company_id != null && company_id == 0){
+        }
+
+        if(companyName != null && !companyName.isEmpty()){
             newContact.setCompanyId(buildCompany(request));
         }
 
@@ -202,7 +206,7 @@ public class AddContactServlet extends HttpServlet {
         newCompany.setDeleted(false);
         newCompany.setCreationTime(LocalDateTime.now());
         Company insertedCompany = (Company) companyDao.create(newCompany);
-        return newCompany;
+        return insertedCompany;
     }
 
     private Deal buildDeal(HttpServletRequest request, Contact contact){
@@ -211,6 +215,7 @@ public class AddContactServlet extends HttpServlet {
         String dealName = request.getParameter("deal_name");
         Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
         BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
+        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
 
         newDeal.setDealName(dealName);
         if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
@@ -218,7 +223,8 @@ public class AddContactServlet extends HttpServlet {
         newDeal.setCreationDate(LocalDateTime.now());
         newDeal.setDeleted(false);
         newDeal.setContact(contact);
-
+        newDeal.setCreatedBy((User) userDao.getByPK(responsible)); // temp value, will be authorized user here
+        newDeal.setResponsible((User) userDao.getByPK(responsible));
         return newDeal;
     }
 

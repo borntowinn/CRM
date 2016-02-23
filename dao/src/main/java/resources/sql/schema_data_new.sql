@@ -48,11 +48,11 @@ INSERT INTO phase(phase) VALUES ('Initial contact');
 INSERT INTO phase(phase) VALUES ('Negotiation');
 INSERT INTO phase(phase) VALUES ('Decision taking');
 
-INSERT INTO deal VALUES (1, 5, 1000000.00, 2, 2, '2016-01-22 00:00:00', 2, 2, false);
-INSERT INTO deal VALUES (2, 4, 2000000000.00, 1, 1, '2015-12-12 00:00:00', 1, 2, false);
-INSERT INTO deal VALUES (3, 3, 150000.00, 3, 3, '2014-01-01 00:00:00', 5, 2, false);
-INSERT INTO deal VALUES (4, 2, 800.99, 1, 1, '2016-08-07 00:00:00', 5, 2, false);
-INSERT INTO deal VALUES (5, 1, 600000.00, 2, 2, '2014-12-31 00:00:00', 4, 2, false);
+INSERT INTO deal(name, createdby, budget, company_id, contact_id, date_creation, phase_id, responsible, isdeleted) VALUES ('deal1', 5, 1000000.00, 2, 2, '2016-01-22 00:00:00', 2, 2, false);
+INSERT INTO deal(name, createdby, budget, company_id, contact_id, date_creation, phase_id, responsible, isdeleted) VALUES ('deal2', 4, 2000000000.00, 1, 1, '2015-12-12 00:00:00', 1, 2, false);
+INSERT INTO deal(name, createdby, budget, company_id, contact_id, date_creation, phase_id, responsible, isdeleted) VALUES ('deal3', 3, 150000.00, 3, 3, '2014-01-01 00:00:00', 3, 2, false);
+INSERT INTO deal(name, createdby, budget, company_id, contact_id, date_creation, phase_id, responsible, isdeleted) VALUES ('deal4', 2, 800.99, 1, 1, '2016-08-07 00:00:00', 2, 2, false);
+INSERT INTO deal(name, createdby, budget, company_id, contact_id, date_creation, phase_id, responsible, isdeleted) VALUES ('deal5', 1, 600000.00, 2, 2, '2014-12-31 00:00:00', 1, 2, false);
 
 INSERT INTO file(date_creation, file, file_name) VALUES ('2016-08-12 00:00:00', '\x013d7d16d7ad4fefb61bd95b765c8ceb', 'flower.png');
 INSERT INTO file(date_creation, file, file_name) VALUES ('2015-08-12 00:00:00', '\x013d7d16d7ad4fefb61bd95b765c8ceb', 'flower.png');
