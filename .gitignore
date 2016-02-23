@@ -42,6 +42,5 @@ ehthumbs.db
 Thumbs.db
 
 # My files
-*.properties
 .idea/*
 target/*
