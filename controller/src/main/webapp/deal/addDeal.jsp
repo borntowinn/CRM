@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
+<head>
+    <title>CRM:add deal</title>
+</head>
 <jsp:include page="../fragments/headTag.jsp"/>
 <body>
 <jsp:include page="../fragments/header.jsp"/>

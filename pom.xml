@@ -45,7 +45,6 @@
     <module>model</module>
     <module>jdbc</module>
     <module>service</module>
-    <module>service</module>
   </modules>
 
   <name>CRM Maven Webapp</name>
