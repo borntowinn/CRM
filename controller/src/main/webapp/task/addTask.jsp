@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
-<jsp:include page="../fragments/headTag.jsp"/>
+<jsp:include page="../task/headTask.jsp"/>
 
 <body>
 <jsp:include page="../fragments/header.jsp"/>
@@ -15,28 +15,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
             <div class="row">
-                <div class="col-sm-3">
-                    <a href="#" class="btn btn-info" role="button">+ Добавить задачу</a>
-                    <br><br>
-
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">Сегодня/Завтра</a>
-                        <a href="#" class="list-group-item">День</a>
-                        <a href="#" class="list-group-item">Неделя</a>
-                        <a href="#" class="list-group-item">Месяц</a>
-                        <a href="#" class="list-group-item">Список</a>
-                    </div>
-
-                    <div class="list-group">
-                        <a href="#" class="list-group-item active">Фильтры:</a>
-                        <a href="#" class="list-group-item">Только мои задачи</a>
-                        <a href="#" class="list-group-item">Просроченные задачи</a>
-                        <a href="#" class="list-group-item">Выполненные задачи</a>
-                        <a href="#" class="list-group-item">Все задачи</a>
-                        <a href="#" class="list-group-item">Удаленные</a>
-                    </div>
-
-                </div><%--col-sm-3--%>
+                <jsp:include page="../task/sideBar.jsp"/>
 
                 <div class="col-sm-9">
                     <div class="panel panel-success">
@@ -45,7 +24,7 @@
                         </div>
                         <br><br>
 
-                        <form class="form-horizontal" role="form" method="POST" action="/tasks" accept-charset="UTF-8">
+                        <form action="<c:url value="/tasks/add"/>" method="post" class="form-horizontal" role="form" accept-charset="UTF-8">
 
                             <div class="form-group">
                                 <label class="control-label col-sm-2" for="periodList">Период:</label>

@@ -7,7 +7,8 @@ import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,12 +17,12 @@ import java.util.List;
 public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> {
 
   private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
-
-  private final static String SELECT_QUERY = "SELECT task_id, period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task ";
-  private final static String SELECT_BY_PK = "SELECT task_id, period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone from task WHERE task_id=?";
+  private final static String SELECT_QUERY = "SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id";
+  private final static String SELECT_BY_PK = "SELECT * FROM task WHERE task_id=?";
   private final static String CREATE_QUERY = "INSERT INTO task (period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
   private final static String DELETE_QUERY = "DELETE FROM task WHERE task_id= ?;";
+  private final static String GET_TASKS_FOR_PERIOD ="SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id WHERE plantime >= ? AND plantime < ?";
 
   private UserDao<User> userDao = DaoFactory.getUserDAO();
   private DealDao<Deal> dealDao = DaoFactory.getDealDao();
@@ -56,7 +57,7 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
 
   @Override
   protected List parseResultSet(ResultSet rs) throws PersistException {
-    List<Task> result = new ArrayList<>();
+    List<Task> result = new LinkedList<>();
     try {
       while (rs.next()) {
         Task task = new Task();
@@ -68,6 +69,10 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
         task.setTaskType(rs.getString("task_type"));
         task.setResponsible(userDao.getByPK(rs.getInt("responsible")));
         task.setAuthor(userDao.getByPK(rs.getInt("author")));
+
+        if(rs.getMetaData().getColumnCount() == 14){
+          task.setComment(rs.getString("comment"));
+        }
 
         if(rs.getTimestamp("plantime") != null){
           task.setPlanTime(rs.getTimestamp("plantime").toLocalDateTime());
@@ -174,4 +179,25 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   public Task create(Task object) throws PersistException {
     return persist(object);
   }
+
+  @Override
+  public List<Task> getTasksForPeriod(LocalDateTime start, LocalDateTime end) throws PersistException{
+    List<Task> taskList = null;
+
+    String sql = TaskDaoImpl.GET_TASKS_FOR_PERIOD;
+    try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+      statement.setTimestamp(1, Timestamp.valueOf(start));
+      statement.setTimestamp(2, Timestamp.valueOf(end));
+      ResultSet rs = statement.executeQuery();
+      taskList = parseResultSet(rs);
+
+      if(rs != null){
+        rs.close();
+      }
+    } catch (SQLException e) {
+      throw new PersistException(e);
+    }
+    return taskList;
+  }
+
 }

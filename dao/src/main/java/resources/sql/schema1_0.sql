@@ -272,333 +272,333 @@ CREATE TABLE comments_to_task (
 -- foreign keys
 -- Reference:  Comment_To_Deal_comment (table: comments_to_deal)
 
-ALTER TABLE comments_to_deal ADD CONSTRAINT Comment_To_Deal_comment 
+ALTER TABLE comments_to_deal ADD CONSTRAINT Comment_To_Deal_comment
     FOREIGN KEY (comment_id)
     REFERENCES comment (comment_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Comment_To_Deal_deal (table: comments_to_deal)
 
-ALTER TABLE comments_to_deal ADD CONSTRAINT Comment_To_Deal_deal 
+ALTER TABLE comments_to_deal ADD CONSTRAINT Comment_To_Deal_deal
     FOREIGN KEY (deal_id)
     REFERENCES deal (deal_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Contact_To_Comment_comment (table: comment_to_contact)
 
-ALTER TABLE comment_to_contact ADD CONSTRAINT Contact_To_Comment_comment 
+ALTER TABLE comment_to_contact ADD CONSTRAINT Contact_To_Comment_comment
     FOREIGN KEY (comment_id)
     REFERENCES comment (comment_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Contact_To_Comment_contact (table: comment_to_contact)
 
-ALTER TABLE comment_to_contact ADD CONSTRAINT Contact_To_Comment_contact 
+ALTER TABLE comment_to_contact ADD CONSTRAINT Contact_To_Comment_contact
     FOREIGN KEY (contact_id)
     REFERENCES contact (contact_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Contact_to_File_contact (table: files_to_contact)
 
-ALTER TABLE files_to_contact ADD CONSTRAINT Contact_to_File_contact 
+ALTER TABLE files_to_contact ADD CONSTRAINT Contact_to_File_contact
     FOREIGN KEY (contact_id)
     REFERENCES contact (contact_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Contact_to_File_file (table: files_to_contact)
 
-ALTER TABLE files_to_contact ADD CONSTRAINT Contact_to_File_file 
+ALTER TABLE files_to_contact ADD CONSTRAINT Contact_to_File_file
     FOREIGN KEY (file_id)
     REFERENCES file (file_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Files_To_Companies_company (table: files_to_company)
 
-ALTER TABLE files_to_company ADD CONSTRAINT Files_To_Companies_company 
+ALTER TABLE files_to_company ADD CONSTRAINT Files_To_Companies_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Files_To_Companies_file (table: files_to_company)
 
-ALTER TABLE files_to_company ADD CONSTRAINT Files_To_Companies_file 
+ALTER TABLE files_to_company ADD CONSTRAINT Files_To_Companies_file
     FOREIGN KEY (file_id)
     REFERENCES file (file_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Files_To_Deals_deal (table: files_to_deal)
 
-ALTER TABLE files_to_deal ADD CONSTRAINT Files_To_Deals_deal 
+ALTER TABLE files_to_deal ADD CONSTRAINT Files_To_Deals_deal
     FOREIGN KEY (deal_id)
     REFERENCES deal (deal_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Files_To_Deals_file (table: files_to_deal)
 
-ALTER TABLE files_to_deal ADD CONSTRAINT Files_To_Deals_file 
+ALTER TABLE files_to_deal ADD CONSTRAINT Files_To_Deals_file
     FOREIGN KEY (file_id)
     REFERENCES file (file_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Tags_To_Contacts_tag (table: tags_to_contact)
 
-ALTER TABLE tags_to_contact ADD CONSTRAINT Tags_To_Contacts_tag 
+ALTER TABLE tags_to_contact ADD CONSTRAINT Tags_To_Contacts_tag
     FOREIGN KEY (tag_id)
     REFERENCES tag (tag_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Tags_To_Contacts_contact (table: tags_to_contact)
 
-ALTER TABLE tags_to_contact ADD CONSTRAINT Tags_To_Contacts_contact 
+ALTER TABLE tags_to_contact ADD CONSTRAINT Tags_To_Contacts_contact
     FOREIGN KEY (contact_id)
     REFERENCES contact (contact_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Tags_To_Deals_deal (table: tags_to_deal)
 
-ALTER TABLE tags_to_deal ADD CONSTRAINT Tags_To_Deals_deal 
+ALTER TABLE tags_to_deal ADD CONSTRAINT Tags_To_Deals_deal
     FOREIGN KEY (deal_id)
     REFERENCES deal (deal_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Tags_To_Deals_tag (table: tags_to_deal)
 
-ALTER TABLE tags_to_deal ADD CONSTRAINT Tags_To_Deals_tag 
+ALTER TABLE tags_to_deal ADD CONSTRAINT Tags_To_Deals_tag
     FOREIGN KEY (tag_id)
     REFERENCES tag (tag_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Task_To_Comment_comment (table: comments_to_task)
 
-ALTER TABLE comments_to_task ADD CONSTRAINT Task_To_Comment_comment 
+ALTER TABLE comments_to_task ADD CONSTRAINT Task_To_Comment_comment
     FOREIGN KEY (comment_id)
     REFERENCES comment (comment_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  Task_To_Comment_task (table: comments_to_task)
 
-ALTER TABLE comments_to_task ADD CONSTRAINT Task_To_Comment_task 
+ALTER TABLE comments_to_task ADD CONSTRAINT Task_To_Comment_task
     FOREIGN KEY (task_id)
     REFERENCES task (task_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  User_To_File_file (table: files_to_user)
 
-ALTER TABLE files_to_user ADD CONSTRAINT User_To_File_file 
+ALTER TABLE files_to_user ADD CONSTRAINT User_To_File_file
     FOREIGN KEY (file_id)
     REFERENCES file (file_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  User_To_File_user (table: files_to_user)
 
-ALTER TABLE files_to_user ADD CONSTRAINT User_To_File_user 
+ALTER TABLE files_to_user ADD CONSTRAINT User_To_File_user
     FOREIGN KEY (user_id)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  comments_to_company_comment (table: comments_to_company)
 
-ALTER TABLE comments_to_company ADD CONSTRAINT comments_to_company_comment 
+ALTER TABLE comments_to_company ADD CONSTRAINT comments_to_company_comment
     FOREIGN KEY (comment_id)
     REFERENCES comment (comment_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  comments_to_company_company (table: comments_to_company)
 
-ALTER TABLE comments_to_company ADD CONSTRAINT comments_to_company_company 
+ALTER TABLE comments_to_company ADD CONSTRAINT comments_to_company_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  company_to_tag_tag (table: tags_to_company)
 
-ALTER TABLE tags_to_company ADD CONSTRAINT company_to_tag_tag 
+ALTER TABLE tags_to_company ADD CONSTRAINT company_to_tag_tag
     FOREIGN KEY (tag_id)
     REFERENCES tag (tag_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  company_to_tag_tag (table: tags_to_company)
 
-ALTER TABLE tags_to_company ADD CONSTRAINT company_to_tag_company 
+ALTER TABLE tags_to_company ADD CONSTRAINT company_to_tag_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  company_user (table: company)
 
-ALTER TABLE company ADD CONSTRAINT company_user 
+ALTER TABLE company ADD CONSTRAINT company_user
     FOREIGN KEY (createdBy)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  contact_company (table: contact)
 
-ALTER TABLE contact ADD CONSTRAINT contact_company 
+ALTER TABLE contact ADD CONSTRAINT contact_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  contact_user (table: contact)
 
-ALTER TABLE contact ADD CONSTRAINT contact_user 
+ALTER TABLE contact ADD CONSTRAINT contact_user
     FOREIGN KEY (createdBy)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  deal_company (table: deal)
 
-ALTER TABLE deal ADD CONSTRAINT deal_company 
+ALTER TABLE deal ADD CONSTRAINT deal_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  deal_user (table: deal)
 
-ALTER TABLE deal ADD CONSTRAINT deal_user 
+ALTER TABLE deal ADD CONSTRAINT deal_user
     FOREIGN KEY (createdBy)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  deal_user (table: deal)
 
-ALTER TABLE deal ADD CONSTRAINT deal_user_responsible 
+ALTER TABLE deal ADD CONSTRAINT deal_user_responsible
     FOREIGN KEY (responsible)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  task_company (table: task)
 
-ALTER TABLE task ADD CONSTRAINT task_company 
+ALTER TABLE task ADD CONSTRAINT task_company
     FOREIGN KEY (company_id)
     REFERENCES company (company_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  task_contact (table: task)
 
-ALTER TABLE task ADD CONSTRAINT task_contact 
+ALTER TABLE task ADD CONSTRAINT task_contact
     FOREIGN KEY (contact_id)
     REFERENCES contact (contact_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  task_deal (table: task)
 
-ALTER TABLE task ADD CONSTRAINT task_deal 
+ALTER TABLE task ADD CONSTRAINT task_deal
     FOREIGN KEY (deal_id)
     REFERENCES deal (deal_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  task_user (table: task)
 
-ALTER TABLE task ADD CONSTRAINT task_user 
+ALTER TABLE task ADD CONSTRAINT task_user
     FOREIGN KEY (responsible)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  task_user (table: task)
 
-ALTER TABLE task ADD CONSTRAINT task_user_author 
+ALTER TABLE task ADD CONSTRAINT task_user_author
     FOREIGN KEY (author)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  user_user_role (table: "user")
 
-ALTER TABLE "user" ADD CONSTRAINT user_user_role 
+ALTER TABLE "user" ADD CONSTRAINT user_user_role
     FOREIGN KEY (user_role_id)
     REFERENCES user_role (user_role_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  session_history_user (table: session_history)
 
-ALTER TABLE session_history ADD CONSTRAINT session_history_user 
+ALTER TABLE session_history ADD CONSTRAINT session_history_user
     FOREIGN KEY (user_id)
     REFERENCES "user" (user_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  deal_phase (table: deal)
 
-ALTER TABLE deal ADD CONSTRAINT deal_phase 
+ALTER TABLE deal ADD CONSTRAINT deal_phase
     FOREIGN KEY (phase_id)
     REFERENCES phase (phase_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
 
 -- Reference:  deal_contact (table: deal)
 
-ALTER TABLE deal ADD CONSTRAINT deal_contact 
+ALTER TABLE deal ADD CONSTRAINT deal_contact
     FOREIGN KEY (contact_id)
     REFERENCES contact (contact_id)
-    NOT DEFERRABLE 
-    INITIALLY IMMEDIATE 
+    NOT DEFERRABLE
+    INITIALLY IMMEDIATE
 ;
