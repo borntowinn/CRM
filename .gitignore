@@ -42,6 +42,6 @@ ehthumbs.db
 Thumbs.db
 
 # My files
-
+jdbc.properties
 .idea/*
 target/*
