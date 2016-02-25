@@ -26,7 +26,7 @@ import java.util.List;
 @MultipartConfig
 public class AddContactServlet extends HttpServlet {
 
-    public static final String CONTACTS_URL = "/crm/contacts";
+    public static final String CONTACTS_URL = "contacts";
     public static final String ADD_CONTACT_URL = "addContact.jsp";
 
     private ContactDao contactDao;

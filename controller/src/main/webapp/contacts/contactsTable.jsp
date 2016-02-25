@@ -3,7 +3,7 @@
 
 <div class="panel panel-primary" style="border-color: #428bca">
     <div class="text-right" style="margin: 5px">
-        <form action="/crm/add_contact">
+        <form action="${pageContext.request.contextPath}/add_contact">
             <button type="submit" class="btn btn-default" style="color: #428bca">Добавить
                 контакт
             </button>
