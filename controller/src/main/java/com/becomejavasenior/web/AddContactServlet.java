@@ -26,6 +26,7 @@ import java.util.List;
 @MultipartConfig
 public class AddContactServlet extends HttpServlet {
 
+    public static final String CONTACTS_URL = "/crm/contacts";
     public static final String ADD_CONTACT_URL = "addContact.jsp";
 
     private ContactDao contactDao;
@@ -66,7 +67,7 @@ public class AddContactServlet extends HttpServlet {
         if(taskName != null && !taskName.isEmpty()){
             taskDao.create(buildTask(request, contact));
         }
-        response.sendRedirect("dashboard");
+        response.sendRedirect(CONTACTS_URL);
 
     }
 

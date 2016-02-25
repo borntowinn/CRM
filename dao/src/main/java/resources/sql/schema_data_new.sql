@@ -37,11 +37,11 @@ INSERT INTO company(company_name, phone_number, email, web_site, createdby, addr
 INSERT INTO company(company_name, phone_number, email, web_site, createdby, address, isdeleted, creation_time, responsible )
   VALUES ('Uber', '1 (877) 223-8', 'support@uber.com', 'www.uber.com', 1, '1455 Market St 4th Fl, San Francisco, CA ', false, '1999-12-25 00:00:00', 3);
 
-INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Martin', 1, '+38-248-88-99', 'king@gmail.com', 'martin.king', 'CEO', false, '2011-11-09 00:00:00', 2, 3);
-INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Lora', 2, '+48-222-56-66', 'fauler@yahoo.com', 'lorochka', 'finance manager', false, '2012-11-08 00:00:00', 3, 1);
-INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Marat', 3, '+1-555-0000', 'farat@mail.ru', 'marat.farat', 'project manager', false, '2013-08-09 00:00:00', 1, 5);
-INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Jesus', 3, '+6-222-66-55', 'jesus@gmail.com', 'jesus.christ', 'unemployed', true, '1999-12-25 00:00:00', 1, 4);
-INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby) VALUES ('Larry', 1, '+77-22-33-44', 'page@gmail.com', 'larry.page', 'CTO', false, '2001-12-12 00:00:00', 2, 3);
+INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby, responsible) VALUES ('Martin', 1, '+38-248-88-99', 'king@gmail.com', 'martin.king', 'CEO', false, '2011-11-09 00:00:00', 2, 3, 1);
+INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby, responsible) VALUES ('Lora', 2, '+48-222-56-66', 'fauler@yahoo.com', 'lorochka', 'finance manager', false, '2012-11-08 00:00:00', 3, 1, 3);
+INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby, responsible) VALUES ('Marat', 3, '+1-555-0000', 'farat@mail.ru', 'marat.farat', 'project manager', false, '2013-08-09 00:00:00', 1, 5, 2);
+INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby, responsible) VALUES ('Jesus', 3, '+6-222-66-55', 'jesus@gmail.com', 'jesus.christ', 'unemployed', true, '1999-12-25 00:00:00', 1, 4, 1);
+INSERT INTO contact(name_surname, phone_type, phone_number, email, skype, position, isdeleted, creation_time, company_id, createdby, responsible) VALUES ('Larry', 1, '+77-22-33-44', 'page@gmail.com', 'larry.page', 'CTO', false, '2001-12-12 00:00:00', 2, 3, 2);
 
 
 INSERT INTO phase(phase) VALUES ('Initial contact');

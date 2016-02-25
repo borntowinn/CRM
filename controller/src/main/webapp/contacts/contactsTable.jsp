@@ -3,9 +3,11 @@
 
 <div class="panel panel-primary" style="border-color: #428bca">
     <div class="text-right" style="margin: 5px">
-        <button type="button" class="btn btn-default" style="color: #428bca">Добавить
-            контакт
-        </button>
+        <form action="/crm/add_contact">
+            <button type="submit" class="btn btn-default" style="color: #428bca">Добавить
+                контакт
+            </button>
+        </form>
     </div>
     <div class="text-center"
          style="margin-bottom: 10px; font-size: xx-large; color: #428bca">
