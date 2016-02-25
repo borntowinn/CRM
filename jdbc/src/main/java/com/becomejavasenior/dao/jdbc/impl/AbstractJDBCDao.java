@@ -57,21 +57,15 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     }
 
     @Override
-    public ResultSet executeQuery(String query) throws PersistException {
-        try (Connection connection = dataSource.getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(query);
-            return statement.executeQuery();
+    public ResultSet executeQuery(PreparedStatement statement) {
+        try {
+            int count = statement.executeUpdate();
+            if (count != 1)
+                throw new PersistException("On persist modify more then 1 record: " + count);
+            return statement.getGeneratedKeys();
         } catch (SQLException e) {
-            /*SQLException will be ignored only for queries that don't produce a result set, for example INSERT or
-            * UPDATE. In this case null value will be returned instead of a valid result set*/
-            log.error("error executing query " + query + " " + e.getMessage());
-            if (e.getErrorCode() != 0) {
-                throw new PersistException();
-            }
+            throw new PersistException(e);
         }
-
-        return null;
     }
 
     @Override

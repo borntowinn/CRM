@@ -2,6 +2,7 @@ package com.becomejavasenior.web;
 
 import com.becomejavasenior.*;
 import com.becomejavasenior.File;
+import com.becomejavasenior.impl.DealServiceImpl;
 import com.becomejavasenior.service.CompanyService;
 import com.becomejavasenior.service.TaskService;
 import org.apache.commons.io.IOUtils;
@@ -29,7 +30,7 @@ public class DealController extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(DealController.class);
 
     private final String CREATE_DEAL = "/deal/addDeal.jsp";
-    private final DealService service = new DealService();
+    private final DealServiceImpl dealService = new DealServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,10 +38,10 @@ public class DealController extends HttpServlet {
         request.setAttribute("timeList", TaskService.getTimeList());
         request.setAttribute("periodMap", TaskService.getPeriodMap());
         request.setAttribute("typeMap", TaskService.getTypeMap());
-        request.setAttribute("userMap", service.getUserMap());
-        request.setAttribute("companyMap", service.getCompanyMap());
-        request.setAttribute("contactMap", service.getContactMap());
-        request.setAttribute("phaseMap", service.getPhaseMap());
+        request.setAttribute("userMap", dealService.getUserMap());
+        request.setAttribute("companyMap", dealService.getCompanyMap());
+        request.setAttribute("contactMap", dealService.getContactMap());
+        request.setAttribute("phaseMap", dealService.getPhaseMap());
 
         request.getRequestDispatcher(CREATE_DEAL)
                 .forward(request, response);
@@ -52,10 +53,10 @@ public class DealController extends HttpServlet {
         request.setAttribute("timeList", TaskService.getTimeList());
         request.setAttribute("periodMap", TaskService.getPeriodMap());
         request.setAttribute("typeMap", TaskService.getTypeMap());
-        request.setAttribute("userMap", service.getUserMap());
-        request.setAttribute("companyMap", service.getCompanyMap());
-        request.setAttribute("contactMap", service.getContactMap());
-        request.setAttribute("phaseMap", service.getPhaseMap());
+        request.setAttribute("userMap", dealService.getUserMap());
+        request.setAttribute("companyMap", dealService.getCompanyMap());
+        request.setAttribute("contactMap", dealService.getContactMap());
+        request.setAttribute("phaseMap", dealService.getPhaseMap());
 
         createDeal(request);
         request.getRequestDispatcher(CREATE_DEAL).forward(request, response);
@@ -69,18 +70,18 @@ public class DealController extends HttpServlet {
             if (budgetString.contains(","))
                 request.setAttribute("message", "incorrect data input, use . ");
             deal.setBudget(new BigDecimal(Double.parseDouble(budgetString)));
-            deal.setCreatedBy(service.userByPK(request.getParameter("responsible")));//change to current user
-            deal.setPhase(service.phaseByPK(request.getParameter("phase")));
-            deal.setResponsible(service.userByPK(request.getParameter("responsible")));
+            deal.setCreatedBy(dealService.currentUser());
+            deal.setPhase(dealService.phaseByPK(request.getParameter("phase")));
+            deal.setResponsible(dealService.userByPK(request.getParameter("responsible")));
             deal.setCreationDate(LocalDateTime.now());
-            Company company = service.companyByPK(request.getParameter("company"));
+            Company company = dealService.companyByPK(request.getParameter("company"));
             if (company != null) {
                 deal.setCompany(company);
             } else {
                 company = createCompany(request);
                 deal.setCompany(company);
             }
-            Contact contact = service.contactByPK(request.getParameter("contact"));
+            Contact contact = dealService.contactByPK(request.getParameter("contact"));
             if (contact != null) {
                 deal.setContact(contact);
             } else {
@@ -96,9 +97,9 @@ public class DealController extends HttpServlet {
             if (request.getParameter("addTask") != null) {
                 createTask(request);
             }
-            service.createEntity(deal);
-            service.executeInsert("INSERT INTO tags_to_deal (tag_id, deal_id) VALUES"
-                    + " (" + createTag(request) + ", " +  deal.getId() + ");"); //check id
+            int dealId = ((Deal)dealService.createEntity(deal)).getId();
+            int tag = createTag(request);
+            dealService.executeInsert(tag, dealId);
         } catch (IOException | ServletException e) {
             LOGGER.error("can't upload file" + e);
             e.printStackTrace();
@@ -121,7 +122,7 @@ public class DealController extends HttpServlet {
             array = IOUtils.toByteArray(fileContent);
             file.setFile(array);
         }
-        service.createEntity(file);
+        dealService.createEntity(file);
         request.setAttribute("message", "File was added successfully");
         files.add(file);
         return files;
@@ -132,7 +133,7 @@ public class DealController extends HttpServlet {
         Comment comment = new Comment();
         comment.setCreationDate(LocalDateTime.now());
         comment.setComment(note);
-        service.createEntity(comment);
+        dealService.createEntity(comment);
         comments.add(comment);
         return comments;
     }
@@ -140,18 +141,18 @@ public class DealController extends HttpServlet {
     private int createTag(HttpServletRequest request) throws ClassNotFoundException {
         Tag tag = new Tag();
         tag.setTag(request.getParameter("tags"));
-        return service.createEntity(tag).getId();
+        return ((Tag) dealService.createEntity(tag)).getId();
     }
 
     private void createTask(HttpServletRequest request) throws ClassNotFoundException {
         Task task = new Task();
-        task.setResponsible(service.userByPK(request.getParameter("responsibleName")));
-        task.setAuthor(service.currentUser());
+        task.setResponsible(dealService.userByPK(request.getParameter("responsibleName")));
+        task.setAuthor(dealService.currentUser());
         task.setCreationTime(LocalDateTime.now());
         task.setDone(false);
         task.setDeleted(false);
         task.setPeriod(request.getParameter("periodName"));
-        service.createEntity(task);
+        dealService.createEntity(task);
         request.setAttribute("message", "Task was added successfully");
     }
 
@@ -162,18 +163,18 @@ public class DealController extends HttpServlet {
         company.setEmail(request.getParameter("email"));
         company.setWebsite(request.getParameter("website"));
         company.setAddress(request.getParameter("address"));
-        company.setResponsible(service.currentUser());
-        company.setCreatedBy(service.currentUser());
+        company.setResponsible(dealService.currentUser());
+        company.setCreatedBy(dealService.currentUser());
         company.setDeleted(false);
         company.setCreationTime(LocalDateTime.now());
-        return service.createEntity(company);
+        return (Company) dealService.createEntity(company);
     }
 
     private Contact createContact(HttpServletRequest request, Company company) throws ClassNotFoundException {
         Contact contact = new Contact();
         contact.setNameSurname(request.getParameter("nameSurname"));
         if (company == null) {
-            contact.setCompanyId(service.companyByPK(request.getParameter("company")));
+            contact.setCompanyId(dealService.companyByPK(request.getParameter("company")));
         } else {
             contact.setCompanyId(company);
         }
@@ -181,10 +182,10 @@ public class DealController extends HttpServlet {
         contact.setPhoneNumber(request.getParameter("phoneNumber"));
         contact.setEmail(request.getParameter("email"));
         contact.setSkype(request.getParameter("skype"));
-        contact.setCreatedBy(service.currentUser());
-        contact.setResponsible(service.currentUser());
+        contact.setCreatedBy(dealService.currentUser());
+        contact.setResponsible(dealService.currentUser());
         contact.setDeleted(false);
         contact.setCreationTime(LocalDateTime.now());
-        return service.createEntity(contact);
+        return (Contact) dealService.createEntity(contact);
     }
 }
