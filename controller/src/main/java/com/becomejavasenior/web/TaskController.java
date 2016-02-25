@@ -2,6 +2,7 @@ package com.becomejavasenior.web;
 
 import com.becomejavasenior.*;
 import com.becomejavasenior.service.TaskService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,35 +18,91 @@ import java.util.Map;
 
 @WebServlet(
         name = "taskServlet",
-        urlPatterns = {"/tasks"}
+        urlPatterns = {"/tasks/*"}
 )
 public class TaskController extends HttpServlet {
 
-    private final String CREATE = "create";
-    private final String VIEW = "view";
+    private static final Logger log = Logger.getLogger(TaskController.class);
+    private final String URI_CREATE = "/create";
+    private final String URI_ADD = "/add";
+    private final String URI_LIST_ALL = "/listAll";
+    private final String URI_LIST_CURRENT = "/listCurrent";
+    private final String URI_LIST_DAY = "/listDay";
+    private final String URI_LIST_WEEK = "/listWeek";
+    private final String URI_LIST_MONTH = "/listMonth";
+    private final String URL_LIST_MONTH = "/task/monthList.jsp";
+    private final String URL_LIST_DAY = "/task/dayList.jsp";
+    private final String URL_LIST_CURRENT = "/task/currentList.jsp";
+    private final String URL_LIST_ALL = "/task/allList.jsp";
+    private final String URL_ADD = "/task/addTask.jsp";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if(action == null){
-            action = VIEW;
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String requestURI = request.getPathInfo();
+        String url;
+
+        switch(requestURI){
+            case URI_LIST_ALL: url = this.listAll(request); break;
+            case URI_CREATE: url = this.createTask(request); break;
+            case URI_LIST_CURRENT: url = this.listCurrent(request); break;
+            case URI_LIST_DAY: url = this.listDay(request); break;
+            case URI_LIST_WEEK: url = this.listWeek(); break;
+            case URI_LIST_MONTH:  url = this.listMonth(); break;
+            default: url = this.listAll(request); break;
         }
 
-        switch(action)
-        {
-            case CREATE:
-                this.createTask(request, response);
-                break;
-            case VIEW:
-            default:
-                this.listTasks(request, response);
-                break;
+        request.getRequestDispatcher(url)
+                .forward(request, response);
+    }
+
+    private String listMonth() {
+        return URL_LIST_MONTH;
+    }
+
+    private String listWeek() {
+        return "/task/weekList.jsp";
+    }
+
+    private String listDay(HttpServletRequest request) {
+        List<String> timeList = TaskService.getTimeList();
+        request.setAttribute("timeList", timeList);
+
+        return URL_LIST_DAY;
+    }
+
+    private String listCurrent(HttpServletRequest request) {
+        List<Task> todayList = TaskService.getTodayList();
+        List<Task> tomorrowList = TaskService.getTomorrowList();
+        List<Task> overdueList = TaskService.getOverdueList();
+
+        if(todayList != null && todayList.size() > 0){
+            request.setAttribute("todayList", todayList);
         }
+        if(tomorrowList != null && tomorrowList.size() > 0){
+            request.setAttribute("tomorrowList", tomorrowList);
+        }
+        if(overdueList != null && overdueList.size() > 0){
+            request.setAttribute("overdueList", overdueList);
+        }
+
+        return URL_LIST_CURRENT;
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String requestURI = request.getPathInfo();
+        String url;
 
+        switch(requestURI){
+            case URI_ADD: url = this.addTask(request); break;
+            default: url = this.addTask(request); break;
+        }
+
+        request.getRequestDispatcher(url)
+                .forward(request, response);
+    }
+
+    private String addTask(HttpServletRequest request)  throws ServletException, IOException {
         Task task = new Task();
         task.setPeriod(request.getParameter("periodName"));
         task.setTaskName(request.getParameter("task_name"));
@@ -81,16 +138,17 @@ public class TaskController extends HttpServlet {
         LocalDateTime planTime = LocalDateTime.of(date, time);
         task.setPlanTime(planTime);
 
-        String message = TaskService.getSuccessMessage();
-        request.setAttribute("message", message);
+        String taskText = request.getParameter("commentName");
 
-        TaskService.saveTask(task);
+        if(TaskService.saveTask(task, taskText)){
+            String message = TaskService.getSuccessMessage();
+            request.setAttribute("message", message);
+        }
 
-        request.getRequestDispatcher("/task/index.jsp")
-                .forward(request, response);
+        return URL_LIST_ALL;
     }
 
-    private void createTask(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+    private String createTask(HttpServletRequest request){
         List<String> timeList = TaskService.getTimeList();
         Map<String, String> periodMap = TaskService.getPeriodMap();
         Map<String, String> nameMap = TaskService.getNameMap();
@@ -109,13 +167,13 @@ public class TaskController extends HttpServlet {
         request.setAttribute("contactMap", contactMap);
         request.setAttribute("userMap", userMap);
 
-        request.getRequestDispatcher("/task/addTask.jsp")
-                .forward(request, response);
+        return URL_ADD;
     }
 
-    private void listTasks(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private String listAll(HttpServletRequest request) {
+        List<Task> taskList = TaskService.getAllTasks();
+        request.setAttribute("taskList", taskList);
 
-        request.getRequestDispatcher("/task/index.jsp")
-                .forward(request, response);
+        return URL_LIST_ALL;
     }
 }

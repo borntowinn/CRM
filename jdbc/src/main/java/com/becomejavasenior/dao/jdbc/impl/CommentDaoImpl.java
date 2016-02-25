@@ -6,10 +6,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +17,9 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
 
     private static final Logger log = Logger.getLogger(CommentDaoImpl.class);
 
-    private final static String SELECT_QUERY = "SELECT comment_id, comment, data_creation, file_name, company_id, contact_id, deal_id, task_id FROM comment;";
+    private final static String SELECT_QUERY = "SELECT comment_id, comment, data_creation, company_id, contact_id, deal_id, task_id FROM comment;";
     private final static String SELECT_BY_PK_QUERY = "SELECT comment_id, comment, data_creation, company_id, contact_id, deal_id, task_id FROM comment WHERE comment_id = ?;";
-    private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?);";
+    private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String UPDATE_QUERY = "UPDATE comment SET comment = ?, data_creation = ?, company_id = ?, contact_id = ?, deal_id = ?, task_id = ? WHERE comment_id = ?;";
 
     private final static String DELETE_QUERY = "DELETE FROM comment WHERE comment_id= ?;";
@@ -70,10 +67,23 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
                 comment.setId(rs.getInt("comment_id"));
                 comment.setComment(rs.getString("comment"));
                 comment.setCreationDate(rs.getTimestamp("data_creation").toLocalDateTime());
-                comment.setCompanyId(companyDao.getByPK(rs.getInt("company_id")));
-                comment.setContactId(contactDao.getByPK(rs.getInt("contact_id")));
-                comment.setDealId(dealDao.getByPK(rs.getInt("deal_id")));
-                comment.setTaskId(taskDao.getByPK(rs.getInt("task_id")));
+
+                if (rs.getInt("company_id") != 0) {
+                    comment.setCompanyId(companyDao.getByPK(rs.getInt("company_id")));
+                }
+
+                if (rs.getInt("contact_id") != 0) {
+                    comment.setContactId(contactDao.getByPK(rs.getInt("contact_id")));
+                }
+
+                if (rs.getInt("deal_id") != 0) {
+                    comment.setDealId(dealDao.getByPK(rs.getInt("deal_id")));
+                }
+
+                if (rs.getInt("task_id") != 0) {
+                    comment.setTaskId(taskDao.getByPK(rs.getInt("task_id")));
+                }
+
                 result.add(comment);
             }
         } catch (SQLException e) {
@@ -88,10 +98,31 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
         try {
             statement.setString(1, comment.getComment());
             statement.setTimestamp(2, Timestamp.valueOf(comment.getCreationDate()));
-            statement.setInt(3, comment.getCompanyId().getId());
-            statement.setInt(4, comment.getContactId().getId());
-            statement.setInt(5, comment.getDealId().getId());
-            statement.setInt(6, comment.getTaskId().getId());
+
+            if (comment.getCompanyId() != null) {
+                statement.setInt(3, comment.getCompanyId().getId());
+            } else {
+                statement.setNull(3, Types.INTEGER);
+            }
+
+            if (comment.getContactId() != null) {
+                statement.setInt(4, comment.getContactId().getId());
+            } else {
+                statement.setNull(4, Types.INTEGER);
+            }
+
+            if (comment.getDealId() != null) {
+                statement.setInt(5, comment.getDealId().getId());
+            } else {
+                statement.setNull(5, Types.INTEGER);
+            }
+
+            if (comment.getTaskId() != null) {
+                statement.setInt(6, comment.getTaskId().getId());
+            } else {
+                statement.setNull(6, Types.INTEGER);
+            }
+
         } catch (SQLException e) {
             log.error("couldn't prepared Statement for Insert " + e);
             throw new PersistException(e);
@@ -103,10 +134,30 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
         try {
             statement.setString(1, comment.getComment());
             statement.setTimestamp(2, Timestamp.valueOf(comment.getCreationDate()));
-            statement.setInt(3, comment.getCompanyId().getId());
-            statement.setInt(4, comment.getContactId().getId());
-            statement.setInt(5, comment.getDealId().getId());
-            statement.setInt(6, comment.getTaskId().getId());
+            if (comment.getCompanyId() != null) {
+                statement.setInt(3, comment.getCompanyId().getId());
+            }
+            else {
+                statement.setNull(3, Types.INTEGER);
+            }
+            if (comment.getContactId() != null) {
+                statement.setInt(4, comment.getContactId().getId());
+            }
+            else {
+                statement.setNull(4, Types.INTEGER);
+            }
+            if (comment.getDealId() != null) {
+                statement.setInt(5, comment.getDealId().getId());
+            }
+            else {
+                statement.setNull(5, Types.INTEGER);
+            }
+            if (comment.getTaskId() != null) {
+                statement.setInt(6, comment.getTaskId().getId());
+            }
+            else {
+                statement.setNull(6, Types.INTEGER);
+            }
             statement.setInt(7, comment.getId());
         } catch (SQLException e) {
             log.error("couldn't prepared Statement for Update " + e);

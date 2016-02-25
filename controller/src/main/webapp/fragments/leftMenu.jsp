@@ -7,11 +7,7 @@
     <li><a href="#">Сделки</a></li>
     <li><a href="/contacts">Контакты</a></li>
     <li><a href="/company">Добавить компанию</a></li>
-
-    <li><a href="<c:url value="/tasks">
-    <c:param name="action" value="view" />
-    </c:url>">Задачи</a></li>
-
+    <li><a href="<c:url value="/tasks/listAll" />">Задачи</a></li>
     <li><a href="#">Аналитика</a></li>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Настройки

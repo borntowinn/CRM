@@ -44,6 +44,7 @@
     <module>dao</module>
     <module>model</module>
     <module>jdbc</module>
+    <module>service</module>
   </modules>
 
   <name>CRM Maven Webapp</name>

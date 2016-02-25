@@ -28,8 +28,12 @@ public class DataSource {
         }
         ds.setDriverClassName(props.getProperty("DRIVER"));
         ds.setUrl(props.getProperty("URL"));
-//        ds.addConnectionProperty("ssl", "true");
-//        ds.addConnectionProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
+
+        if (!props.getProperty("URL").contains("localhost")) {
+            ds.addConnectionProperty("ssl", "true");
+            ds.addConnectionProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
+        }
+
         ds.setUsername(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
     }

@@ -22,8 +22,7 @@ public class Task implements Serializable {
     private Contact contact;
     private Boolean isDeleted;
     private Boolean isDone;
-
-    private List<Comment> commentList = new LinkedList<Comment>();
+    private String comment;
 
     public Task() {
 
@@ -117,14 +116,6 @@ public class Task implements Serializable {
         this.creationTime = creationTime;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
-
     public Boolean getDeleted() {
         return isDeleted;
     }
@@ -139,5 +130,13 @@ public class Task implements Serializable {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
