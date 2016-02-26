@@ -2,9 +2,6 @@ package com.becomejavasenior;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Default71721 on 22.01.16
@@ -20,7 +17,7 @@ public class User implements Serializable {
     private String mobilePhone;
     private String workPhone;
     private Integer language;
-    private List<SessionHistory> sessionHistories = new LinkedList<SessionHistory>();
+    private String passwordSalt;
 
     public User() {
     }
@@ -105,11 +102,11 @@ public class User implements Serializable {
         this.language = language;
     }
 
-    public List<SessionHistory> getSessionHistories() {
-        return sessionHistories;
+    public String getPasswordSalt() {
+        return passwordSalt;
     }
 
-    public void setSessionHistories(List<SessionHistory> sessionHistories) {
-        this.sessionHistories = sessionHistories;
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
     }
 }

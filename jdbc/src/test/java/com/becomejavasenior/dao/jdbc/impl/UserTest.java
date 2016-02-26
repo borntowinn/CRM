@@ -42,12 +42,14 @@ public class UserTest {
         newUser.setMobilePhone("+666 66 66");
         newUser.setWorkPhone("+777 77 77");
         newUser.setUserRole(userRole);
+        newUser.setPasswordSalt("1234");
         newUser.setLanguage(1);
 
         //1 - create
         User lastInsertedObject = (User) userDao.persist(newUser);
         assertEquals("Glen", lastInsertedObject.getName());
         assertEquals("!(*@&!*(@&!*(@!@)(*", lastInsertedObject.getPassword());
+        assertEquals("1234", lastInsertedObject.getPasswordSalt());
         assertEquals("+777 77 77", lastInsertedObject.getWorkPhone());
         assertSame(1, lastInsertedObject.getUserRole().getId());
 
@@ -56,12 +58,14 @@ public class UserTest {
         lastInsertedObject.setCreationDate(LocalDateTime.now());
         lastInsertedObject.setEmail("maria.johnson@yahoo.com");
         lastInsertedObject.setMobilePhone("248-8-248");
+        lastInsertedObject.setPasswordSalt("1234");
         userDao.update(lastInsertedObject);
 
         //3 - get by PK and check update
         int id = lastInsertedObject.getId();
         User getByPkUser = (User) userDao.getByPK(id);
         assertEquals("248-8-248", getByPkUser.getMobilePhone());
+        assertEquals("1234", getByPkUser.getPasswordSalt());
         assertNotSame(2, getByPkUser.getUserRole().getId());
     }
 
@@ -84,6 +88,7 @@ public class UserTest {
         newUser.setEmail("oven@gmail.com");
         newUser.setMobilePhone("+6 66 66");
         newUser.setWorkPhone("+7 77 77");
+        newUser.setPasswordSalt("1234");
         newUser.setUserRole(userRole);
         newUser.setLanguage(1);
         User lastInsertedObject = (User) userDao.persist(newUser);

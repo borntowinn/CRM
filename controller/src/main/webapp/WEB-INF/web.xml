@@ -13,6 +13,22 @@
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
+    <filter>
+        <filter-name>UserCheckFilter</filter-name>
+        <filter-class>com.becomejavasenior.filter.UserCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserCheckFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+
     <servlet>
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>com.becomejavasenior.web.DashboardServlet</servlet-class>
@@ -23,7 +39,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>dashboard.jsp</welcome-file>
+        <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
     <resource-ref>

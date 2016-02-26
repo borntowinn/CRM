@@ -4,8 +4,8 @@
     <li class="active"><a href="#">Home</a></li>
     <li><a href="/crm/dashboard">Рабочий стол</a></li>
     <li><a href="#">Сделки</a></li>
-    <li><a href="/contacts">Контакты</a></li>
-    <li><a href="/company">Добавить компанию</a></li>
+    <li><a href="<c:url value="/contacts" />">Контакты</a></li>
+    <li><a href="<c:url value="/company" />">Добавить компанию</a></li>
     <li><a href="<c:url value="/tasks/listAll" />">Задачи</a></li>
     <li><a href="#">Аналитика</a></li>
     <li class="dropdown">
