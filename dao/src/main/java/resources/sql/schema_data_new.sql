@@ -77,68 +77,22 @@ INSERT INTO task(period, task_name, plantime, responsible, task_type, author, co
 INSERT INTO task(period, task_name, plantime, responsible, task_type, author, company_id, contact_id, creation_time, deal_id, isdone)
   VALUES ('next year', 'task5', '2015-01-01 11:00:00', 5, 'call', 1, 2,5,  '2015-02-03 00:00:00', 3, false);
 
-INSERT INTO comment_to_contact(comment_id, contact_id) VALUES (1, 5);
-INSERT INTO comment_to_contact(comment_id, contact_id) VALUES (2, 4);
-INSERT INTO comment_to_contact(comment_id, contact_id) VALUES (3, 3);
-INSERT INTO comment_to_contact(comment_id, contact_id) VALUES (4, 2);
-INSERT INTO comment_to_contact(comment_id, contact_id) VALUES (5, 1);
 
-INSERT INTO comments_to_company VALUES (1, 5, 1);
-INSERT INTO comments_to_company VALUES (2, 4, 2);
-INSERT INTO comments_to_company VALUES (3, 3, 3);
-INSERT INTO comments_to_company VALUES (4, 2, 4);
-INSERT INTO comments_to_company VALUES (5, 1, 5);
+INSERT INTO tags_to_company(company_id, tag_id) VALUES (4, 2);
+INSERT INTO tags_to_company(company_id, tag_id) VALUES (5, 3);
+INSERT INTO tags_to_company(company_id, tag_id) VALUES (3, 1);
+INSERT INTO tags_to_company(company_id, tag_id) VALUES (4, 5);
+INSERT INTO tags_to_company(company_id, tag_id) VALUES (2, 4);
 
-INSERT INTO comments_to_deal VALUES (1, 2, 5);
-INSERT INTO comments_to_deal VALUES (2, 2, 1);
-INSERT INTO comments_to_deal VALUES (3, 5, 4);
-INSERT INTO comments_to_deal VALUES (4, 1, 5);
-INSERT INTO comments_to_deal VALUES (5, 4, 3);
+INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (2, 3);
+INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (3, 4);
+INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (4, 5);
+INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (5, 1);
+INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (1, 2);
 
-INSERT INTO files_to_company VALUES (1, 2, 2);
-INSERT INTO files_to_company VALUES (2, 5, 1);
-INSERT INTO files_to_company VALUES (3, 1, 5);
-INSERT INTO files_to_company VALUES (4, 2, 5);
-INSERT INTO files_to_company VALUES (5, 1, 3);
+INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (5, 4);
+INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (4, 3);
+INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (3, 2);
+INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (2, 1);
+INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (1, 5);
 
-INSERT INTO files_to_contact(file_id, contact_id) VALUES (2, 3);
-INSERT INTO files_to_contact(file_id, contact_id) VALUES (3, 2);
-INSERT INTO files_to_contact(file_id, contact_id) VALUES (5, 4);
-INSERT INTO files_to_contact(file_id, contact_id) VALUES(4, 5);
-INSERT INTO files_to_contact(file_id, contact_id) VALUES (2, 5);
-
-INSERT INTO files_to_deal VALUES (1, 1, 1);
-INSERT INTO files_to_deal VALUES (2, 2, 2);
-INSERT INTO files_to_deal VALUES (3, 3, 3);
-INSERT INTO files_to_deal VALUES (4, 4, 4);
-INSERT INTO files_to_deal VALUES (5, 5, 5);
-
-INSERT INTO files_to_user VALUES (1, 4, 1);
-INSERT INTO files_to_user VALUES (2, 5, 2);
-INSERT INTO files_to_user VALUES (3, 1, 3);
-INSERT INTO files_to_user VALUES (4, 5, 4);
-INSERT INTO files_to_user VALUES (5, 3, 5);
-
-INSERT INTO tags_to_company VALUES (1, 4, 2);
-INSERT INTO tags_to_company VALUES (2, 5, 3);
-INSERT INTO tags_to_company VALUES (3, 3, 1);
-INSERT INTO tags_to_company VALUES (4, 4, 5);
-INSERT INTO tags_to_company VALUES (5, 2, 4);
-
-INSERT INTO tags_to_contact VALUES (1, 2, 3);
-INSERT INTO tags_to_contact VALUES (2, 3, 4);
-INSERT INTO tags_to_contact VALUES (3, 4, 5);
-INSERT INTO tags_to_contact VALUES (4, 5, 1);
-INSERT INTO tags_to_contact VALUES (5, 1, 2);
-
-INSERT INTO tags_to_deal VALUES (1, 5, 4);
-INSERT INTO tags_to_deal VALUES (2, 4, 3);
-INSERT INTO tags_to_deal VALUES (3, 3, 2);
-INSERT INTO tags_to_deal VALUES (4, 2, 1);
-INSERT INTO tags_to_deal VALUES (5, 1, 5);
-
-INSERT INTO comments_to_task VALUES (1, 5, 4);
-INSERT INTO comments_to_task VALUES (2, 4, 3);
-INSERT INTO comments_to_task VALUES (3, 3, 2);
-INSERT INTO comments_to_task VALUES (4, 2, 1);
-INSERT INTO comments_to_task VALUES (5, 1, 5);

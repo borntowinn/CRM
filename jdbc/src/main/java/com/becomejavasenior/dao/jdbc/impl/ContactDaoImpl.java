@@ -31,10 +31,8 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
-    private static final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation) VALUES (?, ?)";
-    private static final String ADD_COMMENT_TO_CONTACT_QUERY = "INSERT INTO comment_to_contact (comment_id, contact_id) VALUES (?, ?)";
-    private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name) VALUES (?, ?, ?)";
-    private static final String ADD_FILE_TO_CONTACT_QUERY = "INSERT INTO files_to_contact(file_id, contact_id) VALUES (?, ?)";
+    private static final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation, contact_id) VALUES (?, ?, ?)";
+    private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name, contact_id) VALUES (?, ?, ?, ?)";
     private static final String GET_ALL_TAGS = "SELECT tag FROM tag";
 
 
@@ -154,99 +152,36 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
 
 
     public void addCommentToContact(Comment comment, int contact_id) {
-        int commentInsertedId = 0;
-        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-
+        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_QUERY)) {
             statement.setString(1, comment.getComment());
             statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setInt(3, contact_id);
             int count = statement.executeUpdate();
             if (count != 1) {
                 log.warn("On persist modify more then 1 record:");
                 throw new PersistException("On persist modify more then 1 record: " + count);
             }
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs != null && rs.next()) {
-                commentInsertedId = rs.getInt(1);
-            }
         } catch (SQLException e) {
             log.error("Couldn't add comment to Contact" + e);
             throw new PersistException(e);
         }
-
-        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_TO_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, commentInsertedId);
-            statement.setInt(2, contact_id);
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new PersistException("On persist modify more then 1 record: " + count);
-            }
-            ResultSet rs = statement.getGeneratedKeys();
-            if (rs != null && rs.next()) {
-                commentInsertedId = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            log.error("Couldn't add comment to Contact" + e);
-            throw new PersistException(e);
-        }
-
-
     }
 
 
     public void addFileToContact(File file, int contact_id) {
-        int fileInsertedId = 0;
-        PreparedStatement insertFile = null;
-        PreparedStatement insertFileToFileContact = null;
-        Connection connection = null;
-        try {
-            connection = DataSource.getInstance().getConnection();
-            connection.setAutoCommit(false);
-            insertFile = connection.prepareStatement(ADD_FILE_QUERY, Statement.RETURN_GENERATED_KEYS);
-            insertFileToFileContact = connection.prepareStatement(ADD_FILE_TO_CONTACT_QUERY);
-
-            insertFile.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-            insertFile.setBytes(2, file.getFile());
-            insertFile.setString(3, file.getFileName());
-
-            int count = insertFile.executeUpdate();
+        try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_FILE_QUERY)) {
+            statement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setBytes(2, file.getFile());
+            statement.setString(3, file.getFileName());
+            statement.setInt(4, contact_id);
+            int count = statement.executeUpdate();
             if (count != 1) {
+                log.warn("On persist modify more then 1 record:");
                 throw new PersistException("On persist modify more then 1 record: " + count);
             }
-            ResultSet rs = insertFile.getGeneratedKeys();
-            if (rs != null && rs.next()) {
-                fileInsertedId = rs.getInt(1);
-            }
-
-            insertFileToFileContact.setInt(1, fileInsertedId);
-            insertFileToFileContact.setInt(2, contact_id);
-            insertFileToFileContact.executeUpdate();
-            connection.commit();
-
-
         } catch (SQLException e) {
-            log.error("File adding failed" + e);
+            log.error("Couldn't add file to Contact" + e);
             throw new PersistException(e);
-        } finally {
-            if (insertFile != null) {
-                try {
-                    insertFile.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (insertFile != null) {
-                try {
-                    insertFile.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                log.error("Couldn't setAutoCommint to true");
-                e.printStackTrace();
-            }
         }
     }
 

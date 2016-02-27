@@ -50,23 +50,17 @@ public class AddContactServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        // create contact for insert to db
-        String dealName = request.getParameter("deal_name");
-        String taskName = request.getParameter("task_name");
 
+        String taskName = request.getParameter("task_name");
+        // create contact for insert to db
         Contact newContact = buildContact(request);
         Contact contact = (Contact) contactDao.create(newContact);
+
+        addCommentToContact(request, contact);
         addFilesToContact(request, contact);
+        addDeal(request, contact);
+        addTask(request, contact);
 
-        // Add deal to contact
-        if(dealName != null && !dealName.isEmpty()){
-            dealDao.create(buildDeal(request, contact));
-        }
-
-        // Add task to contact
-        if(taskName != null && !taskName.isEmpty()){
-            taskDao.create(buildTask(request, contact));
-        }
         response.sendRedirect(CONTACTS_URL);
 
     }
@@ -210,47 +204,51 @@ public class AddContactServlet extends HttpServlet {
         return insertedCompany;
     }
 
-    private Deal buildDeal(HttpServletRequest request, Contact contact){
-        // Deal
-        Deal newDeal = new Deal();
+    private void addDeal(HttpServletRequest request, Contact contact){
         String dealName = request.getParameter("deal_name");
-        Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
-        BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
-        Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
 
-        newDeal.setDealName(dealName);
-        if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
-        if (dealBudget != BigDecimal.ZERO) newDeal.setBudget(dealBudget);
-        newDeal.setCreationDate(LocalDateTime.now());
-        newDeal.setDeleted(false);
-        newDeal.setContact(contact);
-        newDeal.setCreatedBy((User) userDao.getByPK(responsible)); // temp value, will be authorized user here
-        newDeal.setResponsible((User) userDao.getByPK(responsible));
-        return newDeal;
+        // Add deal to contact
+        if(dealName != null && !dealName.isEmpty()){
+            Deal newDeal = new Deal();
+            Integer dealPhase = (request.getParameter("deal_phase") != null) ? Integer.valueOf(request.getParameter("deal_phase")) : 0;
+            BigDecimal dealBudget = (request.getParameter("deal_budget") != null) ? BigDecimal.valueOf(Long.valueOf(request.getParameter("deal_budget"))) : BigDecimal.ZERO;
+            Integer responsible = (request.getParameter("responsible") != null) ?  Integer.valueOf(request.getParameter("responsible")) : 0;
+
+            newDeal.setDealName(dealName);
+            if (dealPhase != 0) newDeal.setPhase( (Phase) phaseDao.getByPK(dealPhase));
+            if (dealBudget != BigDecimal.ZERO) newDeal.setBudget(dealBudget);
+            newDeal.setCreationDate(LocalDateTime.now());
+            newDeal.setDeleted(false);
+            newDeal.setContact(contact);
+            newDeal.setCreatedBy((User) userDao.getByPK(responsible)); // temp value, will be authorized user here
+            newDeal.setResponsible((User) userDao.getByPK(responsible));
+            dealDao.create(newDeal);
+        }
     }
 
 
 
-    private Task buildTask(HttpServletRequest request, Contact contact){
-        // Task
-        Task newTask = new Task();
+    private void addTask(HttpServletRequest request, Contact contact){
         String taskName = request.getParameter("task_name");
-        String dateTimeTo = request.getParameter("datetime_to");
-        String taskPeriod = request.getParameter("task_period");
-        Integer taskResponsible = Integer.valueOf(request.getParameter("task_responsible"));
-        String taskType = request.getParameter("task_type");
+        // Add task to contact
+        if(taskName != null && !taskName.isEmpty()){
+            Task newTask = new Task();
+            String dateTimeTo = request.getParameter("datetime_to");
+            String taskPeriod = request.getParameter("task_period");
+            Integer taskResponsible = Integer.valueOf(request.getParameter("task_responsible"));
+            String taskType = request.getParameter("task_type");
 
-        newTask.setTaskName(taskName);
-        if(dateTimeTo != null) newTask.setPlanTime(LocalDateTime.parse(dateTimeTo));
-        if(taskPeriod != null) newTask.setPeriod(taskPeriod);
-        if(taskType != null) newTask.setTaskType(taskType);
-        newTask.setResponsible((User) userDao.getByPK(taskResponsible));
-        newTask.setAuthor((User) userDao.getByPK(taskResponsible)); // temporary, when authorization will done will be changed to user from session
-        newTask.setCreationTime(LocalDateTime.now());
-        newTask.setDeleted(false);
-        newTask.setDone(false);
-        newTask.setContact(contact);
-
-        return newTask;
+            newTask.setTaskName(taskName);
+            if(dateTimeTo != null) newTask.setPlanTime(LocalDateTime.parse(dateTimeTo));
+            if(taskPeriod != null) newTask.setPeriod(taskPeriod);
+            if(taskType != null) newTask.setTaskType(taskType);
+            newTask.setResponsible((User) userDao.getByPK(taskResponsible));
+            newTask.setAuthor((User) userDao.getByPK(taskResponsible)); // temporary, when authorization will done will be changed to user from session
+            newTask.setCreationTime(LocalDateTime.now());
+            newTask.setDeleted(false);
+            newTask.setDone(false);
+            newTask.setContact(contact);
+            taskDao.create(newTask);
+        }
     }
 }
