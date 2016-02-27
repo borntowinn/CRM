@@ -30,13 +30,10 @@
                 </div>
 
                <div class="form-group">
-                   <label for="tegs" class="control-label col-xs-2">Теги</label>
+                   <label for="tags" class="control-label col-xs-2">Теги</label>
 
                    <div class="col-xs-10">
-
-                       <input type="text" class="form-control" id="tegs" name="tegs"
-                              value="<c:forEach items="${tagList}" var="tag">${tag}, </c:forEach>" data-role="tagsinput" >
-
+                       <input type="text" class="form-control" id="tags" name="tags" value="" data-role="tagsinput" >
                    </div>
                </div>
 

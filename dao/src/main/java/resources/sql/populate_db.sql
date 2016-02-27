@@ -9,11 +9,11 @@ INSERT INTO timezone(timezone) VALUES ('Europe/Kiev');
 INSERT INTO timezone(timezone) VALUES ('Europe/Warsaw');
 INSERT INTO timezone(timezone) VALUES ('Europe/Berlin');
 
-INSERT INTO "user" VALUES (1, 'Travis ', 'Kalanick', 'password', '1999-12-25 00:00:00', 'travis@uber.com', '+38-288-88-88', '+44-547-11-33', 2, 1);
-INSERT INTO "user" VALUES (2, 'Elon', 'Musk', 'pass', '1999-12-25 00:00:00', 'musk@tesla.com', '+48-444-22-34', '+44-546-22-21', 2,1);
-INSERT INTO "user" VALUES (3, 'Larry', 'Ellison', 'passwd', '1999-12-25 00:00:00', 'ellison@oracle.com', '+7-222-44-55', '+44-236-22-21', 2,1);
-INSERT INTO "user" VALUES (4, 'Sergey', 'Brin', 'password1989', '1999-12-25 00:00:00', 'brin@gmail.com', '+6-222-56-32', '+44-543-33-22', 2,1);
-INSERT INTO "user" VALUES (5, 'David', 'Karp', 'wordpass', '1999-12-25 00:00:00', 'karp@tumblr.com', '+44-555-33-11', '+32-222-45-67', 2,1);
+INSERT INTO "user"(name, description, password, date_creation, email, mobile_phone, work_phone, language, user_role_id) VALUES ('Travis ', 'Kalanick', 'password', '1999-12-25 00:00:00', 'travis@uber.com', '+38-288-88-88', '+44-547-11-33', 2, 1);
+INSERT INTO "user"(name, description, password, date_creation, email, mobile_phone, work_phone, language, user_role_id) VALUES ('Elon', 'Musk', 'pass', '1999-12-25 00:00:00', 'musk@tesla.com', '+48-444-22-34', '+44-546-22-21', 2,1);
+INSERT INTO "user"(name, description, password, date_creation, email, mobile_phone, work_phone, language, user_role_id) VALUES ('Larry', 'Ellison', 'passwd', '1999-12-25 00:00:00', 'ellison@oracle.com', '+7-222-44-55', '+44-236-22-21', 2,1);
+INSERT INTO "user"(name, description, password, date_creation, email, mobile_phone, work_phone, language, user_role_id) VALUES ('Sergey', 'Brin', 'password1989', '1999-12-25 00:00:00', 'brin@gmail.com', '+6-222-56-32', '+44-543-33-22', 2,1);
+INSERT INTO "user"(name, description, password, date_creation, email, mobile_phone, work_phone, language, user_role_id) VALUES ('David', 'Karp', 'wordpass', '1999-12-25 00:00:00', 'karp@tumblr.com', '+44-555-33-11', '+32-222-45-67', 2,1);
 
 INSERT INTO session_history VALUES (1,1, '123.321.123', 'chrome', '2015-12-25 00:00:00');
 INSERT INTO session_history VALUES (2,1, '125.521.323', 'chrome', '2014-12-25 00:00:00');
@@ -60,11 +60,11 @@ INSERT INTO file(date_creation, file, file_name) VALUES ('2016-09-12 00:00:00', 
 INSERT INTO file(date_creation, file, file_name) VALUES ('2016-08-12 00:00:00', '\x013d7d16d7ad4fefb61bd95b765c8ceb', 'wire.doc');
 INSERT INTO file(date_creation, file, file_name) VALUES ('2016-08-11 00:00:00', '\x013d7d16d7ad4fefb61bd95b765c8ceb', 'java.png');
 
-INSERT INTO tag VALUES (1, 'important');
-INSERT INTO tag VALUES (2, 'busy');
-INSERT INTO tag VALUES (3, 'dead');
-INSERT INTO tag VALUES (4, 'success');
-INSERT INTO tag VALUES (5, 'fail');
+INSERT INTO tag(tag, company_id, contact_id, deal_id) VALUES ('important',1,1,1);
+INSERT INTO tag(tag, company_id, contact_id, deal_id) VALUES ('busy',2,2,2);
+INSERT INTO tag(tag, company_id, contact_id, deal_id) VALUES ('dead',1,2,1);
+INSERT INTO tag(tag, company_id, contact_id, deal_id) VALUES ('success',3,2,1);
+INSERT INTO tag(tag, company_id, contact_id, deal_id) VALUES ('fail',1,2,4);
 
 INSERT INTO task(period, task_name, plantime, responsible, task_type, author, company_id, contact_id, creation_time, deal_id, isdone)
   VALUES ('today', 'task1', '2015-01-01 12:00:00', 2, 'call',  3, 4, 5, '2016-08-09 00:00:00', 5, false);
@@ -76,23 +76,3 @@ INSERT INTO task(period, task_name, plantime, responsible, task_type, author, co
   VALUES ('next week', 'task4', '2015-01-01 12:00:00', 2, 'meeting', 2, 1, 4, '2013-12-08 00:00:00', 1, false);
 INSERT INTO task(period, task_name, plantime, responsible, task_type, author, company_id, contact_id, creation_time, deal_id, isdone)
   VALUES ('next year', 'task5', '2015-01-01 11:00:00', 5, 'call', 1, 2,5,  '2015-02-03 00:00:00', 3, false);
-
-
-INSERT INTO tags_to_company(company_id, tag_id) VALUES (4, 2);
-INSERT INTO tags_to_company(company_id, tag_id) VALUES (5, 3);
-INSERT INTO tags_to_company(company_id, tag_id) VALUES (3, 1);
-INSERT INTO tags_to_company(company_id, tag_id) VALUES (4, 5);
-INSERT INTO tags_to_company(company_id, tag_id) VALUES (2, 4);
-
-INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (2, 3);
-INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (3, 4);
-INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (4, 5);
-INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (5, 1);
-INSERT INTO tags_to_contact(contact_id, tag_id) VALUES (1, 2);
-
-INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (5, 4);
-INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (4, 3);
-INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (3, 2);
-INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (2, 1);
-INSERT INTO tags_to_deal(deal_id, tag_id) VALUES (1, 5);
-

@@ -668,3 +668,11 @@ ALTER TABLE file ADD COLUMN user_id integer;
 ALTER TABLE file ADD COLUMN company_id integer;
 ALTER TABLE file ADD COLUMN contact_id integer;
 ALTER TABLE file ADD COLUMN deal_id integer;
+
+DROP TABLE IF EXISTS tags_to_company;
+DROP TABLE IF EXISTS tags_to_contact;
+DROP TABLE IF EXISTS tags_to_deal;
+
+ALTER TABLE tag ADD COLUMN company_id integer;
+ALTER TABLE tag ADD COLUMN contact_id integer;
+ALTER TABLE tag ADD COLUMN deal_id integer;

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class AddContactServlet extends HttpServlet {
     private CompanyDao companyDao;
     private PhaseDao phaseDao;
     private DealDao dealDao;
+    private TagDao tagDao;
 
 
     @Override
@@ -45,24 +47,23 @@ public class AddContactServlet extends HttpServlet {
         this.companyDao = DaoFactory.getCompanyDAO();
         this.phaseDao = DaoFactory.getPhaseDao();
         this.dealDao = DaoFactory.getDealDao();
+        this.tagDao = DaoFactory.getTagDao();
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-
-        String taskName = request.getParameter("task_name");
         // create contact for insert to db
         Contact newContact = buildContact(request);
         Contact contact = (Contact) contactDao.create(newContact);
 
+        addTagsToContact(request, contact);
         addCommentToContact(request, contact);
         addFilesToContact(request, contact);
         addDeal(request, contact);
         addTask(request, contact);
 
         response.sendRedirect(CONTACTS_URL);
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -140,7 +141,6 @@ public class AddContactServlet extends HttpServlet {
         String email = request.getParameter("email");
         String skype = request.getParameter("skype");
         String position = request.getParameter("position");
-        String comment = request.getParameter("note");
 
         newContact.setNameSurname(name);
         newContact.setPhoneType(phoneType);
@@ -154,6 +154,16 @@ public class AddContactServlet extends HttpServlet {
         newContact.setResponsible((User) userDao.getByPK(responsible));
 
         return newContact;
+    }
+
+    private void addTagsToContact(HttpServletRequest request, Contact contact) {
+        String tags = request.getParameter("tags");
+        if(!tags.isEmpty() && tags != null){
+            List<Tag> tagList = getTagListFromString(tags);
+            for (Tag tag : tagList) {
+                tagDao.create(tag);
+            }
+        }
     }
 
     private void addCommentToContact(HttpServletRequest request, Contact contact){
@@ -250,5 +260,16 @@ public class AddContactServlet extends HttpServlet {
             newTask.setContact(contact);
             taskDao.create(newTask);
         }
+    }
+
+    private List<Tag> getTagListFromString(String tagsString){
+        List<Tag> tags = new LinkedList<>();
+        String[] splittedString = tagsString.split(",");
+        for (int i = 0; i < splittedString.length; i++) {
+            Tag newTag = new Tag();
+            newTag.setTag(splittedString[i]);
+            tags.add(newTag);
+        }
+        return tags;
     }
 }
