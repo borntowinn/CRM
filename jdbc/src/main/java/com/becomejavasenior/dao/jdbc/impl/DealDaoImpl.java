@@ -88,7 +88,14 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
             statement.setInt(3, deal.getPhase().getId());
             statement.setInt(4, deal.getResponsible().getId());
             statement.setTimestamp(5, Timestamp.valueOf(deal.getCreationDate()));
-            statement.setInt(6, deal.getCompany().getId());
+
+            if(deal.getCompany() == null){
+                statement.setInt(6, 1); // temp value
+            }else{
+                statement.setInt(6, deal.getCompany().getId());
+            }
+
+
             statement.setInt(7, deal.getContact().getId());
             statement.setBoolean(8, deal.getDeleted());
             statement.setString(9, deal.getDealName());

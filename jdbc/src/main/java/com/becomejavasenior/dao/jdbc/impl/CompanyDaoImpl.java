@@ -67,9 +67,14 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
                 company.setPhoneNumber(rs.getString("phone_number"));
                 company.setEmail(rs.getString("email"));
                 company.setWebsite(rs.getString("web_site"));
-                if (rs.getInt("createdby") != 0) {
+
+
+                if(rs.getInt("createdby") != 0){
                     company.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
+                }else{
+                    company.setCreatedBy(userDao.getByPK(1));
                 }
+
                 company.setAddress(rs.getString("address"));
                 company.setDeleted(rs.getBoolean("isdeleted"));
                 company.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
@@ -109,7 +114,13 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
         statement.setString(3, object.getPhoneNumber());
         statement.setString(4, object.getEmail());
         statement.setString(5, object.getWebsite());
-        statement.setInt(6, object.getCreatedBy().getId());
+
+        if(object.getCreatedBy() == null){
+            statement.setNull(6, Types.INTEGER);
+        }else{
+            statement.setInt(6, object.getCreatedBy().getId());
+        }
+
         statement.setString(7, object.getAddress());
         statement.setBoolean(8, object.getDeleted());
         statement.setTimestamp(9, Timestamp.valueOf(object.getCreationTime()));

@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <ul class="nav nav-pills nav-stacked">
     <li class="active"><a href="#">Home</a></li>
-    <li><a href="/crm/dashboard">Рабочий стол</a></li>
+    <li><a href="dashboard">Рабочий стол</a></li>
+    <li><a href="add_contact">Добавить контакт</a></li>
     <li><a href="#">Сделки</a></li>
     <li><a href="<c:url value="/contacts" />">Контакты</a></li>
     <li><a href="<c:url value="/company" />">Добавить компанию</a></li>

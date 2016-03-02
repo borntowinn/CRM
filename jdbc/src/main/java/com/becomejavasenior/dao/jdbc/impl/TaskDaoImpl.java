@@ -4,10 +4,12 @@ import com.becomejavasenior.*;
 import com.becomejavasenior.dao.*;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
+import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +24,11 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   private final static String CREATE_QUERY = "INSERT INTO task (period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
   private final static String DELETE_QUERY = "DELETE FROM task WHERE task_id= ?;";
+  private final static String GET_TYPES = "SELECT DISTINCT task_type FROM task;";
+  private final static String GET_PERIODS = "SELECT DISTINCT period FROM task";
+
   private final static String GET_TASKS_FOR_PERIOD ="SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id WHERE plantime >= ? AND plantime < ?";
+
 
   private UserDao<User> userDao = DaoFactory.getUserDAO();
   private DealDao<Deal> dealDao = DaoFactory.getDealDao();
@@ -181,6 +187,44 @@ public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> 
   }
 
   @Override
+  public List<String> getTaskTypes() {
+    return getListFromColumn("task_type", GET_TYPES);
+  }
+
+  @Override
+  public List<String> getTaskPeriods() {
+    return getListFromColumn("period", GET_PERIODS );
+  }
+
+  private List<String> getListFromColumn(String columnName, String sql){
+    List<String> list = new ArrayList<>();
+    PreparedStatement statement = null;
+    Connection connection = null;
+    try {
+      connection = DataSource.getInstance().getConnection();
+      statement = connection.prepareStatement(sql);
+      ResultSet rs = statement.executeQuery();
+      while (rs.next()) {
+        list.add(rs.getString(columnName));
+      }
+    } catch (SQLException e) {
+      throw new PersistException(e);
+    } finally {
+      try{
+        if(statement != null)
+          statement.close();
+      }catch(SQLException e){
+        throw new PersistException(e);
+      }
+//      try{
+//        if(connection != null) connection.close();
+//      }catch(SQLException se){
+//        se.printStackTrace();
+//      }
+    }
+    return list;
+  }
+
   public List<Task> getTasksForPeriod(LocalDateTime start, LocalDateTime end) throws PersistException{
     List<Task> taskList = null;
 
