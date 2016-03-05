@@ -148,4 +148,22 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
             throw new PersistException(e);
         }
     }
+
+    public List<?> selectEntityByParamId(int id, String sql) {
+        List<?> list = null;
+        try(Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            list = parseResultSet(set);
+            if (list == null || list.size() == 0) {
+                LOGGER.warn("Record with PK = " + id + " in Comment table not found.");
+                throw new PersistException("Record with PK = " + id + " in Comment table not found.");
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Couldn't select comments for entity with id " + id + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

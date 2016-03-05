@@ -1,5 +1,6 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
+import com.becomejavasenior.Comment;
 import com.becomejavasenior.Company;
 import com.becomejavasenior.Contact;
 import com.becomejavasenior.User;
@@ -29,6 +30,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?, responsible = ?  WHERE contact_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
+    private static final String SELECT_COMMENT_BY_CONTACT_ID = "SELECT * FROM comment WHERE contact_id = ?;";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private CompanyDao<Company> companyDAO = DaoFactory.getCompanyDAO();
@@ -132,5 +134,10 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     @Override
     public Contact create(Contact contact) throws PersistException {
         return persist(contact);
+    }
+
+    @Override
+    public Comment selectComments(int contactId) {
+        return (Comment) selectEntityByParamId(contactId, SELECT_COMMENT_BY_CONTACT_ID).get(0);
     }
 }

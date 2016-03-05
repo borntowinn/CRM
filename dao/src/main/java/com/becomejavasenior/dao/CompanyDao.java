@@ -7,4 +7,5 @@ import com.becomejavasenior.File;
 import java.util.List;
 
 public interface CompanyDao<T> extends AbstractDao<T> {
+    Company selectCompanyByContactId(int contactId);
 }

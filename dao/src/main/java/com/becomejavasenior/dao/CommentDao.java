@@ -1,7 +1,10 @@
 package com.becomejavasenior.dao;
 
-/**
- * Created by Default71721 on 10.02.16.
- */
+import com.becomejavasenior.Comment;
+
+import java.util.List;
+
 public interface CommentDao<T> extends AbstractDao<T> {
+    List<Comment> selectCommentsForCompany(int companyId);
+    List<Comment> selectCommentsForDeal(int dealId);
 }

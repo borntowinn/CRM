@@ -22,6 +22,7 @@ public class TagDaoImpl extends AbstractJDBCDao<Tag> implements TagDao<Tag> {
     private final static String UPDATE_QUERY = "UPDATE tag SET tag= ? WHERE tag_id= ?;";
     private final static String DELETE_QUERY = "DELETE FROM tag WHERE tag_id= ?;";
     private final static String ADD_TAG_TO_DEAL = "INSERT INTO tags_to_deal (tag_id, deal_id) VALUES (?, ?);";
+    private final static String SELECT_TAG_BY_CONTACT_ID = "SELECT tag_id FROM tags_to_contact WHERE contact_id = ?;";
 
     @Override
     protected String getSelectQuery() {
@@ -96,6 +97,21 @@ public class TagDaoImpl extends AbstractJDBCDao<Tag> implements TagDao<Tag> {
             PreparedStatement statement = connection.prepareStatement(ADD_TAG_TO_DEAL);
             statement.setInt(1, tagId);
             statement.setInt(2, dealId);
+            executeQuery(statement);
+        } catch (SQLException e) {
+            LOGGER.error("error executing query " + e.getMessage());
+            if (e.getErrorCode() != 0) {
+                throw new PersistException();
+            }
+        }
+    }
+
+    //
+    @Override
+    public void selectTagByContact(int contactId) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_TAG_BY_CONTACT_ID);
+            statement.setInt(1, contactId);
             executeQuery(statement);
         } catch (SQLException e) {
             LOGGER.error("error executing query " + e.getMessage());
