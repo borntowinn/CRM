@@ -6,9 +6,7 @@
        scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="text"/>
-<fmt:message key="header.profile" var="headerProfile" />
-<fmt:message key="header.logout" var="headerLogout" />
-<fmt:message key="header.search" var="headerSearch" />
+
 <html lang="${language}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -37,15 +35,15 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <%--<fmt:message key="header.profile" var="headerProfile" />--%>
-                    <a href="#Profile">${headerProfile}</a>
+                    <a href="#Profile"><fmt:message key="header.profile"/></a>
                 </li>
                 <li id="log-out">
                     <%--<fmt:message key="logout" var="logout" />--%>
-                    <a href="<c:url value="/login.jsp" />">${headerLogout}</a>
+                    <a href="<c:url value="/login.jsp" />"><fmt:message key="header.logout"/> </a>
                 </li>
             </ul>
             <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="${headerSearch}">
+                <input type="text" class="form-control" placeholder="<fmt:message key="header.search"/>">
             </form>
             <form class="navbar-form navbar-right" style="margin-top: 15px">
                 <select id="language" name="language" onchange="submit()">
