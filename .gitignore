@@ -45,3 +45,4 @@ Thumbs.db
 jdbc.properties
 .idea/*
 target/*
+.wiki
