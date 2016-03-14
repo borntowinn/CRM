@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
+<html lang="${language}">
 <div class="panel panel-primary" style="border-color: #428bca">
     <div class="text-right" style="margin: 5px">
         <form action="${pageContext.request.contextPath}/add_contact">
@@ -39,4 +42,7 @@
 </div>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dataTable.css"/>
+
+</html>
+
 

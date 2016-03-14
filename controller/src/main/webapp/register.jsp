@@ -21,7 +21,7 @@
     <script type="text/javascript"
             src="<c:url value="${pageContext.request.contextPath}/webjars/jquery/2.1.4/jquery.min.js"/>"></script>
     <script type="text/javascript"
-            src="<c:url value="${pageContext.request.contextPath}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"/>"></script>
+            src="<c:url value="${pageContext.request.contextPath}/webjars/materializecss/0.97.5/js/materialize.min.js"/>"></script>
     <script src="resources/js/userValidation.js"></script>
 </head>
 
@@ -66,7 +66,9 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input type="submit" value="Register Now" class="btn waves-effect waves-light col s12"/>
+                    <button type="submit" value="Register Now" class="btn waves-effect waves-light col s12">Register
+                        Now
+                    </button>
                 </div>
                 <div class="input-field col s12">
                     <p class="margin center medium-small sign-up">Already have an account? <a

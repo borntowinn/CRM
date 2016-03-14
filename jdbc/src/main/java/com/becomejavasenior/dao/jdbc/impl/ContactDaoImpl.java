@@ -29,7 +29,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     private static final String SELECT_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact";
     private static final String SELECT_BY_PK_QUERY = "SELECT contact_id, name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible  FROM contact WHERE contact_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO contact (name_surname, phone_type, phone_number, email, skype, position, isDeleted, creation_time, createdBy, company_id, responsible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?  WHERE contact_id = ?;";
+    private static final String UPDATE_QUERY = "UPDATE contact SET name_surname = ?, phone_type = ?, phone_number  = ?, email = ?, skype = ?, position = ?, isdeleted = ?, creation_time = ?, createdBy = ?, company_id = ?, responsible = ?  WHERE contact_id = ?;";
     private static final String DELETE_QUERY = "DELETE FROM contact WHERE contact_id = ?";
     private static final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation, contact_id) VALUES (?, ?, ?)";
     private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name, contact_id) VALUES (?, ?, ?, ?)";

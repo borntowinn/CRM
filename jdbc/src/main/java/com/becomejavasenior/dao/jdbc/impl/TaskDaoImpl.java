@@ -19,7 +19,7 @@ import java.util.List;
 public class TaskDaoImpl extends AbstractJDBCDao<Task> implements TaskDao<Task> {
 
   private static final Logger log = Logger.getLogger(TaskDaoImpl.class);
-  private final static String SELECT_QUERY = "SELECT task.*, comment.comment FROM task INNER JOIN comment ON task.task_id = comment.task_id";
+  private final static String SELECT_QUERY = "SELECT * FROM TASK";
   private final static String SELECT_BY_PK = "SELECT * FROM task WHERE task_id=?";
   private final static String CREATE_QUERY = "INSERT INTO task (period, task_name, plantime, responsible, task_type, author, company_id, deal_id, creation_time, contact_id, isdeleted, isdone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   private final static String UPDATE_QUERY = "UPDATE task SET period = ?, task_name = ?, plantime  = ?, responsible = ?, task_type = ?, author = ?, company_id = ?, deal_id = ? , creation_time = ?, contact_id = ?, isdeleted =?, isdone = ? WHERE task_id=?";
