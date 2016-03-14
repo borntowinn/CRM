@@ -22,7 +22,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
     private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String UPDATE_QUERY = "UPDATE comment SET comment = ?, data_creation = ?, company_id = ?, contact_id = ?, deal_id = ?, task_id = ? WHERE comment_id = ?;";
     private final static String COMMENTS_FOR_COMPANY = "SELECT * FROM comment WHERE company_id = ?;";
-    private final static String COMMENTS_FOR_DEAL = "SELECT * FROM comment WHERE deal_id = ?;";
+    private final static String COMMENTS_FOR_DEAL = "SELECT comment FROM comment WHERE deal_id = ?;";
     private static final String SELECT_DEAL_BY_CONTACT = "SELECT comment FROM comment WHERE contact_id = ?;);";//?
 
     private final static String DELETE_QUERY = "DELETE FROM comment WHERE comment_id= ?;";
@@ -176,7 +176,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
         return (List<Comment>) selectEntityByParamId(dealId, COMMENTS_FOR_DEAL);
     }
 
-    public List<Comment> selectCommentsFroContact(int contactId) {
+    public List<Comment> selectCommentsForContact(int contactId) {
         return (List<Comment>) selectEntityByParamId(contactId, SELECT_DEAL_BY_CONTACT);
     }
 }

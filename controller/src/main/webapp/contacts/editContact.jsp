@@ -1,5 +1,3 @@
-<jsp:useBean id="contact" scope="request" type="com.becomejavasenior.Contact"/>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -18,6 +16,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <form class="form-horizontal" role="form" method="POST" action="/contact?contactId=?"
                   accept-charset="UTF-8" enctype="multipart/form-data">
+                <input hidden="hidden" value="${requestScope.get("contactId")}">
 
                 <div class="col-sm-6">
                     <div class="panel panel-success">
@@ -28,49 +27,47 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="nameSurname">Имя фамилия:</label>
-                            <input type="text" value = "${contact.getNameSurname}" id="nameSurname" name="nameSurname">
+                            <input type="text" value ="${nameSurname}" id="nameSurname" name="nameSurname">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="tags">Теги:</label>
-                            <div class="col-sm-7">
-                                <textarea class="from-control" rows="4" id="tags" name="tags"></textarea>
-                            </div>
+                            <textarea class="from-control" rows="4" id="tags" name="tags"></textarea>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="responsibleList">Ответственный:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="responsibleList" name="responsible">
                                     <c:forEach var="entry" items="${userMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
+                                        <option selected value="${entry.key}">${entry.value}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="position">Должность:</label>
-                            <input type="text" id="position" name="position">
+                            <input type="text" value ="${position}" id="position" name="position">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="phoneTypeList">Тип телефона:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="phoneTypeList" name="phoneType">
                                     <c:forEach var="entry" items="${phoneTypeMap}">
-                                        <option value="${entry.key}">${entry.value}</option>
+                                        <option value="${entry.key}" inlist="${phoneType}">${entry.value}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="contactPhoneNumber">Номер телефона:</label>
-                            <input type="text" id="contactPhoneNumber" name="phoneNumber">
+                            <input type="text" value="${contactPhoneNumber}" id="contactPhoneNumber" name="phoneNumber">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="contactEmail">Email:</label>
-                            <input type="email" id="contactEmail" name="email">
+                            <input type="email" value="${contactEmail}" id="contactEmail" name="contactEmail">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="skype">Skype:</label>
-                            <input type="text" id="skype" name="skype">
+                            <input type="text" value="${skype}" id="skype" name="skype">
                         </div>
                     </div>
                 </div>
@@ -84,33 +81,33 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="companyName">Название компании:</label>
-                            <input type="text" id="companyName" name="companyName">
+                            <input type="text" value="${companyName}" id="companyName" name="companyName">
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
                                 <button type="button" class="btn btn-default" href="#">Перейти в редактор компании</button>
-                                <button type="button" class="btn btn-default">Открепить</button>
+                                <button type="button" class="btn btn-default" name="deleteCompany">Открепить</button>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="phoneNumber">Номер телефона:</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber">
+                            <input type="text" value="${phoneNumber}" id="phoneNumber" name="phoneNumber">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="email">Email:</label>
-                            <input type="email" id="email" name="email">
+                            <input type="email" value="${mail}" id="email" name="email">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="webAddress">Web адрес:</label>
-                            <input type="text" id="webAddress" name="website">
+                            <input type="text" value="${webAddr}" id="webAddress" name="website">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="address">Адрес:</label>
-                            <input type="text" id="address" name="address">
+                            <input type="text" value="${addr}" id="address" name="address">
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="button" class="btn btn-default">Отмена</button>
+                                <button type="reset" class="btn btn-default">Отмена</button>
                             </div>
                         </div>
                     </div>
@@ -121,18 +118,18 @@
                         <button type="button" class="btn btn-default" href="#">Добавить задачу</button>
                         <button type="button" class="btn btn-default">Добавить примечание</button>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-5" for="note">Примечание:</label>
-                    <div class="col-sm-7">
-                        <textarea class="from-control" rows="4" id="note" name="note"></textarea>
+                    <div class="form-group" hidden="hidden">
+                        <label class="control-label col-sm-5" for="note">Примечание:</label>
+                        <div class="col-sm-7">
+                            <textarea class="from-control" rows="4" id="note" name="note"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group"> <%--hidden="hidden"--%>
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="file" id="fileData" name="fileData">
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="file" id="fileData" name="fileData">
-                    </div>
-                </div> <%--make it show or hire--%>
                 <div class="form-group">
                     <label class="control-label col-sm-5" for="phaseList">Примечания компании:</label>
                     <div class="col-sm-5">
@@ -152,7 +149,7 @@
                             </c:forEach>
                         </select>
                     </div>
-
+                </div>
                 <div class="col-sm-6">
                     <div class="panel panel-success">
                         <div class="table-responsive">
@@ -171,7 +168,7 @@
                                         <td><p><a href="javascript:void(0)">${deal.dealName}</a></p></td>
                                         <td><p><a href="javascript:void(0)">${deal.phase.phase}</a></p></td>
                                         <td><p>${deal.budget}</p></td>
-                                        <%--<td><p>${deal.currency}</p></td>--%>
+                                        <td><p>UAN</p></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -210,14 +207,14 @@
 
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="button" class="btn btn-default">Отмена</button>
+                                <button type="reset" class="btn btn-default">Отмена</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-10">
-                        <button type="submit" class="btn btn-default">Добавить</button>
+                        <button type="submit" class="btn btn-default">Обновить</button>
                     </div>
                 </div>
                 </div>

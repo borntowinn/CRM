@@ -5,6 +5,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
@@ -150,16 +151,12 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
     }
 
     public List<?> selectEntityByParamId(int id, String sql) {
-        List<?> list = null;
+        List<?> list = new ArrayList<>();
         try(Connection connection = dataSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet set = statement.executeQuery();
             list = parseResultSet(set);
-            if (list == null || list.size() == 0) {
-                LOGGER.warn("Record with PK = " + id + " in Comment table not found.");
-                throw new PersistException("Record with PK = " + id + " in Comment table not found.");
-            }
         } catch (SQLException e) {
             LOGGER.error("Couldn't select comments for entity with id " + id + e.getMessage());
             e.printStackTrace();

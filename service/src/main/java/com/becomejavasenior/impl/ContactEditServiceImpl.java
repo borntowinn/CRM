@@ -49,12 +49,6 @@ public class ContactEditServiceImpl implements ContactEditService {
         return companyComments;
     }
 
-    //
-    public Tag executeInsert(int contactId) {
-        getTag().selectTagByContact(contactId);
-        return null;
-    }
-
     public void updateEntity(Object object) throws ClassNotFoundException {
         if (object instanceof Company) getCompany().update((Company) object);
         if (object instanceof Contact) getContact().update((Contact) object);
@@ -63,8 +57,16 @@ public class ContactEditServiceImpl implements ContactEditService {
         else throw new ClassNotFoundException();
     }
 
+    public Tag selectTag(int contactId) {
+        return getTag().selectTagByContact(contactId).get(0);
+    }
+
     public void createDeal(Deal deal) {
         getDeal().create(deal);
+    }
+
+    public void createFile (File file) {
+        getFile().create(file);
     }
 
     public User userByPK(String param) {
@@ -88,7 +90,7 @@ public class ContactEditServiceImpl implements ContactEditService {
     }
 
     public Comment commentByContactId(int contactId) {
-        return getContact().selectComments(contactId);
+        return getContact().selectComments(contactId).get(0);
     }
 
     private UserDao<User> getUser() {
@@ -117,5 +119,9 @@ public class ContactEditServiceImpl implements ContactEditService {
 
     private CompanyDao<Company> getCompany() {
         return DaoFactory.getCompanyDAO();
+    }
+
+    private FileDao<File> getFile() {
+        return DaoFactory.getFileDao();
     }
 }

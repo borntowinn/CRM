@@ -137,7 +137,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     }
 
     @Override
-    public Comment selectComments(int contactId) {
-        return (Comment) selectEntityByParamId(contactId, SELECT_COMMENT_BY_CONTACT_ID).get(0);
+    public List<Comment> selectComments(int contactId) {
+        return (List<Comment>) selectEntityByParamId(contactId, SELECT_COMMENT_BY_CONTACT_ID);
     }
 }
