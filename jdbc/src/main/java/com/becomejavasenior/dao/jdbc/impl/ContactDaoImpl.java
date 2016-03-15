@@ -1,6 +1,10 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.*;
+import com.becomejavasenior.Comment;
+import com.becomejavasenior.Company;
+import com.becomejavasenior.Contact;
+import com.becomejavasenior.User;
 import com.becomejavasenior.dao.CompanyDao;
 import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.UserDao;
@@ -34,8 +38,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     private static final String ADD_COMMENT_QUERY = "INSERT INTO comment (comment, data_creation, contact_id) VALUES (?, ?, ?)";
     private static final String ADD_FILE_QUERY = "INSERT INTO file (date_creation, file, file_name, contact_id) VALUES (?, ?, ?, ?)";
     private static final String GET_ALL_TAGS = "SELECT tag FROM tag";
-
-
+    private static final String SELECT_COMMENT_BY_CONTACT_ID = "SELECT * FROM comment WHERE contact_id = ?;";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private CompanyDao<Company> companyDAO = DaoFactory.getCompanyDAO();
@@ -81,7 +84,7 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
                 contact.setDeleted(rs.getBoolean("isdeleted"));
                 contact.setCreationTime(rs.getTimestamp("creation_time").toLocalDateTime());
                 contact.setCreatedBy(userDao.getByPK(rs.getInt("createdby")));
-                if(rs.getInt("company_id") != 0){
+                if (rs.getInt("company_id") != 0) {
                     contact.setCompanyId(companyDAO.getByPK(rs.getInt("company_id")));
                 }
 
@@ -111,9 +114,9 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             statement.setTimestamp(8, Timestamp.valueOf(contact.getCreationTime()));
             statement.setInt(9, user_id);
 
-            if(contact.getCompanyId() == null){
+            if (contact.getCompanyId() == null) {
                 statement.setInt(10, 1); // temp value
-            }else{
+            } else {
                 statement.setInt(10, contact.getCompanyId().getId());
             }
 
@@ -149,7 +152,6 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
     public Contact create(Contact contact) throws PersistException {
         return persist(contact);
     }
-
 
     public void addCommentToContact(Comment comment, int contact_id) {
         try (PreparedStatement statement = DataSource.getInstance().getConnection().prepareStatement(ADD_COMMENT_QUERY)) {
@@ -201,5 +203,10 @@ public class ContactDaoImpl extends AbstractJDBCDao<Contact> implements ContactD
             throw new PersistException(e);
         }
         return list;
+    }
+
+    @Override
+    public List<Comment> selectComments (int contactId) {
+        return (List<Comment>) selectEntityByParamId(contactId, SELECT_COMMENT_BY_CONTACT_ID);
     }
 }

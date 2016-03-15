@@ -20,6 +20,7 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
     private final static String CREATE_QUERY = "INSERT INTO \"company\" (company_name, responsible, phone_number, email, web_site, createdby, address, isdeleted, creation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final static String UPDATE_QUERY = "UPDATE \"company\" SET company_name = ?, responsible = ?, phone_number = ?, email = ?, web_site = ?, createdby = ?, address = ?, isdeleted = ?, creation_time = ? WHERE company_id=?";
     private final static String DELETE_QUERY = "DELETE FROM \"company\" WHERE company_id= ?;";
+    private final static String SELECT_COMPANY_BY_CONTACT_ID = "SELECT * FROM company WHERE company_id IN (SELECT company_id FROM contact WHERE contact_id = ?);";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
 
@@ -106,6 +107,10 @@ public class CompanyDaoImpl extends AbstractJDBCDao<Company> implements CompanyD
             log.error("couldn't prepared Statement for Insert Company " + e.getMessage());
             throw new PersistException(e);
         }
+    }
+
+    public Company selectCompanyByContactId(int contactId) {
+        return (Company) selectEntityByParamId(contactId, SELECT_COMPANY_BY_CONTACT_ID).get(0);
     }
 
     private void prepareStatement(PreparedStatement statement, Company object) throws SQLException {

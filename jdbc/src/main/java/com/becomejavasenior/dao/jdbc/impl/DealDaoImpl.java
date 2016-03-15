@@ -15,13 +15,14 @@ import java.util.List;
  */
 public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> {
 
-    private static final Logger log = Logger.getLogger(DealDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(DealDaoImpl.class);
 
     private static final String SELECT_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal";
     private static final String SELECT_BY_PK_QUERY = "SELECT deal_id, createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name FROM deal WHERE deal_id = ?";
     private static final String CREATE_QUERY = "INSERT INTO deal (createdby, budget, phase_id, responsible, date_creation, company_id, contact_id, isdeleted, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE deal SET createdby = ?, budget = ?, phase_id  = ?, responsible = ?, date_creation = ?, company_id = ?, contact_id = ?, isdeleted = ?, name = ? WHERE deal_id=?";
     private static final String DELETE_QUERY = "DELETE FROM deal WHERE deal_id= ?;";
+    private static final String SELECT_DEALS_BY_CONTACT_ID = "SELECT * FROM deal WHERE contact_id = ?;";
 
     private UserDao<User> userDao = DaoFactory.getUserDAO();
     private PhaseDao<Phase> phaseDao = DaoFactory.getPhaseDao();
@@ -74,7 +75,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
-            log.error("result has not parsed " + e);
+            LOGGER.error("result has not parsed " + e);
             throw new PersistException();
         }
         return resultList;
@@ -102,7 +103,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
-            log.error("couldn't prepared Statement for Insert Deal " + e);
+            LOGGER.error("couldn't prepared Statement for Insert Deal " + e);
             throw new PersistException();
         }
     }
@@ -123,7 +124,7 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
         }
         catch (SQLException e)
         {
-            log.error("couldn't prepared Statement for Update Deal " + e);
+            LOGGER.error("couldn't prepared Statement for Update Deal " + e);
             throw new PersistException();
         }
     }
@@ -131,5 +132,9 @@ public class DealDaoImpl extends AbstractJDBCDao<Deal> implements DealDao<Deal> 
     @Override
     public Deal create(Deal deal) {
         return persist(deal);
+    }
+
+    public List<Deal> selectDealByContactId(int contactId) {
+        return (List<Deal>) selectEntityByParamId(contactId, SELECT_DEALS_BY_CONTACT_ID);
     }
 }

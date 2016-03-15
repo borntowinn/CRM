@@ -27,6 +27,8 @@ public class Contact implements Serializable {
     private List<Deal> deals = new LinkedList<Deal>();
     private List<Task> tasks = new LinkedList<Task>();
     private List<Tag> tags = new LinkedList<Tag>();
+    private List<Comment> commentList = new LinkedList<>();
+
     public Contact() {
     }
 
@@ -156,5 +158,13 @@ public class Contact implements Serializable {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 }

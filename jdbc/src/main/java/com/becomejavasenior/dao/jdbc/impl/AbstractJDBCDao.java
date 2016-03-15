@@ -5,6 +5,7 @@ import com.becomejavasenior.dao.exception.PersistException;
 import org.apache.log4j.Logger;
 import com.becomejavasenior.dao.jdbc.factory.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
@@ -147,5 +148,19 @@ public abstract class AbstractJDBCDao<T> implements AbstractDao<T> {
             LOGGER.error("couldn't delete " + e.getMessage());
             throw new PersistException(e);
         }
+    }
+
+    public List<?> selectEntityByParamId(int id, String sql) {
+        List<?> list = new ArrayList<>();
+        try(Connection connection = dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            list = parseResultSet(set);
+        } catch (SQLException e) {
+            LOGGER.error("Couldn't select comments for entity with id " + id + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
     }
 }

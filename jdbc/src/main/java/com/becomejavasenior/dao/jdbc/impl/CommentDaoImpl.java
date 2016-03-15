@@ -15,12 +15,15 @@ import java.util.List;
  */
 public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentDao<Comment> {
 
-    private static final Logger log = Logger.getLogger(CommentDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(CommentDaoImpl.class);
 
     private final static String SELECT_QUERY = "SELECT comment_id, comment, data_creation, company_id, contact_id, deal_id, task_id FROM comment;";
     private final static String SELECT_BY_PK_QUERY = "SELECT comment_id, comment, data_creation, company_id, contact_id, deal_id, task_id FROM comment WHERE comment_id = ?;";
     private final static String CREATE_QUERY = "INSERT INTO comment (comment, data_creation, company_id, contact_id, deal_id, task_id) VALUES (?, ?, ?, ?, ?, ?);";
     private final static String UPDATE_QUERY = "UPDATE comment SET comment = ?, data_creation = ?, company_id = ?, contact_id = ?, deal_id = ?, task_id = ? WHERE comment_id = ?;";
+    private final static String COMMENTS_FOR_COMPANY = "SELECT * FROM comment WHERE company_id = ?;";
+    private final static String COMMENTS_FOR_DEAL = "SELECT comment FROM comment WHERE deal_id = ?;";
+    private static final String SELECT_DEAL_BY_CONTACT = "SELECT comment FROM comment WHERE contact_id = ?;);";//?
 
     private final static String DELETE_QUERY = "DELETE FROM comment WHERE comment_id= ?;";
 
@@ -87,7 +90,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
                 result.add(comment);
             }
         } catch (SQLException e) {
-            log.error("result has not parsed " + e);
+            LOGGER.error("result has not parsed " + e);
             throw new PersistException(e);
         }
         return result;
@@ -124,7 +127,7 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
             }
 
         } catch (SQLException e) {
-            log.error("couldn't prepared Statement for Insert " + e);
+            LOGGER.error("couldn't prepared Statement for Insert " + e);
             throw new PersistException(e);
         }
     }
@@ -160,8 +163,20 @@ public class CommentDaoImpl extends AbstractJDBCDao<Comment> implements CommentD
             }
             statement.setInt(7, comment.getId());
         } catch (SQLException e) {
-            log.error("couldn't prepared Statement for Update " + e);
+            LOGGER.error("couldn't prepared Statement for Update " + e);
             throw new PersistException(e);
         }
+    }
+
+    public List<Comment> selectCommentsForCompany(int companyId) {
+        return (List<Comment>) selectEntityByParamId(companyId, COMMENTS_FOR_COMPANY);
+    }
+
+    public List<Comment> selectCommentsForDeal(int dealId) {
+        return (List<Comment>) selectEntityByParamId(dealId, COMMENTS_FOR_DEAL);
+    }
+
+    public List<Comment> selectCommentsForContact(int contactId) {
+        return (List<Comment>) selectEntityByParamId(contactId, SELECT_DEAL_BY_CONTACT);
     }
 }

@@ -27,7 +27,7 @@
             <tbody>
             <c:forEach var="cont" items="${contacts}">
                 <tr>
-                    <td><p><a href="javascript:void(0)">${cont.nameSurname}</a></p></td>
+                    <td><p><a href="/contact?contactId=${cont.getId()}">${cont.nameSurname}</a></p></td>
                     <td><p><a href="javascript:void(0)">${cont.companyId.companyName}</a></p></td>
                     <td><p>${cont.phoneNumber}</p></td>
                     <td><p>${cont.email}</p></td>
