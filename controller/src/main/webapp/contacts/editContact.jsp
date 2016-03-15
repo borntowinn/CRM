@@ -14,9 +14,8 @@
             <jsp:include page="../fragments/leftMenu.jsp"/>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <form class="form-horizontal" role="form" method="POST" action="/contact?contactId=?"
+            <form class="form-horizontal" role="form" method="POST"
                   accept-charset="UTF-8" enctype="multipart/form-data">
-                <input hidden="hidden" value="${requestScope.get("contactId")}">
 
                 <div class="col-sm-6">
                     <div class="panel panel-success">
@@ -27,32 +26,33 @@
 
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="nameSurname">Имя фамилия:</label>
-                            <input type="text" value ="${nameSurname}" id="nameSurname" name="nameSurname">
+                            <input type="text" value="${nameSurname}" id="nameSurname" name="nameSurname">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="tags">Теги:</label>
-                            <textarea class="from-control" rows="4" id="tags" name="tags"></textarea>
+                            <textarea class="from-control" rows="4" id="tags" name="tags"><c:forEach items="${tag}"
+                                        var="item"><c:out value="${item}"/></c:forEach></textarea>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="responsibleList">Ответственный:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="responsibleList" name="responsible">
                                     <c:forEach var="entry" items="${userMap}">
-                                        <option selected value="${entry.key}">${entry.value}</option>
+                                        <option value="${entry.key}"${entry.key == resp ? 'selected="selected"' : ''}>${entry.value}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="position">Должность:</label>
-                            <input type="text" value ="${position}" id="position" name="position">
+                            <input type="text" value="${position}" id="position" name="position">
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-5" for="phoneTypeList">Тип телефона:</label>
                             <div class="col-sm-5">
                                 <select class="form-control" id="phoneTypeList" name="phoneType">
                                     <c:forEach var="entry" items="${phoneTypeMap}">
-                                        <option value="${entry.key}" inlist="${phoneType}">${entry.value}</option>
+                                        <option value="${entry.key}"${entry.key == phoneType ? 'selected="selected"' : ''}>${entry.value}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -85,8 +85,11 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-10">
-                                <button type="button" class="btn btn-default" href="#">Перейти в редактор компании</button>
-                                <button type="button" class="btn btn-default" name="deleteCompany">Открепить</button>
+                                <button type="button" class="btn btn-default" href="#">Перейти в редактор компании
+                                </button>
+                                <button type="button" class="btn btn-default" name="deleteCompany" value="detachCompany"
+                                        >Открепить
+                                </button>
                             </div>
                         </div>
                         <div class="form-group">
@@ -118,7 +121,7 @@
                         <button type="button" class="btn btn-default" href="#">Добавить задачу</button>
                         <button type="button" class="btn btn-default">Добавить примечание</button>
                     </div>
-                    <div class="form-group" hidden="hidden">
+                    <div class="form-group"> <%--hidden="hidden"--%>
                         <label class="control-label col-sm-5" for="note">Примечание:</label>
                         <div class="col-sm-7">
                             <textarea class="from-control" rows="4" id="note" name="note"></textarea>
@@ -213,15 +216,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-10">
+                    <div class="col-sm-offset-3 col-sm-10" href="/contacts">
                         <button type="submit" class="btn btn-default">Обновить</button>
                     </div>
                 </div>
-                </div>
+                <%--</div>--%>
             </form>
-        </div> <%--class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"--%>
-    </div><%--class="row"--%>
-</div><%--class="container-fluid"--%>
+        </div>
+        <%--class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"--%>
+    </div>
+    <%--class="row"--%>
+</div>
+<%--class="container-fluid"--%>
 
 </body>
 </html>

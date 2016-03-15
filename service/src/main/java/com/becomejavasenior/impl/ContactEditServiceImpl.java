@@ -49,6 +49,14 @@ public class ContactEditServiceImpl implements ContactEditService {
         return companyComments;
     }
 
+    public List<Tag> selectTag(int contactId) {
+        return getTag().selectTagByContact(contactId);
+    }
+
+    public void createComment(Comment comment) {
+        getComment().create(comment);
+    }
+
     public void updateEntity(Object object) throws ClassNotFoundException {
         if (object instanceof Company) getCompany().update((Company) object);
         if (object instanceof Contact) getContact().update((Contact) object);
@@ -57,15 +65,11 @@ public class ContactEditServiceImpl implements ContactEditService {
         else throw new ClassNotFoundException();
     }
 
-    public Tag selectTag(int contactId) {
-        return getTag().selectTagByContact(contactId).get(0);
-    }
-
     public void createDeal(Deal deal) {
         getDeal().create(deal);
     }
 
-    public void createFile (File file) {
+    public void createFile(File file) {
         getFile().create(file);
     }
 
@@ -87,10 +91,6 @@ public class ContactEditServiceImpl implements ContactEditService {
 
     public Company companyByContactId(int contactId) {
         return getCompany().selectCompanyByContactId(contactId);
-    }
-
-    public Comment commentByContactId(int contactId) {
-        return getContact().selectComments(contactId).get(0);
     }
 
     private UserDao<User> getUser() {

@@ -17,10 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "editContact",
         urlPatterns = {"/contact"})
@@ -29,6 +27,7 @@ public class ContactEditServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(DealController.class);
 
     private final String EDIT_CONTACT = "/contacts/editContact.jsp";
+    private final String CONTACTS = "/contacts/result.jsp";
     private final ContactEditServiceImpl contactService = new ContactEditServiceImpl();
 
     @Override
@@ -53,7 +52,8 @@ public class ContactEditServlet extends HttpServlet {
         request.setAttribute("skype", contact.getSkype());
         request.setAttribute("resp", contact.getResponsible().getId());
         request.setAttribute("phoneType", contact.getPhoneType());
-        request.setAttribute("tag", contact.getTags());
+        request.setAttribute("tag",
+                contactService.selectTag(contact.getId()).stream().map(Tag::getTag).collect(Collectors.toList()));
         Company company = contact.getCompanyId();
         request.setAttribute("companyName", company.getCompanyName());
         request.setAttribute("phoneNumber", company.getPhoneNumber());
@@ -83,20 +83,25 @@ public class ContactEditServlet extends HttpServlet {
         request.setAttribute("deals", contactService.dealsForContact(contactId));
         request.setAttribute("nameSurname", contact.getNameSurname());
 
-        editContact(request, contact);
+        try {
+            editContact(request, contact);
+        } catch (ClassNotFoundException e) {
+            LOGGER.error("you try to update nonexistent object");
+            e.printStackTrace();
+        }
         if (request.getParameter("") != null) {
             try {
                 editCompany(request, contact);
             } catch (ClassNotFoundException e) {
-                LOGGER.error("you try to update nonexistent object" + e);
+                LOGGER.error("you try to update nonexistent object");
                 e.printStackTrace();
             }
         }
-        request.getRequestDispatcher(EDIT_CONTACT)
+        request.getRequestDispatcher(CONTACTS)
                 .forward(request, response);
     }
 
-    private void editContact(HttpServletRequest request, Contact editContact) throws ServletException, IOException {
+    private void editContact(HttpServletRequest request, Contact editContact) throws ServletException, IOException, ClassNotFoundException {
         editContact.setNameSurname(request.getParameter("nameSurname"));
         if (request.getParameter("tags") != null) {
             try {
@@ -115,19 +120,19 @@ public class ContactEditServlet extends HttpServlet {
         String note = request.getParameter("note");
         try {
             if (note != null) {
-                editContact.setCommentList(updateComment(note, editContact.getId()));
+                editContact.setCommentList(createComment(note));
             }
-            contactService.updateEntity(editContact);
             if (request.getParameter("fileData") != null) {
                 editContact.setFiles(createFile(request));
             }
         } catch (ClassNotFoundException e) {
-            LOGGER.error("you try to update nonexistent object" + e);
+            LOGGER.error("you try to update nonexistent object");
             e.printStackTrace();
         }
         if (request.getParameter("addDeal") != null) {
             addDeal(request);
         }
+        contactService.updateEntity(editContact);
     }
 
     private List<File> createFile(HttpServletRequest request) throws IOException, ServletException, ClassNotFoundException {
@@ -150,17 +155,18 @@ public class ContactEditServlet extends HttpServlet {
     }
 
     private void updateTag(Contact contact, HttpServletRequest request) throws ClassNotFoundException {
-        Tag tag = contactService.selectTag(contact.getId());
-        tag.setTag(request.getParameter("tags"));
-        contactService.updateEntity(tag);
+        for (Tag tag : contactService.selectTag(contact.getId())) {
+            tag.setTag(request.getParameter("tags"));
+            contactService.updateEntity(tag);
+        }
     }
 
-    private List<Comment> updateComment(String note, int contactId) throws ClassNotFoundException {
+    private List<Comment> createComment(String note) throws ClassNotFoundException {
         List<Comment> comments = new ArrayList<>();
-        Comment comment = contactService.commentByContactId(contactId);
+        Comment comment = new Comment();
         comment.setCreationDate(LocalDateTime.now());
         comment.setComment(note);
-        contactService.updateEntity(comment);
+        contactService.createComment(comment);
         comments.add(comment);
         return comments;
     }
