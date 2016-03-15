@@ -4,7 +4,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page isELIgnored="false" %>
 
-<html>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="text"/>
+<fmt:message key="leftmenu.addContact" var="addContact"/>
+<fmt:message key="leftmenu.addCompany" var="addCompany"/>
+<fmt:message key="contact.dealfastadd" var="dealfastadd"/>
+<fmt:message key="contact.plantask" var="plantask"/>
+
+<html lang="${language}">
 <jsp:include page="fragments/headTag.jsp"/>
 
 <body>
@@ -20,7 +30,7 @@
 
         <form id="addContactForm" class="form-horizontal" method="post" enctype="multipart/form-data">
            <div class="col-sm-5 col-sm-offset-2 col-md-5 col-md-offset-2 main">
-               <h2 class="page-header">Добавить контакт</h2>
+               <h2 class="page-header">${addContact}</h2>
                 <div class="form-group">
                     <label for="contact_name" class="control-label col-xs-2">Имя Фамилия</label>
 
@@ -115,7 +125,7 @@
             </div>
 
            <div class="col-sm-5 col-md-5 main">
-                <h2 class="page-header">Запланировать действие</h2>
+                <h2 class="page-header">${plantask}</h2>
 
                     <div class="form-group">
 
@@ -200,7 +210,7 @@
            </div>
 
            <div class="col-sm-5 col-sm-offset-2 col-md-5 col-md-offset-2 main">
-                <h2 class="page-header">Быстрое добавление сделки</h2>
+                <h2 class="page-header">${dealfastadd}</h2>
                 <div class="form-group">
                     <label for="deal_name" class="control-label col-xs-2">Название</label>
 
@@ -236,7 +246,7 @@
             </div>
 
            <div class="col-sm-5 col-md-5 main">
-                <h2 class="page-header">Добавить компанию</h2>
+                <h2 class="page-header">${addCompany}</h2>
                 <div class="form-group">
                     <label for="company" class="control-label col-xs-2">Компания</label>
                     <div class="col-xs-10">
