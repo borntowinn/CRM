@@ -1,28 +1,38 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "task")
 public class Task implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "task_id")
     private Integer id;
     private String period;
+    @Column(name = "task_name")
     private String taskName;
+    @Column(name = "plantime")
     private LocalDateTime planTime;
     private User responsible;
+    @Column(name = "task_type")
     private String taskType;
     private User author;
+    @Column(name = "company_id")
     private Company company;
+    @Column(name = "deal_id")
     private Deal deal;
+    @Column(name = "creation_time")
     private LocalDateTime creationTime;
+    @Column(name = "contat_id")
     private Contact contact;
+    @Column(name = "isdeleted")
     private Boolean isDeleted;
+    @Column(name = "isdone")
     private Boolean isDone;
-    private String comment;
 
     public Task() {
 
@@ -130,13 +140,5 @@ public class Task implements Serializable {
 
     public void setDone(Boolean done) {
         isDone = done;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 }

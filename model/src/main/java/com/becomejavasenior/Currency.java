@@ -1,9 +1,14 @@
 package com.becomejavasenior;
 
-/**
- * Created by valkos on 28.01.16.
- */
+import javax.persistence.*;
+
+@Entity
+@Table(name = "currency")
 public class Currency {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "currency_id")
     private Integer id;
     private String currency;
 

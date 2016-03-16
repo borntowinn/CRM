@@ -1,15 +1,20 @@
 package com.becomejavasenior;
 
-import java.util.LinkedList;
+import javax.persistence.*;
 import java.util.List;
 
-/**
- * Created by valkos on 28.01.16.
- */
+@Entity
+@Table(name = "phase")
 public class Phase {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "phase_id")
     private Integer id;
     private String phase;
-    private List<Deal> deals = new LinkedList<Deal>();
+
+    @OneToMany(mappedBy = "phase")
+    private List<Deal> deals; //need I initialization here?
 
     public Phase() {
     }

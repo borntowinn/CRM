@@ -1,9 +1,14 @@
 package com.becomejavasenior;
 
-/**
- * Created by valkos on 28.01.16.
- */
+import javax.persistence.*;
+
+@Entity
+@Table(name = "timezone")
 public class Timezone {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "timezone_id")
     private Integer id;
     private String timezone;
 

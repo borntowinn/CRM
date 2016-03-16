@@ -1,31 +1,47 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by kast0615 on 1/22/2016
- */
+@Entity
+@Table(name = "contact")
 public class Contact implements Serializable {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "contact_id")
     private Integer id;
+    @Column(name = "name_surname")
     private String nameSurname;
+    @Column(name = "phone_type")
     private Integer phoneType;
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String email;
     private String skype;
     private String position;
+    @Column(name = "isdeleted")
     private Boolean isDeleted;
+    @Column(name = "creation_time")
     private LocalDateTime creationTime;
+    @Column(name = "createdby")
     private User createdBy;
+    @Column(name = "company_id")
     private Company companyId;
     private User responsible;
     private List<File> files = new LinkedList<File>();
+
+    @OneToMany(mappedBy = "contact")
     private List<Deal> deals = new LinkedList<Deal>();
     private List<Task> tasks = new LinkedList<Task>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "tags_to_contact", joinColumns = {
+            @JoinColumn(name = "contact_id", nullable = false, updatable = true)},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
     private List<Tag> tags = new LinkedList<Tag>();
     private List<Comment> commentList = new LinkedList<>();
 

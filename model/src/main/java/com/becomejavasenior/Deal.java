@@ -1,25 +1,52 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "deal")
 public class Deal implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "deal_id")
     private Integer id;
+
+    @Column(name = "name")
     private String dealName;
+
+    @Column(name = "createdby")
     private User createdBy;
     private BigDecimal budget;
+
+    @ManyToOne
+    @JoinColumn(name = "phase_id")
     private Phase phase;
+
     private User responsible;
+
+    @Column(name = "date_creation")
     private LocalDateTime creationDate;
+
+    @ManyToOne
+    @Column(name = "company_id")
     private Company company;
+
+    @ManyToOne
+    @Column(name = "contact_id")
     private Contact contact;
+
+    @Column(name = "isdeleted")
     private Boolean isDeleted;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "tags_to_deal", joinColumns = {
+            @JoinColumn(name = "deal_id", nullable = false, updatable = true)},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
     private List<Tag> tagList = new LinkedList<Tag>();
     private List<Comment> commentList = new LinkedList<Comment>();
     private List<File> fileList = new LinkedList<File>();

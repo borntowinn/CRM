@@ -1,19 +1,30 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "file")
 public class File implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "file_id")
     private Integer id;
+    @Column(name = "date_creation")
     private LocalDateTime creationDate;
+    @Column(name = "file")
     private byte[] file;
+    @Column(name = "file_name")
     private String fileName;
+    @Column(name = "company_id")
     private Company companyId;
+    @Column(name = "deal_id")
     private Deal dealId;
+    @Column(name = "contact_id")
     private Contact contactId;
+    @Column(name = "user_id")
     private User userId;
 
     public File() {

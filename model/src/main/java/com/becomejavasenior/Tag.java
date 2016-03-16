@@ -1,11 +1,15 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "tag")
 public class Tag implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "tag_id")
     private Integer id;
     private String tag;
 

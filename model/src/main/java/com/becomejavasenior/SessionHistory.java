@@ -1,16 +1,23 @@
 package com.becomejavasenior;
 
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Created by valkos on 28.01.16.
- */
+@Entity
+@Table(name = "session_history")
 public class SessionHistory {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "session_history_id")
     private Integer id;
+    @Column(name = "user_id")
     private User userId;
+    @Column(name = "ip_address")
     private String ipAddress;
     private String browser;
+    @Column(name = "data_session")
     private LocalDateTime creationDate;
 
     public SessionHistory() {

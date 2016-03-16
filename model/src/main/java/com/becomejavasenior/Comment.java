@@ -1,18 +1,26 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "comment")
 public class Comment implements Serializable {
+    @Id
+    @GeneratedValue
+    @Column(name = "comment_id")
     private Integer id;
     private String comment;
+    @Column(name = "data_creation")
     private LocalDateTime creationDate;
+    @Column(name = "company_id")
     private Company companyId;
+    @Column(name = "deal_id")
     private Deal dealId;
+    @Column(name = "contact_id")
     private Contact contactId;
+    @Column(name = "task_id")
     private Task taskId;
 
     public Comment() {

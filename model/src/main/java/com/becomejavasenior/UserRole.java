@@ -1,13 +1,22 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * Created by Default71721 on 22.01.16.
- */
-public class UserRole implements Serializable{
+@Entity
+@Table(name = "user_role")
+public class UserRole implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "user_role_id")
     private Integer id;
+    @Column(name = "role")
     private String userRole;
+
+    @OneToMany(mappedBy = "userRole")
+    List<User> users;
 
     public UserRole() {
 
@@ -27,5 +36,14 @@ public class UserRole implements Serializable{
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

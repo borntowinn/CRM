@@ -1,22 +1,33 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * Created by Default71721 on 22.01.16
- */
+@Entity
+@Table(name = "user")
 public class User implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id")
     private Integer id;
     private String name;
     private String password;
     private String description;
+    @Column(name = "date_creation")
     private LocalDateTime creationDate;
+
+    @ManyToOne
+    @Column(name = "user_role_id")
     private UserRole userRole;
     private String email;
+    @Column(name = "mobile_phone")
     private String mobilePhone;
+    @Column(name = "work_phone")
     private String workPhone;
     private Integer language;
+    @Column(name = "password_salt")
     private String passwordSalt;
 
     public User() {

@@ -1,29 +1,46 @@
 package com.becomejavasenior;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by katia_stetsiuk on 1/22/2016
- */
+@Entity
+@Table(name = "company")
 public class Company implements Serializable {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "company_id")
     private Integer id;
+    @Column(name = "company_name")
     private String companyName;
     private User responsible;
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String email;
+    @Column(name = "web_site")
     private String website;
+    @Column(name = "createdby")
     private User createdBy;
+    @Column(name = "isdeleted")
     private Boolean isDeleted;
     private String address;
+    @Column(name = "creation_time")
     private LocalDateTime creationTime;
     private List<File> files = new LinkedList<File>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "tags_to_company", joinColumns = {
+            @JoinColumn(name = "company_id", nullable = false, updatable = true)},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
     private List<Tag> tags = new LinkedList<Tag>();
     private List<Comment> comments = new LinkedList<Comment>();
     private List<Task> tasks = new LinkedList<Task>();
+
+    @OneToMany(mappedBy = "company")
+    private List<Deal> deals = new LinkedList<>();
 
     public Company() {
     }
@@ -74,10 +91,6 @@ public class Company implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public Boolean isDeleted() {
-        return isDeleted;
     }
 
     public void setDeleted(Boolean deleted) {
@@ -142,5 +155,13 @@ public class Company implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<Deal> getDeals() {
+        return deals;
+    }
+
+    public void setDeals(List<Deal> deals) {
+        this.deals = deals;
     }
 }
