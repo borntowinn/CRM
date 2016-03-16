@@ -1,1 +1,2 @@
 ALTER TABLE "user" ADD COLUMN password_salt VARCHAR(50);
+ALTER TABLE task ADD COLUMN comment VARCHAR (250);

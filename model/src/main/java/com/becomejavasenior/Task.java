@@ -34,6 +34,8 @@ public class Task implements Serializable {
     @Column(name = "isdone")
     private Boolean isDone;
 
+    private String comment;
+
     public Task() {
 
     }
@@ -140,5 +142,13 @@ public class Task implements Serializable {
 
     public void setDone(Boolean done) {
         isDone = done;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
