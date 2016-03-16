@@ -10,6 +10,10 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-webmvc>4.2.5.RELEASE</spring-webmvc>
+        <spring-beans>4.1.4.RELEASE</spring-beans>
+        <spring-context>4.1.4.RELEASE</spring-context>
+        <javax.servlet-api>3.1.0</javax.servlet-api>
     </properties>
     <build>
         <plugins>
@@ -55,6 +59,7 @@
         <module>model</module>
         <module>jdbc</module>
         <module>service</module>
+        <module>spring-mvc</module>
     </modules>
 
     <name>CRM Maven Webapp</name>
@@ -65,6 +70,31 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring-webmvc}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring-beans}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
 </project>
