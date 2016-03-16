@@ -1,1 +1,1 @@
-CRM
+CRM integrated with slack
