@@ -12,7 +12,9 @@ public class Comment implements Serializable {
     @Column(name = "comment_id")
     private Integer id;
     private String comment;
+
     @Column(name = "data_creation")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
     @Column(name = "company_id")
     private Company companyId;

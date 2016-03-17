@@ -18,6 +18,7 @@ public class SessionHistory {
     private String ipAddress;
     private String browser;
     @Column(name = "data_session")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
 
     public SessionHistory() {

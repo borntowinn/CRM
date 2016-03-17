@@ -26,6 +26,7 @@ public class Task implements Serializable {
     @Column(name = "deal_id")
     private Deal deal;
     @Column(name = "creation_time")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
     @Column(name = "contat_id")
     private Contact contact;

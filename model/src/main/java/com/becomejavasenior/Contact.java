@@ -26,6 +26,7 @@ public class Contact implements Serializable {
     @Column(name = "isdeleted")
     private Boolean isDeleted;
     @Column(name = "creation_time")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
     @Column(name = "createdby")
     private User createdBy;
@@ -43,6 +44,7 @@ public class Contact implements Serializable {
             @JoinColumn(name = "contact_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
     private List<Tag> tags = new LinkedList<Tag>();
+
     private List<Comment> commentList = new LinkedList<>();
 
     public Contact() {

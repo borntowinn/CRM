@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String password;
     private String description;
     @Column(name = "date_creation")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
 
     @ManyToOne

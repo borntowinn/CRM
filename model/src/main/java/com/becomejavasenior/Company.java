@@ -28,6 +28,7 @@ public class Company implements Serializable {
     private Boolean isDeleted;
     private String address;
     @Column(name = "creation_time")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
     private List<File> files = new LinkedList<File>();
 

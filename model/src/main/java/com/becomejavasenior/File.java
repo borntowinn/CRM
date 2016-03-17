@@ -13,6 +13,7 @@ public class File implements Serializable {
     @Column(name = "file_id")
     private Integer id;
     @Column(name = "date_creation")
+    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
     @Column(name = "file")
     private byte[] file;

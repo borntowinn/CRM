@@ -30,7 +30,8 @@ public class Deal implements Serializable {
     private User responsible;
 
     @Column(name = "date_creation")
-    private LocalDateTime creationDate;
+    @Temporal(value=TemporalType.TIMESTAMP)
+    private LocalDateTime creationDate; //?
 
     @ManyToOne
     @Column(name = "company_id")
