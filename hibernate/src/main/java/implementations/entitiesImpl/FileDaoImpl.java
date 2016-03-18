@@ -12,7 +12,6 @@ public class FileDaoImpl extends AbstractDaoImpl implements FileDao{
     @Override
     public File getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         File file = (File) session.load(File.class, id);
         LOGGER.debug(FileDaoImpl.class);
         commitTransaction(session);

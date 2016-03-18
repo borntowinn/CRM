@@ -13,7 +13,6 @@ public class UserRoleDaoImpl extends AbstractDaoImpl implements UserRoleDao{
     @Override
     public UserRole getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         UserRole userRole = (UserRole) session.load(UserRole.class, id);
         LOGGER.debug(UserRoleDaoImpl.class);
         commitTransaction(session);

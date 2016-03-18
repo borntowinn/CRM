@@ -17,7 +17,6 @@ public class ContactDoaImpl extends AbstractDaoImpl implements ContactDao{
     @Override
     public Comment getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         Comment comment = (Comment) session.load(Comment.class, id);
         LOGGER.debug(ContactDoaImpl.class);
         commitTransaction(session);
@@ -32,7 +31,6 @@ public class ContactDoaImpl extends AbstractDaoImpl implements ContactDao{
     @Override
     public void addCommentToContact(Comment comment, Contact contact_id) {
         Session session = getSession();
-        session.beginTransaction();
         comment.setContactId(contact_id); //need to avoid
         comment.setCreationDate(LocalDateTime.now());
         session.save(comment);

@@ -12,7 +12,6 @@ public class SessionHistoryDaoImpl extends AbstractDaoImpl implements SessionHis
     @Override
     public SessionHistory getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         SessionHistory sessionHistory = (SessionHistory) session.load(SessionHistory.class, id);
         LOGGER.debug(DealDaoImpl.class);
         commitTransaction(session);

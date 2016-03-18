@@ -15,7 +15,6 @@ public class CompanyDaoImpl extends AbstractDaoImpl implements CompanyDao {
     @Override
     public Company getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         Company comment = (Company) session.load(Company.class, id);
         LOGGER.debug(CompanyDaoImpl.class);
         commitTransaction(session);
@@ -30,7 +29,6 @@ public class CompanyDaoImpl extends AbstractDaoImpl implements CompanyDao {
     @Override
     public Company selectCompanyByContactId(int contactId) {
         Session session = getSession();
-        session.beginTransaction();
         Criteria allCompanies = getSession().createCriteria(Company.class);
         List companies = allCompanies.add(Restrictions.eq("contact_id", contactId)).list();
         if (companies.size() > 1) {

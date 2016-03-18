@@ -15,7 +15,6 @@ public class TagDaoImpl extends AbstractDaoImpl implements TagDao {
     @Override
     public Tag getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         Tag tag = (Tag) session.load(Tag.class, id);
         LOGGER.debug(TagDaoImpl.class);
         commitTransaction(session);
@@ -30,7 +29,6 @@ public class TagDaoImpl extends AbstractDaoImpl implements TagDao {
     @Override
     public List selectTagByContact(Contact contactId) { //check it
         Session session = getSession();
-        session.beginTransaction();
         Query query = session.createQuery("select t from com.becomejavasenior.Contact c join com.becomejavasenior.Tag t where c = :contactId");
         return query.list();
     }

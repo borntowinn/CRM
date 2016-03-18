@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-10" href="/tagsToContacts">
+                    <div class="col-sm-offset-3 col-sm-10" href="/contacts">
                         <button type="submit" class="btn btn-default">Обновить</button>
                     </div>
                 </div>

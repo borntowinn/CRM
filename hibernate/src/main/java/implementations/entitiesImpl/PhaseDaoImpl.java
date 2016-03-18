@@ -12,7 +12,6 @@ public class PhaseDaoImpl extends AbstractDaoImpl implements PhaseDao{
     @Override
     public Phase getByPK(Integer id) {
         Session session = getSession();
-        session.beginTransaction();
         Phase phase = (Phase) session.load(Phase.class, id);
         LOGGER.debug(PhaseDaoImpl.class);
         commitTransaction(session);

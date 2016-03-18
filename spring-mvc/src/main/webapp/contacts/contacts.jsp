@@ -167,7 +167,7 @@
 
                 <div class="col-sm-9">
                     <div id="myContactsCompaniesTable">
-                        <jsp:include page="/tagsToContacts/contactsTable.jsp"/>
+                        <jsp:include page="/contacts/contactsTable.jsp"/>
                     </div>
                 </div>
 

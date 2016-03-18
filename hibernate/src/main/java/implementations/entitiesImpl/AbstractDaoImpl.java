@@ -17,7 +17,6 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
     @Override
     public T create(T object) {
         Session session = getSession();
-        session.beginTransaction();
         session.save(object);
         commitTransaction(session);
         return object;
@@ -26,7 +25,6 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
     @Override
     public void update(T object) {
         Session session = getSession();
-        session.beginTransaction();
         session.delete(object);
         LOGGER.debug(DealDaoImpl.class);
         commitTransaction(session);
@@ -35,14 +33,15 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
     @Override
     public void delete(T object) {
         Session session = getSession();
-        session.beginTransaction();
         session.update(object);
         LOGGER.debug(DealDaoImpl.class);
         commitTransaction(session);
     }
 
     protected Session getSession() {
-        return HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        return session;
     }
 
     protected void commitTransaction(Session session) {
