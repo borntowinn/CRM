@@ -39,7 +39,7 @@ public class Contact implements Serializable {
     private List<Deal> deals = new LinkedList<Deal>();
     private List<Task> tasks = new LinkedList<Task>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tagsToContacts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_contact", joinColumns = {
             @JoinColumn(name = "contact_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})

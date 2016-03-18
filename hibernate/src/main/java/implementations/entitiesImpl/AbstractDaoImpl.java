@@ -5,9 +5,14 @@ import implementations.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-public class AbstractDaoImpl<T> implements GeneralDao<T> {
+import java.util.List;
+
+public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDaoImpl.class);
+
+    public abstract T getByPK(Integer id);
+    public abstract List getAll();
 
     @Override
     public T create(T object) {

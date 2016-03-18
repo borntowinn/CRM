@@ -11,7 +11,7 @@
 <fmt:message key="leftmenu.dashboard" var="dashboard"/>
 <fmt:message key="leftmenu.addContact" var="addContact"/>
 <fmt:message key="leftmenu.deals" var="deals"/>
-<fmt:message key="leftmenu.contacts" var="contacts"/>
+<fmt:message key="leftmenu.tagsToContacts" var="tagsToContacts"/>
 <fmt:message key="leftmenu.addCompany" var="addCompany"/>
 <fmt:message key="leftmenu.tasks" var="tasks"/>
 <fmt:message key="leftmenu.analytics" var="analytics"/>
@@ -24,7 +24,7 @@
     <li><a href="dashboard">${dashboard}</a></li>
     <li><a href="add_contact">${addContact}</a></li>
     <li><a href="#">${deals}</a></li>
-    <li><a href="<c:url value="/contacts" />">${contacts}</a></li>
+    <li><a href="<c:url value="/tagsToContacts" />">${tagsToContacts}</a></li>
     <li><a href="<c:url value="/company" />">${addCompany}</a></li>
     <li><a href="<c:url value="/tasks/listAll" />">${tasks}</a></li>
     <li><a href="#">${analytics}</a></li>

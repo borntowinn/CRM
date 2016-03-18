@@ -44,7 +44,7 @@ public class Deal implements Serializable {
     @Column(name = "isdeleted")
     private Boolean isDeleted;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tagsToDeals", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_deal", joinColumns = {
             @JoinColumn(name = "deal_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})

@@ -2,6 +2,8 @@ package com.becomejavasenior;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tag")
@@ -12,6 +14,15 @@ public class Tag implements Serializable {
     @Column(name = "tag_id")
     private Integer id;
     private String tag;
+
+    @ManyToMany(mappedBy = "tags")
+    private List<Contact> tagsToContacts = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "tagList")
+    private List<Contact> tagsToDeals = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "tagList")
+    private List<Contact> tagsToCompanies = new ArrayList<>();
 
     public Tag() {
 
@@ -31,5 +42,29 @@ public class Tag implements Serializable {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public List<Contact> getTagsToContacts() {
+        return tagsToContacts;
+    }
+
+    public void setTagsToContacts(List<Contact> tagsToContacts) {
+        this.tagsToContacts = tagsToContacts;
+    }
+
+    public List<Contact> getTagsToDeals() {
+        return tagsToDeals;
+    }
+
+    public void setTagsToDeals(List<Contact> tagsToDeals) {
+        this.tagsToDeals = tagsToDeals;
+    }
+
+    public List<Contact> getTagsToCompanies() {
+        return tagsToCompanies;
+    }
+
+    public void setTagsToCompanies(List<Contact> tagsToCompanies) {
+        this.tagsToCompanies = tagsToCompanies;
     }
 }

@@ -32,11 +32,11 @@ public class Company implements Serializable {
     private LocalDateTime creationTime;
     private List<File> files = new LinkedList<File>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tagsToCompanies", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_company", joinColumns = {
             @JoinColumn(name = "company_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
-    private List<Tag> tags = new LinkedList<Tag>();
+    private List<Tag> companiesToTags = new LinkedList<Tag>();
     private List<Comment> comments = new LinkedList<Comment>();
     private List<Task> tasks = new LinkedList<Task>();
 
@@ -131,11 +131,11 @@ public class Company implements Serializable {
     }
 
     public List<Tag> getTags() {
-        return tags;
+        return companiesToTags;
     }
 
     public void setTags(List<Tag> tags) {
-        this.tags = tags;
+        this.companiesToTags = tags;
     }
 
     public LocalDateTime getCreationTime() {
