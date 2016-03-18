@@ -46,6 +46,5 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
 
     protected void commitTransaction(Session session) {
         session.getTransaction().commit();
-        session.close();
     }
 }

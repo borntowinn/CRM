@@ -13,8 +13,7 @@ public class FileDaoImpl extends AbstractDaoImpl implements FileDao{
     public File getByPK(Integer id) {
         Session session = getSession();
         File file = (File) session.load(File.class, id);
-        LOGGER.debug(FileDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(FileDaoImpl.class + "get file by PK, getByPK method");
         return file;
     }
 

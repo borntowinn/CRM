@@ -16,8 +16,7 @@ public class DealDaoImpl extends AbstractDaoImpl implements DealDao {
     public Deal getByPK(Integer id) {
         Session session = getSession();
         Deal deal = (Deal) session.load(Deal.class, id);
-        LOGGER.debug(DealDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(DealDaoImpl.class + "get deal by PK, getByPK method");
         return deal;
     }
 
@@ -26,10 +25,10 @@ public class DealDaoImpl extends AbstractDaoImpl implements DealDao {
     }
 
     @Override
-    public List selectDealByContactId(int contactId) {
+    public List<Deal> selectDealByContactId(int contactId) {
         Criteria allDeals = getSession().createCriteria(Deal.class);
-        List deals = allDeals.add(Restrictions.eq("contact_id", contactId)).list();
-        LOGGER.debug(DealDaoImpl.class);
+        List<Deal> deals = allDeals.add(Restrictions.eq("contact_id", contactId)).list();
+        LOGGER.debug(DealDaoImpl.class + "selectDealByContactId method");
         return deals;
     }
 }

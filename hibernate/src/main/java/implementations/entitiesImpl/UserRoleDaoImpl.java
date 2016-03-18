@@ -14,8 +14,7 @@ public class UserRoleDaoImpl extends AbstractDaoImpl implements UserRoleDao{
     public UserRole getByPK(Integer id) {
         Session session = getSession();
         UserRole userRole = (UserRole) session.load(UserRole.class, id);
-        LOGGER.debug(UserRoleDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(UserRoleDaoImpl.class + "get user role by PK, getByPK method");
         return userRole;
     }
 

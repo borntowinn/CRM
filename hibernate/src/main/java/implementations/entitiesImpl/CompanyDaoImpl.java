@@ -16,8 +16,7 @@ public class CompanyDaoImpl extends AbstractDaoImpl implements CompanyDao {
     public Company getByPK(Integer id) {
         Session session = getSession();
         Company comment = (Company) session.load(Company.class, id);
-        LOGGER.debug(CompanyDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(CompanyDaoImpl.class + "get company by PK, getByPK method");
         return comment;
     }
 
@@ -34,8 +33,7 @@ public class CompanyDaoImpl extends AbstractDaoImpl implements CompanyDao {
         if (companies.size() > 1) {
             LOGGER.error("Company has more than one contact. It was returned first company");
         }
-        LOGGER.debug(DealDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(DealDaoImpl.class + "selectCompanyByContactId method");
         return (Company) companies.get(0);
     }
 }

@@ -13,8 +13,7 @@ public class PhaseDaoImpl extends AbstractDaoImpl implements PhaseDao{
     public Phase getByPK(Integer id) {
         Session session = getSession();
         Phase phase = (Phase) session.load(Phase.class, id);
-        LOGGER.debug(PhaseDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(PhaseDaoImpl.class + "get phase by PK, getByPK method");
         return phase;
     }
 

@@ -7,7 +7,7 @@ import com.becomejavasenior.File;
 import java.util.List;
 
 public interface ContactDao extends GeneralDao{
-    void addCommentToContact(Comment comment, Contact contact_id);
-    void addFileToContact(File file, int contact_id);
+    void addCommentToContact(Comment comment, Contact contactId);
+    void addFileToContact(File file, int contactId);
     List<String> getAllTags();
 }

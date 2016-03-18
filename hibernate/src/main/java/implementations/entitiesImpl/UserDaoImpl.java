@@ -16,8 +16,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao{
     public User getByPK(Integer id) {
         Session session = getSession();
         User user = (User) session.load(User.class, id);
-        LOGGER.debug(UserDaoImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(UserDaoImpl.class + "get user by PK, getByPK method");
         return user;
     }
 

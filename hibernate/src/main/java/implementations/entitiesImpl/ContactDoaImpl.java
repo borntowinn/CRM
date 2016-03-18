@@ -18,8 +18,7 @@ public class ContactDoaImpl extends AbstractDaoImpl implements ContactDao{
     public Comment getByPK(Integer id) {
         Session session = getSession();
         Comment comment = (Comment) session.load(Comment.class, id);
-        LOGGER.debug(ContactDoaImpl.class);
-        commitTransaction(session);
+        LOGGER.debug(ContactDoaImpl.class + "get comment by PK, getByPK method");
         return comment;
     }
 
@@ -29,22 +28,22 @@ public class ContactDoaImpl extends AbstractDaoImpl implements ContactDao{
     }
 
     @Override
-    public void addCommentToContact(Comment comment, Contact contact_id) {
+    public void addCommentToContact(Comment comment, Contact contactId) {//@TODO figure out: I think, we don't need this
         Session session = getSession();
-        comment.setContactId(contact_id); //need to avoid
+        comment.setContactId(contactId); //@TODO figure out: need to avoid, it has to be in the one level higher
         comment.setCreationDate(LocalDateTime.now());
         session.save(comment);
         commitTransaction(session);
     }
 
     @Override
-    public void addFileToContact(File file, int contact_id) {
-        // figure out: why do we need this method here? move it to FileDaoImpl
+    public void addFileToContact(File file, int contactId) {
+        // @TODO figure out: why do we need this method here? move it to FileDaoImpl
     }
 
     @Override
     public List<String> getAllTags() {
-        // figure out: why do we need this method here? move it to TagDaoImpl
+        // @TODO  figure out: why do we need this method here? move it to TagDaoImpl
         return null;
     }
 }
