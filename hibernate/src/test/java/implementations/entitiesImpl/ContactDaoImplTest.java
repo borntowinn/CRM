@@ -34,13 +34,12 @@ public class ContactDaoImplTest {
         company.setEmail("testContact");
         companyId = companyDao.create(company);
         testContact.setCompanyId(companyId);
-//        tagDao = new TagDaoImpl();
-//        Tag newTag = new Tag();
-//        newTag.setTag("tag");
-//        tag = tagDao.create(newTag);
-//        List<Tag> tags = new LinkedList<>();
-//        tags.add(tag);
-//        contact.setTags(tags);
+        tagDao = new TagDaoImpl();
+        Tag newTag = new Tag();
+        newTag.setTag("tag");
+        newTag.getTagsToContacts().add(contact);
+        tag = tagDao.create(newTag);
+        testContact.getTags().add(tag);
         contact = dao.create(testContact);
         dealDao = new DealDaoImpl();
         Deal newDeal = new Deal();
@@ -53,7 +52,6 @@ public class ContactDaoImplTest {
     @After
     public void after() {
         dealDao.delete(deal);
-//        tagDao.delete(tag);
         dao.delete(contact);
         companyDao.delete(companyId);
     }
@@ -70,10 +68,10 @@ public class ContactDaoImplTest {
         assertTrue(deals.size() > 0);
     }
 
-//    @Test
-//    public void testSelectTagsByContact() throws Exception {
-//        List<Tag> tags = dao.selectTagByContact(contact);
-//        Tag checkTag = tags.get(0);
-//        assertSame("tag", checkTag.getTag());
-//    }
+    @Test
+    public void testSelectTagsByContact() throws Exception {
+        List<Tag> tags = dao.selectTagByContact(contact);
+        Tag checkTag = tags.get(0);
+        assertSame("tag", checkTag.getTag());
+    }
 }

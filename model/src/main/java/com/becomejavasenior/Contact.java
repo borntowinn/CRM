@@ -46,11 +46,13 @@ public class Contact implements Serializable {
     @OneToMany
     private List<Task> tasks = new LinkedList<Task>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "tags_to_contact", joinColumns = {
-            @JoinColumn(name = "contact_id", nullable = false, updatable = true)},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
-    private List<Tag> tags = new LinkedList<Tag>();
+    @ManyToMany(targetEntity = Tag.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "tags_to_contact",
+            joinColumns = @JoinColumn(name = "contact_id", nullable = false, updatable = true),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", nullable = false, updatable = true)
+    )
+    private List<Tag> tags = new LinkedList<>();
 
     @OneToMany
     private List<Comment> commentList = new LinkedList<>();

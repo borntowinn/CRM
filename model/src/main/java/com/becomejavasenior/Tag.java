@@ -15,7 +15,7 @@ public class Tag implements Serializable {
     private Integer id;
     private String tag;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", targetEntity = Contact.class)
     private List<Contact> tagsToContacts = new ArrayList<>();
 
     @ManyToMany(mappedBy = "tagList")
