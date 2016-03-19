@@ -12,13 +12,12 @@ public class SessionHistory {
     @GeneratedValue
     @Column(name = "session_history_id")
     private Integer id;
-    @Column(name = "user_id")
+    @ManyToOne
     private User userId;
     @Column(name = "ip_address")
     private String ipAddress;
     private String browser;
     @Column(name = "data_session")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
 
     public SessionHistory() {

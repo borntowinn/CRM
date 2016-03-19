@@ -13,6 +13,17 @@
         </property>
         <property name="dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
         <property name="show_sql">true</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
+        <mapping class="com.becomejavasenior.Company"/>
+        <mapping class="com.becomejavasenior.Comment"/>
+        <mapping class="com.becomejavasenior.Contact"/>
+        <mapping class="com.becomejavasenior.Deal"/>
+        <mapping class="com.becomejavasenior.File"/>
+        <mapping class="com.becomejavasenior.Phase"/>
+        <mapping class="com.becomejavasenior.SessionHistory"/>
+        <mapping class="com.becomejavasenior.Tag"/>
+        <mapping class="com.becomejavasenior.Task"/>
+        <mapping class="com.becomejavasenior.User"/>
+        <mapping class="com.becomejavasenior.UserRole"/>
     </session-factory>
 </hibernate-configuration>

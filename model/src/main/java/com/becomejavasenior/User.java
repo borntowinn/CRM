@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class User implements Serializable {
 
     @Id
@@ -16,11 +16,9 @@ public class User implements Serializable {
     private String password;
     private String description;
     @Column(name = "date_creation")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
 
     @ManyToOne
-    @Column(name = "user_role_id")
     private UserRole userRole;
     private String email;
     @Column(name = "mobile_phone")

@@ -14,7 +14,7 @@ public class Phase {
     private String phase;
 
     @OneToMany(mappedBy = "phase")
-    private List<Deal> deals; //need I initialization here?
+    private List<Deal> deals;
 
     public Phase() {
     }

@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class FileDaoImpl extends AbstractDaoImpl implements FileDao{
+public class FileDaoImpl extends AbstractDaoImpl<File> implements FileDao<File>{
     private static final Logger LOGGER = Logger.getLogger(FileDaoImpl.class);
     @Override
     public File getByPK(Integer id) {

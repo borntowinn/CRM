@@ -14,15 +14,18 @@ public class Comment implements Serializable {
     private String comment;
 
     @Column(name = "data_creation")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
-    @Column(name = "company_id")
+
+    @ManyToOne
     private Company companyId;
-    @Column(name = "deal_id")
+
+    @ManyToOne
     private Deal dealId;
-    @Column(name = "contact_id")
+
+    @ManyToOne
     private Contact contactId;
-    @Column(name = "task_id")
+
+    @ManyToOne
     private Task taskId;
 
     public Comment() {

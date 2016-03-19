@@ -10,7 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class UserDaoImpl extends AbstractDaoImpl implements UserDao{
+public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao<User>{
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
     @Override
     public User getByPK(Integer id) {

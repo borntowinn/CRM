@@ -13,19 +13,19 @@ public class File implements Serializable {
     @Column(name = "file_id")
     private Integer id;
     @Column(name = "date_creation")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationDate;
     @Column(name = "file")
     private byte[] file;
     @Column(name = "file_name")
     private String fileName;
-    @Column(name = "company_id")
+
+    @ManyToOne
     private Company companyId;
-    @Column(name = "deal_id")
+    @ManyToOne
     private Deal dealId;
-    @Column(name = "contact_id")
+    @ManyToOne
     private Contact contactId;
-    @Column(name = "user_id")
+    @ManyToOne
     private User userId;
 
     public File() {

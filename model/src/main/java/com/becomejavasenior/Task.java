@@ -17,18 +17,19 @@ public class Task implements Serializable {
     private String taskName;
     @Column(name = "plantime")
     private LocalDateTime planTime;
+    @ManyToOne
     private User responsible;
     @Column(name = "task_type")
     private String taskType;
+    @ManyToOne
     private User author;
-    @Column(name = "company_id")
+    @ManyToOne
     private Company company;
-    @Column(name = "deal_id")
+    @ManyToOne
     private Deal deal;
     @Column(name = "creation_time")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
-    @Column(name = "contat_id")
+    @ManyToOne
     private Contact contact;
     @Column(name = "isdeleted")
     private Boolean isDeleted;

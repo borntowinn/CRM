@@ -1,19 +1,13 @@
 package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.*;
-import com.becomejavasenior.dao.CommentDao;
-import com.becomejavasenior.dao.ContactDao;
 import com.becomejavasenior.dao.FileDao;
 import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.jdbc.factory.DaoFactory;
-import com.becomejavasenior.dao.jdbc.factory.DataSource;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;

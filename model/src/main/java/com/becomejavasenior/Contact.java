@@ -26,25 +26,33 @@ public class Contact implements Serializable {
     @Column(name = "isdeleted")
     private Boolean isDeleted;
     @Column(name = "creation_time")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
-    @Column(name = "createdby")
+
+    @ManyToOne
     private User createdBy;
-    @Column(name = "company_id")
+
+    @ManyToOne
     private Company companyId;
+
+    @ManyToOne
     private User responsible;
+
+    @OneToMany
     private List<File> files = new LinkedList<File>();
 
     @OneToMany(mappedBy = "contact")
     private List<Deal> deals = new LinkedList<Deal>();
+
+    @OneToMany
     private List<Task> tasks = new LinkedList<Task>();
 
-    @ManyToMany(mappedBy = "tagsToContacts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_contact", joinColumns = {
             @JoinColumn(name = "contact_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
     private List<Tag> tags = new LinkedList<Tag>();
 
+    @OneToMany
     private List<Comment> commentList = new LinkedList<>();
 
     public Contact() {

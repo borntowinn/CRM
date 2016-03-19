@@ -2,7 +2,6 @@ package com.becomejavasenior.dao.jdbc.impl;
 
 import com.becomejavasenior.SessionHistory;
 import com.becomejavasenior.User;
-import com.becomejavasenior.UserRole;
 import com.becomejavasenior.dao.SessionHistoryDao;
 import com.becomejavasenior.dao.UserDao;
 import com.becomejavasenior.dao.exception.PersistException;

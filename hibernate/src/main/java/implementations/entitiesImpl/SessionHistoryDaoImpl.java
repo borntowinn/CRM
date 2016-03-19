@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class SessionHistoryDaoImpl extends AbstractDaoImpl implements SessionHistoryDao {
+public class SessionHistoryDaoImpl extends AbstractDaoImpl<SessionHistory> implements SessionHistoryDao<SessionHistory> {
     private static final Logger LOGGER = Logger.getLogger(SessionHistoryDaoImpl.class);
     @Override
     public SessionHistory getByPK(Integer id) {

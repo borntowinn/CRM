@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class UserRoleDaoImpl extends AbstractDaoImpl implements UserRoleDao{
+public class UserRoleDaoImpl extends AbstractDaoImpl<UserRole> implements UserRoleDao<UserRole> {
     private static final Logger LOGGER = Logger.getLogger(UserRoleDaoImpl.class);
 
     @Override

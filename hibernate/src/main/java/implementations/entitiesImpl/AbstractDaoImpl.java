@@ -1,5 +1,6 @@
 package implementations.entitiesImpl;
 
+import com.becomejavasenior.dao.exception.PersistException;
 import com.becomejavasenior.dao.hibernatedao.GeneralDao;
 import implementations.HibernateUtil;
 import org.apache.log4j.Logger;
@@ -15,27 +16,48 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
     public abstract List getAll();
 
     @Override
-    public T create(T object) {
-        Session session = getSession();
-        session.save(object);
-        commitTransaction(session);
+    public T create(T object) throws PersistException{
+        Session session = null;
+        try {
+            session = getSession();
+            session.save(object);
+            commitTransaction(session);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
         return object;
     }
 
     @Override
     public void update(T object) {
-        Session session = getSession();
-        session.delete(object);
-        LOGGER.debug(DealDaoImpl.class);
-        commitTransaction(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.update(object);
+            LOGGER.debug(DealDaoImpl.class);
+            commitTransaction(session);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
     public void delete(T object) {
-        Session session = getSession();
-        session.update(object);
-        LOGGER.debug(DealDaoImpl.class);
-        commitTransaction(session);
+        Session session = null;
+        try {
+            session = getSession();
+            session.delete(object);
+            LOGGER.debug(DealDaoImpl.class);
+            commitTransaction(session);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     protected Session getSession() {

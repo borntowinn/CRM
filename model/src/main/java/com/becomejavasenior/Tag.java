@@ -19,10 +19,10 @@ public class Tag implements Serializable {
     private List<Contact> tagsToContacts = new ArrayList<>();
 
     @ManyToMany(mappedBy = "tagList")
-    private List<Contact> tagsToDeals = new ArrayList<>();
+    private List<Deal> tagsToDeals = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "tagList")
-    private List<Contact> tagsToCompanies = new ArrayList<>();
+    @ManyToMany(mappedBy = "companiesToTags")
+    private List<Company> tagsToCompanies = new ArrayList<>();
 
     public Tag() {
 
@@ -52,19 +52,19 @@ public class Tag implements Serializable {
         this.tagsToContacts = tagsToContacts;
     }
 
-    public List<Contact> getTagsToDeals() {
+    public List<Deal> getTagsToDeals() {
         return tagsToDeals;
     }
 
-    public void setTagsToDeals(List<Contact> tagsToDeals) {
+    public void setTagsToDeals(List<Deal> tagsToDeals) {
         this.tagsToDeals = tagsToDeals;
     }
 
-    public List<Contact> getTagsToCompanies() {
+    public List<Company> getTagsToCompanies() {
         return tagsToCompanies;
     }
 
-    public void setTagsToCompanies(List<Contact> tagsToCompanies) {
+    public void setTagsToCompanies(List<Company> tagsToCompanies) {
         this.tagsToCompanies = tagsToCompanies;
     }
 }

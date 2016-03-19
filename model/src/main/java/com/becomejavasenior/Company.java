@@ -16,32 +16,43 @@ public class Company implements Serializable {
     private Integer id;
     @Column(name = "company_name")
     private String companyName;
+
+    @ManyToOne
     private User responsible;
     @Column(name = "phone_number")
     private String phoneNumber;
     private String email;
     @Column(name = "web_site")
     private String website;
-    @Column(name = "createdby")
+
+    @ManyToOne
     private User createdBy;
     @Column(name = "isdeleted")
     private Boolean isDeleted;
     private String address;
     @Column(name = "creation_time")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private LocalDateTime creationTime;
+
+    @OneToMany
     private List<File> files = new LinkedList<File>();
 
-    @ManyToMany(mappedBy = "tagsToCompanies", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_company", joinColumns = {
             @JoinColumn(name = "company_id", nullable = false, updatable = true)},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", nullable = false, updatable = true)})
-    private List<Tag> companiesToTags = new LinkedList<Tag>();
-    private List<Comment> comments = new LinkedList<Comment>();
-    private List<Task> tasks = new LinkedList<Task>();
+    private List<Tag> companiesToTags = new LinkedList<>();
+
+    @OneToMany
+    private List<Comment> comments = new LinkedList<>();
+
+    @OneToMany
+    private List<Task> tasks = new LinkedList<>();
 
     @OneToMany(mappedBy = "company")
     private List<Deal> deals = new LinkedList<>();
+
+    @OneToMany(mappedBy = "companyId")
+    private List<Contact> contacts = new LinkedList<>();
 
     public Company() {
     }
@@ -164,5 +175,13 @@ public class Company implements Serializable {
 
     public void setDeals(List<Deal> deals) {
         this.deals = deals;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 }

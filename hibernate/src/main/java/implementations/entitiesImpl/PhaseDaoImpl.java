@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import java.util.List;
 
-public class PhaseDaoImpl extends AbstractDaoImpl implements PhaseDao{
+public class PhaseDaoImpl extends AbstractDaoImpl<Phase> implements PhaseDao<Phase> {
     private static final Logger LOGGER = Logger.getLogger(PhaseDaoImpl.class);
     @Override
     public Phase getByPK(Integer id) {

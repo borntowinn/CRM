@@ -1,4 +1,4 @@
 package com.becomejavasenior.dao.hibernatedao;
 
-public interface UserRoleDao extends GeneralDao{
+public interface UserRoleDao<T> extends GeneralDao<T> {
 }
