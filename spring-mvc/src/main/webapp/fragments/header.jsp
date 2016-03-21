@@ -39,7 +39,7 @@
                 </li>
                 <li id="log-out">
                     <%--<fmt:message key="logout" var="logout" />--%>
-                    <a href="<c:url value="/login.jsp" />"><fmt:message key="header.logout"/> </a>
+                    <a href="<c:url value="/pages/login.jsp" />"><fmt:message key="header.logout"/> </a>
                 </li>
             </ul>
             <form class="navbar-form navbar-right">

@@ -55,10 +55,10 @@
             </div>
             <div class="row">
                 <div class="input-field col s6 m6 l6">
-                    <p class="margin medium-small"><a href="<c:url value="/register.jsp" />">Register Now!</a></p>
+                    <p class="margin medium-small"><a href="<c:url value="/pages/register.jsper.jsp" />">Register Now!</a></p>
                 </div>
                 <div class="input-field col s6 m6 l6">
-                    <p class="margin right-align medium-small"><a href="<c:url value="/login.jsp" />">Login</a></p>
+                    <p class="margin right-align medium-small"><a href="<c:url value="/pages/login.jsp" />">Login</a></p>
                 </div>
             </div>
 
