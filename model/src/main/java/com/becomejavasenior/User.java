@@ -1,24 +1,37 @@
 package com.becomejavasenior;
 
+import org.hibernate.annotations.Type;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue
     @Column(name = "user_id")
     private Integer id;
+
+    @Column(name = "name")
     private String name;
+
     private String password;
     private String description;
     @Column(name = "date_creation")
+    @Type(type = "date")
     private LocalDateTime creationDate;
 
     @ManyToOne
+    @JoinColumn(name = "user_role_id")
     private UserRole userRole;
     private String email;
     @Column(name = "mobile_phone")
@@ -30,6 +43,13 @@ public class User implements Serializable {
     private String passwordSalt;
 
     public User() {
+    }
+
+    public User(String name, String password, UserRole userRole, String email) {
+        this.name = name;
+        this.password = password;
+        this.userRole = userRole;
+        this.email = email;
     }
 
     public UserRole getUserRole() {
@@ -118,5 +138,37 @@ public class User implements Serializable {
 
     public void setPasswordSalt(String passwordSalt) {
         this.passwordSalt = passwordSalt;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> result = new ArrayList<>();
+        result.add(new SimpleGrantedAuthority(userRole.getUserRole()));
+        return result;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
     }
 }

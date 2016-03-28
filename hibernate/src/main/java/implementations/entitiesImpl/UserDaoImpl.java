@@ -15,7 +15,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao<User>{
     @Override
     public User getByPK(Integer id) {
         Session session = getSession();
-        User user = (User) session.load(User.class, id);
+        User user = session.load(User.class, id);
         LOGGER.debug(UserDaoImpl.class + "get user by PK, getByPK method");
         return user;
     }
@@ -26,7 +26,7 @@ public class UserDaoImpl extends AbstractDaoImpl<User> implements UserDao<User>{
     }
 
     @Override
-    public User getByEmail(String email) {
+    public User getByEmail(String email) throws PersistException{
         Criteria getUsers = getSession().createCriteria(User.class);
         List users = getUsers.add(Restrictions.eq("email", email)).list();
         if (users.size() > 1) {

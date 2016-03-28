@@ -38,7 +38,6 @@ public class UserRole implements Serializable {
         this.userRole = userRole;
     }
 
-
     public List<User> getUsers() {
         return users;
     }

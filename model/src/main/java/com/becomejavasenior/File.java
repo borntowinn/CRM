@@ -20,12 +20,16 @@ public class File implements Serializable {
     private String fileName;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company companyId;
     @ManyToOne
+    @JoinColumn(name = "deal_id")
     private Deal dealId;
     @ManyToOne
+    @JoinColumn(name = "contact_id")
     private Contact contactId;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User userId;
 
     public File() {

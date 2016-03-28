@@ -1,19 +1,25 @@
 package implementations;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
     private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
-        Configuration configuration = new Configuration().configure();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-                applySettings(configuration.getProperties());
-        sessionFactory = configuration.buildSessionFactory(builder.build());
-        return sessionFactory;
+        StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+                .configure( "hibernate.cfg.xml" )
+                .build();
+
+        Metadata metadata = new MetadataSources( standardRegistry )
+                .getMetadataBuilder()
+                .build();
+
+        return metadata.getSessionFactoryBuilder().build();
     }
 
 

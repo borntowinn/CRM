@@ -13,8 +13,15 @@ public class UserRoleDaoImpl extends AbstractDaoImpl<UserRole> implements UserRo
     @Override
     public UserRole getByPK(Integer id) {
         Session session = getSession();
-        UserRole userRole = (UserRole) session.load(UserRole.class, id);
-        LOGGER.debug(UserRoleDaoImpl.class + "get user role by PK, getByPK method");
+        UserRole userRole;
+        try {
+            userRole = session.load(UserRole.class, id);
+            LOGGER.debug(UserRoleDaoImpl.class + "get user role by PK, getByPK method");
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
         return userRole;
     }
 

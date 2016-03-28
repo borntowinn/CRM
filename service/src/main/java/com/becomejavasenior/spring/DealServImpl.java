@@ -6,8 +6,6 @@ import com.becomejavasenior.spring.interfaces.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 @Service
 public class DealServImpl implements AbstractService<Deal> {
 
@@ -15,13 +13,11 @@ public class DealServImpl implements AbstractService<Deal> {
     private AbstractDao<Deal> abstractDao;
 
     @Override
-    @Transactional
     public Deal objectByPK(Deal param) {
         return abstractDao.getByPK(param.getId());
     }
 
     @Override
-    @Transactional
     public Deal createEntity(Deal deal) {
         return abstractDao.create(deal);
     }

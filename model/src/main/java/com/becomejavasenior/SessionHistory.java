@@ -13,6 +13,7 @@ public class SessionHistory {
     @Column(name = "session_history_id")
     private Integer id;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User userId;
     @Column(name = "ip_address")
     private String ipAddress;

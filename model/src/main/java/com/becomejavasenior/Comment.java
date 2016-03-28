@@ -17,15 +17,19 @@ public class Comment implements Serializable {
     private LocalDateTime creationDate;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company companyId;
 
     @ManyToOne
+    @JoinColumn(name = "deal_id")
     private Deal dealId;
 
     @ManyToOne
+    @JoinColumn(name = "contact_id")
     private Contact contactId;
 
     @ManyToOne
+    @JoinColumn(name = "task_id")
     private Task taskId;
 
     public Comment() {

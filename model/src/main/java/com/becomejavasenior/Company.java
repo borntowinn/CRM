@@ -18,23 +18,27 @@ public class Company implements Serializable {
     private String companyName;
 
     @ManyToOne
+    @JoinColumn(name = "responsible")
     private User responsible;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "email")
     private String email;
     @Column(name = "web_site")
     private String website;
 
     @ManyToOne
+    @JoinColumn(name = "createdBy")
     private User createdBy;
     @Column(name = "isdeleted")
     private Boolean isDeleted;
+    @Column(name = "address")
     private String address;
     @Column(name = "creation_time")
     private LocalDateTime creationTime;
 
     @OneToMany
-    private List<File> files = new LinkedList<File>();
+    private List<File> files = new LinkedList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tags_to_company", joinColumns = {

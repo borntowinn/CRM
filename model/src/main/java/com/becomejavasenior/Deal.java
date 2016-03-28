@@ -20,22 +20,27 @@ public class Deal implements Serializable {
     private String dealName;
 
     @ManyToOne
+    @JoinColumn(name = "createdby")
     private User createdBy;
     private BigDecimal budget;
 
     @ManyToOne
+    @JoinColumn(name = "phase_id")
     private Phase phase;
 
     @ManyToOne
+    @JoinColumn(name = "responsible")
     private User responsible;
 
     @Column(name = "date_creation")
     private LocalDateTime creationDate;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company company;
 
     @ManyToOne
+    @JoinColumn(name = "contact_id")
     private Contact contact;
 
     @Column(name = "isdeleted")
@@ -48,11 +53,11 @@ public class Deal implements Serializable {
     private List<Tag> tagList = new LinkedList<Tag>();
 
     @OneToMany
-    private List<Comment> commentList = new LinkedList<Comment>();
+    private List<Comment> commentList = new LinkedList<>();
     @OneToMany
-    private List<File> fileList = new LinkedList<File>();
+    private List<File> fileList = new LinkedList<>();
     @OneToMany
-    private List<Task> tasks = new LinkedList<Task>();
+    private List<Task> tasks = new LinkedList<>();
 
     public Deal() {
 

@@ -52,6 +52,7 @@ public abstract class AbstractDaoImpl<T> implements GeneralDao<T> {
             session = getSession();
             session.delete(object);
             LOGGER.debug(DealDaoImpl.class);
+            session.flush();
             commitTransaction(session);
         } finally {
             if (session != null) {

@@ -6,8 +6,6 @@ import implementations.entitiesImpl.AbstractDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 @Service
 public class UserServImpl implements AbstractService<User> {
 
@@ -15,13 +13,11 @@ public class UserServImpl implements AbstractService<User> {
     AbstractDaoImpl<User> dao;
 
     @Override
-    @Transactional
     public User objectByPK(User param) {
         return dao.getByPK(param.getId());
     }
 
     @Override
-    @Transactional
     public User createEntity(User object) {
         return dao.create(object);
     }

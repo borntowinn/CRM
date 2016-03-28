@@ -29,22 +29,25 @@ public class Contact implements Serializable {
     private LocalDateTime creationTime;
 
     @ManyToOne
+    @JoinColumn(name = "createdby")
     private User createdBy;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company companyId;
 
     @ManyToOne
+    @JoinColumn(name = "responsible")
     private User responsible;
 
-    @OneToMany
-    private List<File> files = new LinkedList<File>();
+    @OneToMany(mappedBy = "contactId")
+    private List<File> files = new LinkedList<>();
 
     @OneToMany(mappedBy = "contact")
-    private List<Deal> deals = new LinkedList<Deal>();
+    private List<Deal> deals = new LinkedList<>();
 
-    @OneToMany
-    private List<Task> tasks = new LinkedList<Task>();
+    @OneToMany(mappedBy = "contact")
+    private List<Task> tasks = new LinkedList<>();
 
     @ManyToMany(targetEntity = Tag.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -54,7 +57,7 @@ public class Contact implements Serializable {
     )
     private List<Tag> tags = new LinkedList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "contactId")
     private List<Comment> commentList = new LinkedList<>();
 
     public Contact() {
