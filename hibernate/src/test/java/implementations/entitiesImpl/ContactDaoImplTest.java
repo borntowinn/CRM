@@ -1,13 +1,11 @@
 package implementations.entitiesImpl;
 
-import com.becomejavasenior.Company;
-import com.becomejavasenior.Contact;
-import com.becomejavasenior.Deal;
-import com.becomejavasenior.Tag;
+import com.becomejavasenior.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,6 +20,9 @@ public class ContactDaoImplTest {
     Deal deal;
     TagDaoImpl tagDao;
     Tag tag;
+    UserDaoImpl userDao;
+    User createdBy;
+    UserRoleDaoImpl userRoleDao;
 
     @Before
     public void before() {
@@ -30,6 +31,7 @@ public class ContactDaoImplTest {
         Contact testContact = new Contact();
         testContact.setEmail("email");
         Company company = new Company();
+        company.setCompanyName("name");
         company.setWebsite("testontact");
         company.setEmail("testContact");
         companyId = companyDao.create(company);
@@ -40,12 +42,21 @@ public class ContactDaoImplTest {
         newTag.getTagsToContacts().add(contact);
         tag = tagDao.create(newTag);
         testContact.getTags().add(tag);
+        userDao = new UserDaoImpl();
+        userRoleDao = new UserRoleDaoImpl();
+        UserRole userRole = userRoleDao.getByPK(1);
+        User object = new User("name", "pass", userRole, "maiiil");
+        createdBy = userDao.create(object);
+        testContact.setCreatedBy(createdBy);
         contact = dao.create(testContact);
         dealDao = new DealDaoImpl();
         Deal newDeal = new Deal();
         newDeal.setContact(contact);
         newDeal.setDealName("name");
         newDeal.setCompany(companyId);
+        newDeal.setCreatedBy(object);
+        newDeal.setBudget(new BigDecimal(1231231.12));
+        newDeal.setResponsible(object);
         deal =  dealDao.create(newDeal);
     }
 
@@ -54,6 +65,7 @@ public class ContactDaoImplTest {
         dealDao.delete(deal);
         dao.delete(contact);
         companyDao.delete(companyId);
+        userDao.delete(createdBy);
     }
 
     @Test

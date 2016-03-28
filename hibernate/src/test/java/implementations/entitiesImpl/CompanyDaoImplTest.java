@@ -5,10 +5,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.Converter;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@Converter(autoApply = true)
 public class CompanyDaoImplTest {
     CompanyDaoImpl dao;
     Company company;
@@ -17,6 +19,7 @@ public class CompanyDaoImplTest {
     public void before() {
         dao = new CompanyDaoImpl();
         Company company = new Company();
+        company.setCompanyName("name");
         company.setAddress("addr");
         company.setEmail("em");
         this.company = dao.create(company);
@@ -30,6 +33,7 @@ public class CompanyDaoImplTest {
     @Test
     public void createCompany() {
         Company company = new Company();
+        company.setCompanyName("name");
         company.setAddress("addr");
         company.setEmail("em");
         Company check
